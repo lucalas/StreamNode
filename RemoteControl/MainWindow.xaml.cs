@@ -23,17 +23,39 @@ namespace RemoteControl
     /// </summary>
     public partial class MainWindow : Window
     {
+        AudioService ac = new AudioService();
         public MainWindow()
         {
             InitializeComponent();
-            AudioService ac = new AudioService();
+            getOutputMixers();
+            getInputMixers();
+        }
+
+        public void getOutputMixers()
+        {
             foreach (MMDevice device in ac.GetListOfOutputDevices())
             {
                 List<ApplicationController> appController = ac.GetApplicationsMixer(device);
                 foreach (ApplicationController app in appController)
                 {
                     ApplicationMixer mixer = new ApplicationMixer(app.processName, device.FriendlyName, app);
-                    Mixer.Items.Add(mixer);
+                    MixerOutput.Items.Add(mixer);
+                }
+            }
+        }
+
+        public void getInputMixers()
+        {
+            foreach (MMDevice device in ac.GetListOfInputDevices())
+            {
+                ApplicationController deviceController = ac.GetDeviceController(device);
+                ApplicationMixer mixerDevice = new ApplicationMixer(deviceController.processName, device.FriendlyName, deviceController);
+                MixerInput.Items.Add(mixerDevice);
+                List<ApplicationController> appController = ac.GetApplicationsMixer(device);
+                foreach (ApplicationController app in appController)
+                {
+                    ApplicationMixer mixer = new ApplicationMixer(app.processName, device.FriendlyName, app);
+                    MixerInput.Items.Add(mixer);
                 }
             }
         }

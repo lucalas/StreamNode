@@ -15,10 +15,15 @@ namespace RemoteControl.Services
         {
         }
 
-
         public MMDevice GetDefaultOutputDevice()
         {
             MMDevice device = devicesController.GetDefaultAudioEndpoint(DataFlow.Render, Role.Multimedia);
+            return device;
+        }
+
+        public MMDevice GetDefaultInputDevice()
+        {
+            MMDevice device = devicesController.GetDefaultAudioEndpoint(DataFlow.Capture, Role.Multimedia);
             return device;
         }
 
@@ -28,11 +33,26 @@ namespace RemoteControl.Services
             return deviceList;
         }
 
+        public MMDeviceCollection GetListOfInputDevices()
+        {
+            MMDeviceCollection deviceList = devicesController.EnumerateAudioEndPoints(DataFlow.Capture, DeviceState.Active);
+            return deviceList;
+        }
+
         public bool MixerIsDefault(MMDevice device)
         {
             return GetDefaultOutputDevice().ID.Equals(device.ID);
         }
 
+        public ApplicationController GetDeviceController(MMDevice device)
+        {
+            return new ApplicationController(device, device.AudioSessionManager.SimpleAudioVolume, device.FriendlyName);
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="device"></param>
+        /// <returns></returns>
         public List<ApplicationController> GetApplicationsMixer(MMDevice device)
         {
             List<ApplicationController> appsList = new List<ApplicationController>();
@@ -44,7 +64,7 @@ namespace RemoteControl.Services
                 //if (!session.IsSystemSoundsSession && ProcessUtils.ProcessExists(session.GetProcessID))
                 if (ProcessUtils.ProcessExists(session.GetProcessID))
                 {
-                    ApplicationController ac = new ApplicationController(device, session, ProcessUtils.ProcessName(session.GetProcessID));
+                    ApplicationController ac = new ApplicationController(device, session.SimpleAudioVolume, ProcessUtils.ProcessName(session.GetProcessID));
                     appsList.Add(ac);
                 }
             }
