@@ -14,7 +14,15 @@
                 <TranslateTransform/>
             </TransformGroup>
         </Grid.RenderTransform>
-        <Slider Name="VolumeSlider" ValueChanged="VolumeSlider_ValueChanged" Maximum="1" HorizontalAlignment="Center" Margin="0,41,0,0" VerticalAlignment="Top" Width="120"/>
-        <Label Name="Title" Content="{Binding title}" HorizontalAlignment="Center" Margin="0,9,0,0" VerticalAlignment="Top" FontSize="16" FontWeight="Bold"/>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*" />
+            <RowDefinition Height="1*" />
+            <RowDefinition Height="2*" />
+            <RowDefinition Height="1*" />
+        </Grid.RowDefinitions>
+        <Label Grid.Column="1" Name="Title" Content="{Binding title}" HorizontalAlignment="Center" Margin="0,2,0,0" VerticalAlignment="Top" FontSize="16" FontWeight="Bold"/>
+        <Label Grid.Column="2" Name="DeviceNameLabel" Content="{Binding DeviceName}" HorizontalAlignment="Center" Margin="0,21,0,0" VerticalAlignment="Top" FontSize="9"/>
+        <Slider Grid.Column="3" Name="VolumeSlider" ValueChanged="VolumeSlider_ValueChanged" Maximum="1" HorizontalAlignment="Center" Margin="0,41,0,0" VerticalAlignment="Top" Width="120" Height="40"/>
+        <Button Grid.Column="4" Content="Mute" HorizontalAlignment="Center" Margin="0,63,0,0" VerticalAlignment="Top" Click="Mute_Click"/>
     </Grid>
 </UserControl>

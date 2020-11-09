@@ -1,4 +1,5 @@
-﻿using RemoteControl.Objects;
+﻿using NAudio.CoreAudioApi;
+using RemoteControl.Objects;
 using RemoteControl.Services;
 using System;
 using System.Collections.Generic;
@@ -26,11 +27,14 @@ namespace RemoteControl
         {
             InitializeComponent();
             AudioService ac = new AudioService();
-            List<ApplicationController> appController = ac.GetApplicationsMixer(ac.GetDefaultOutputDevice());
-            foreach (ApplicationController app in appController)
+            foreach (MMDevice device in ac.GetListOfOutputDevices())
             {
-                ApplicationMixer mixer = new ApplicationMixer(app.processName, app);
-                Mixer.Items.Add(mixer);
+                List<ApplicationController> appController = ac.GetApplicationsMixer(device);
+                foreach (ApplicationController app in appController)
+                {
+                    ApplicationMixer mixer = new ApplicationMixer(app.processName, device.FriendlyName, app);
+                    Mixer.Items.Add(mixer);
+                }
             }
         }
     }

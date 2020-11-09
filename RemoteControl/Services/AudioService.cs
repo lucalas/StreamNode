@@ -28,6 +28,11 @@ namespace RemoteControl.Services
             return deviceList;
         }
 
+        public bool MixerIsDefault(MMDevice device)
+        {
+            return GetDefaultOutputDevice().ID.Equals(device.ID);
+        }
+
         public List<ApplicationController> GetApplicationsMixer(MMDevice device)
         {
             List<ApplicationController> appsList = new List<ApplicationController>();

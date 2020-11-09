@@ -7,6 +7,20 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\Icons\microphone-off.svg" />
+    <None Remove="Resources\Icons\microphone.svg" />
+    <None Remove="Resources\Icons\volume-high.svg" />
+    <None Remove="Resources\Icons\volume-off.svg" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\Icons\microphone-off.svg" />
+    <EmbeddedResource Include="Resources\Icons\microphone.svg" />
+    <EmbeddedResource Include="Resources\Icons\volume-high.svg" />
+    <EmbeddedResource Include="Resources\Icons\volume-off.svg" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="NAudio" Version="1.10.0" />
   </ItemGroup>
 

@@ -18,5 +18,30 @@ namespace RemoteControl.Objects
             device = _device;
             processName = _processName;
         }
+
+        public float getVolume()
+        {
+            return session.SimpleAudioVolume.Volume;
+        }
+
+        public void updateVolume(float value)
+        {
+            session.SimpleAudioVolume.Volume = value;
+        }
+
+        public void toggleMute()
+        {
+            session.SimpleAudioVolume.Mute = !session.SimpleAudioVolume.Mute;
+        }
+
+        public void setMute(bool mute)
+        {
+            session.SimpleAudioVolume.Mute = mute;
+        }
+
+        public bool getMute()
+        {
+            return session.SimpleAudioVolume.Mute;
+        }
     }
 }
