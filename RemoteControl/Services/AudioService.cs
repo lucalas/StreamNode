@@ -15,31 +15,51 @@ namespace RemoteControl.Services
         {
         }
 
+        /// <summary>
+        /// Return output devices.
+        /// </summary>
+        /// <returns></returns>
         public MMDevice GetDefaultOutputDevice()
         {
             MMDevice device = devicesController.GetDefaultAudioEndpoint(DataFlow.Render, Role.Multimedia);
             return device;
         }
 
+        /// <summary>
+        /// Return default input devices.
+        /// </summary>
+        /// <returns></returns>
         public MMDevice GetDefaultInputDevice()
         {
             MMDevice device = devicesController.GetDefaultAudioEndpoint(DataFlow.Capture, Role.Multimedia);
             return device;
         }
 
+        /// <summary>
+        /// Return output devices.
+        /// </summary>
+        /// <returns></returns>
         public MMDeviceCollection GetListOfOutputDevices()
         {
             MMDeviceCollection deviceList = devicesController.EnumerateAudioEndPoints(DataFlow.Render, DeviceState.Active);
             return deviceList;
         }
-
+        /// <summary>
+        /// Return input devices.
+        /// </summary>
+        /// <returns></returns>
         public MMDeviceCollection GetListOfInputDevices()
         {
             MMDeviceCollection deviceList = devicesController.EnumerateAudioEndPoints(DataFlow.Capture, DeviceState.Active);
             return deviceList;
         }
 
-        public bool MixerIsDefault(MMDevice device)
+        /// <summary>
+        /// Return if device is the default device.
+        /// </summary>
+        /// <param name="device"></param>
+        /// <returns></returns>
+        public bool DeviceIsDefault(MMDevice device)
         {
             return GetDefaultOutputDevice().ID.Equals(device.ID);
         }
@@ -49,7 +69,7 @@ namespace RemoteControl.Services
             return new ApplicationController(device, device.AudioSessionManager.SimpleAudioVolume, device.FriendlyName);
         }
         /// <summary>
-        /// 
+        /// Return Mixers List of every single application.
         /// </summary>
         /// <param name="device"></param>
         /// <returns></returns>
