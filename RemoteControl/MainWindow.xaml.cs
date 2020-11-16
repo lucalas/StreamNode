@@ -24,6 +24,7 @@ namespace RemoteControl
     public partial class MainWindow : Window
     {
         AudioService ac = new AudioService();
+        OBSService os = new OBSService();
         public MainWindow()
         {
             InitializeComponent();
@@ -58,6 +59,11 @@ namespace RemoteControl
                     MixerInput.Items.Add(mixer);
                 }
             }
+        }
+
+        private void Connect_Click(object sender, RoutedEventArgs e)
+        {
+            os.Connect(ipport.Text, pwd.Text);
         }
     }
 }
