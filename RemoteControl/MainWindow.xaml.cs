@@ -1,4 +1,6 @@
 ﻿using NAudio.CoreAudioApi;
+using OBSWebsocketDotNet.Types;
+using RemoteControl.Controllers;
 using RemoteControl.Objects;
 using RemoteControl.Services;
 using System;
@@ -23,13 +25,24 @@ namespace RemoteControl
     /// </summary>
     public partial class MainWindow : Window
     {
+        private static MainWindow _singleton;
+        public static MainWindow singleton { get { return _singleton; } }
+
         AudioService ac = new AudioService();
         OBSService os = new OBSService();
+
         public MainWindow()
         {
+            _singleton = this;
             InitializeComponent();
             getOutputMixers();
             getInputMixers();
+            InitOBS();
+        }
+
+        public void InitOBS()
+        {
+            os.Connected += e_OBSConnected;
         }
 
         public void getOutputMixers()
@@ -61,9 +74,25 @@ namespace RemoteControl
             }
         }
 
+        public void getOBSScenes()
+        {
+            GetSceneListInfo scenes = os.getScenes();
+
+            foreach (OBSScene scene in scenes.Scenes)
+            {
+                SceneController sc = new SceneController(scene);
+                OBSScenes.Items.Add(sc);
+            }
+        }
+
         private void Connect_Click(object sender, RoutedEventArgs e)
         {
             os.Connect(ipport.Text, pwd.Text);
+        }
+
+        static void e_OBSConnected(object sender, EventArgs e)
+        {
+            MainWindow.singleton.getOBSScenes();
         }
     }
 }

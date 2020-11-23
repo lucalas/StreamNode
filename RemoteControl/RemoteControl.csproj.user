@@ -10,9 +10,15 @@
     <Compile Update="Controllers\ApplicationMixer.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Controllers\SceneController.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Page Update="Controllers\ApplicationMixer.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Controllers\SceneController.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="MainWindow.xaml">

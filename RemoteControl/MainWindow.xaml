@@ -44,6 +44,14 @@
                     <Label Grid.Column="2" Content="password:"/>
                     <TextBox Grid.Column="3" Name="pwd"/>
                     <Button Grid.Column="4" Name="Connect" Content="Connect" Click="Connect_Click"/>
+
+                    <ListView Grid.Row="2" Grid.ColumnSpan="5" Name="OBSScenes" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                        <ListView.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel Orientation="Horizontal" />
+                            </ItemsPanelTemplate>
+                        </ListView.ItemsPanel>
+                    </ListView>
                 </Grid>
             </TabItem>
         </TabControl>

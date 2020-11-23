@@ -21,10 +21,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Json.Net" Version="1.0.23" />
     <PackageReference Include="NAudio" Version="1.10.0" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
-    <PackageReference Include="obs-websocket-dotnet" Version="4.8.0" />
-    <PackageReference Include="websocket-sharp.clone" Version="3.0.0" />
+    <PackageReference Include="WebSocketSharp-netstandard" Version="1.0.1" />
   </ItemGroup>
 
 </Project>
