@@ -21,6 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Fleck" Version="1.1.0" />
     <PackageReference Include="Json.Net" Version="1.0.23" />
     <PackageReference Include="NAudio" Version="1.10.0" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />

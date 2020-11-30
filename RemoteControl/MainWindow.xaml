@@ -54,6 +54,7 @@
                     </ListView>
                 </Grid>
             </TabItem>
+            <TabItem Header="Settings"></TabItem>
         </TabControl>
     </Grid>
 </Window>
