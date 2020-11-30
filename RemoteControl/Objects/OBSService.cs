@@ -38,6 +38,11 @@ namespace RemoteControl.Objects
             }
         }
 
+        public void setCurrentScene(string sceneName)
+        {
+            _obs.SetCurrentScene(sceneName);
+        }
+
         public GetSceneListInfo getScenes()
         {
             return _obs.GetSceneList();

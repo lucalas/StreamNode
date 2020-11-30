@@ -17,6 +17,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using static RemoteControl.Controllers.SceneController;
 
 namespace RemoteControl
 {
@@ -81,6 +82,7 @@ namespace RemoteControl
             foreach (OBSScene scene in scenes.Scenes)
             {
                 SceneController sc = new SceneController(scene);
+                sc.onButtonClick += OnButtonClickEventHandler;
                 OBSScenes.Items.Add(sc);
             }
         }
@@ -93,6 +95,11 @@ namespace RemoteControl
         static void e_OBSConnected(object sender, EventArgs e)
         {
             MainWindow.singleton.getOBSScenes();
+        }
+
+        void OnButtonClickEventHandler(object sender, OnButtonClickEventArgs e)
+        {
+            os.setCurrentScene(e.sceneName);
         }
     }
 }

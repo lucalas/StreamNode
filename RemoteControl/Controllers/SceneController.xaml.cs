@@ -19,8 +19,15 @@ namespace RemoteControl.Controllers
     /// </summary>
     public partial class SceneController : UserControl
     {
+        public class OnButtonClickEventArgs : EventArgs
+        {
+            public string sceneName;
+        }
+
+        public delegate void OnButtonClickEventHandler(object sender, OnButtonClickEventArgs e);
         private OBSScene _scene;
         private SceneControllerData AppData;
+        public event OnButtonClickEventHandler onButtonClick;
 
         public SceneController() : this(null)
         {
@@ -32,7 +39,15 @@ namespace RemoteControl.Controllers
             _scene = scene;
             InitializeComponent();
             AppData = new SceneControllerData() { title = scene.Name };
-            Title.DataContext = AppData;
+            SceneButton.DataContext = AppData;
+        }
+
+        private void SceneButton_Click(object sender, RoutedEventArgs e)
+        {
+            Button sceneButton = (Button)sender;
+            OnButtonClickEventArgs args = new OnButtonClickEventArgs();
+            args.sceneName = sceneButton.Content.ToString();
+            onButtonClick(sender, args);
         }
     }
 
