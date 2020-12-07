@@ -19,6 +19,7 @@ namespace RemoteControl.Services
 
         public void Configure(IWebSocketConnection socket)
         {
+            _socket = socket;
             _socket.OnOpen = () => {
                 Trace.WriteLine("Connected");
             };
