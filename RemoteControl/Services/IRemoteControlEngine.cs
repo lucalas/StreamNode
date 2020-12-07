@@ -6,6 +6,6 @@ namespace RemoteControl.Services
 {
     interface IRemoteControlEngine
     {
-        void connect();
+        void Connect();
     }
 }

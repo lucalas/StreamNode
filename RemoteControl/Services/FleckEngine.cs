@@ -1,22 +1,38 @@
 ﻿using Fleck;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 
 namespace RemoteControl.Services
 {
     class FleckEngine : IRemoteControlEngine
     {
-        public void connect()
-        {
-            WebSocketServer server = new WebSocketServer("ws://0.0.0.0:8181");
-            server.Start(socket =>
-            {
-                socket.OnOpen = () => Console.WriteLine("Open!");
-                socket.OnClose = () => Console.WriteLine("Close!");
-                socket.OnMessage = message => socket.Send(message);
-            });
+        private WebSocketServer _server;
+        private IWebSocketConnection _socket;
 
+        public void Connect()
+        {
+            _server = new WebSocketServer("ws://0.0.0.0:8181");
+            _server.Start(Configure);
+        }
+
+        public void Configure(IWebSocketConnection socket)
+        {
+            _socket.OnOpen = () => {
+                Trace.WriteLine("Connected");
+            };
+            _socket.OnClose = () => {
+                Trace.WriteLine("Disconnected");
+            };
+            _socket.OnMessage = HandlerMessage;
+        }
+
+        void HandlerMessage(String message)
+        {
+            Trace.WriteLine("printing message:");
+            Trace.WriteLine(message);
+            _socket.Send(message);
         }
     }
 }

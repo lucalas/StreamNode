@@ -14,7 +14,7 @@ namespace RemoteControl.Services
 
         public void connect()
         {
-            engine.connect();
+            engine.Connect();
         }
     }
 }
