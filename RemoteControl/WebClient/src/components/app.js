@@ -2,16 +2,16 @@ import { h } from 'preact';
 
 import { Layout } from 'antd';
 
-
 import CustomHeader from './customheader';
 import Routes from '../routes';
+import CustomSidebar from './sidebar';
 
 const { Footer, Sider, Content } = Layout;
 
 const App = () => (
 	<div id="app" class="bg-white">
 		<Layout>
-			<Sider>Sider</Sider>
+			<CustomSidebar/>
 			<Layout>
 				<CustomHeader />
 				<Content>
