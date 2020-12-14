@@ -1,7 +1,7 @@
 const WSSocketConnector = {
     connection : null,
     onopen : null,
-    onmessage : null,
+    onvolumechange : null,
 
     connect : (ip, port) => {
         this.connection = new WebSocket('ws://' + ip + ':' + port);
@@ -12,6 +12,10 @@ const WSSocketConnector = {
         this.connection.onmessage = data => {
             if (this.exists(this.onmessage)) this.onmessage(data);
         }
+    },
+
+    onmessage : (message) => {
+        let data = JSON.parse(message);
     },
 
     sendData : (message) => {

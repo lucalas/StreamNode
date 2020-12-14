@@ -1,6 +1,7 @@
 import { Component } from 'preact';
 
 import { Layout, Row, Col } from 'antd';
+import VolumeBox from '../../components/volumebox';
 
 class Dashboard extends Component {
 
@@ -12,7 +13,7 @@ class Dashboard extends Component {
         return (
         <Layout>
             <Row>
-                <Col span={6}>cioa</Col>
+                <Col span={6}><VolumeBox/></Col>
                 <Col span={6}>cioa</Col>
                 <Col span={6}>cioa</Col>
                 <Col span={6}>cioa</Col>
