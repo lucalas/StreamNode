@@ -1,0 +1,51 @@
+"request/response object type":
+-----------------------
+{
+	type: string {"volumes", "obs", "change-volume", "change-obs"},
+    data: object {}
+}
+
+"volumes":
+--------
+[
+    {
+        id?: string
+        name: string
+        volume: number
+        mute: boolean
+        icon: string (blob)
+    }
+]
+
+"obs"
+-------
+{
+    scene: [
+        {
+            scene: string
+        }
+    ]
+}
+
+
+"change-volume"
+--------
+{
+    id?: string
+    name: string
+    volume: number
+    mute: boolean
+}
+
+"change-obs"
+------
+{
+    type: string {"change-scene"},
+    data: object {}
+
+    "change-scene"
+    --------------
+    {
+        new-scene: string
+    }
+}

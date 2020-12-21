@@ -1,8 +1,10 @@
 ﻿using Fleck;
+using RemoteControl.Objects;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
+using System.Text.Json;
 
 namespace RemoteControl.Services
 {
@@ -10,6 +12,7 @@ namespace RemoteControl.Services
     {
         private WebSocketServer _server;
         private IWebSocketConnection _socket;
+        public event EventHandler<RemoteControlOnMessageArgs> OnMessage;
 
         public void Connect()
         {
@@ -29,11 +32,11 @@ namespace RemoteControl.Services
             _socket.OnMessage = HandlerMessage;
         }
 
-        void HandlerMessage(String message)
+        private void HandlerMessage(string message)
         {
-            Trace.WriteLine("printing message:");
-            Trace.WriteLine(message);
-            _socket.Send(message);
+            RemoteControlOnMessageArgs args = new RemoteControlOnMessageArgs();
+            args.message = message;
+            OnMessage(this, args);
         }
     }
 }
