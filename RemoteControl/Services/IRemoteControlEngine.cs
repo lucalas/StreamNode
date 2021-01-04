@@ -7,7 +7,8 @@ namespace RemoteControl.Services
 {
     interface IRemoteControlEngine
     {
-        event EventHandler<RemoteControlOnMessageArgs> OnMessage;
+        delegate string OnMessageEventHandler(object sender, RemoteControlOnMessageArgs args);
+        event OnMessageEventHandler OnMessage;
 
         void Connect();
     }

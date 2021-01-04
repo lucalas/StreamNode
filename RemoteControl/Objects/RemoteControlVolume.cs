@@ -6,9 +6,9 @@ namespace RemoteControl.Objects
 {
     class RemoteControlVolume
     {
-        string name { get; set; }
-        int volume { get; set; }
-        bool mute { get; set; }
-        string icon { get; set; }
+        public string name { get; set; }
+        public int volume { get; set; }
+        public bool mute { get; set; }
+        public string icon { get; set; }
     }
 }

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
 using System.Text.Json;
+using static RemoteControl.Services.IRemoteControlEngine;
 
 namespace RemoteControl.Services
 {
@@ -12,7 +13,7 @@ namespace RemoteControl.Services
     {
         private WebSocketServer _server;
         private IWebSocketConnection _socket;
-        public event EventHandler<RemoteControlOnMessageArgs> OnMessage;
+        public event OnMessageEventHandler OnMessage;
 
         public void Connect()
         {
@@ -36,7 +37,12 @@ namespace RemoteControl.Services
         {
             RemoteControlOnMessageArgs args = new RemoteControlOnMessageArgs();
             args.message = message;
-            OnMessage(this, args);
+            string response = OnMessage(this, args);
+
+            if (response != null)
+            {
+                _socket.Send(response);
+            }
         }
     }
 }

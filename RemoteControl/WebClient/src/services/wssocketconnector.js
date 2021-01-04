@@ -4,42 +4,57 @@ const dataType = {
     changeVolume: "change-volume",
     changeObs: "change-obs"
 }
-const WSSocketConnector = {
-    connection : null,
-    onopen : null,
-    onvolumechange : null,
+class WSSocketConnector {
+    connection = null;
+    onopen = null;
+    onvolumechange = null;
+    onvolumegetCallbacks = [];
 
-    connect : (ip, port) => {
-        this.connection = new WebSocket('ws://' + ip + ':' + port);
-        this.connection.onopen = () => {
-            if (this.exists(this.onopen)) this.onopen();
-        };
+    connect(ip, port) {
+        return new Promise((resolve, reject) => {
+            this.connection = new WebSocket('ws://' + ip + ':' + port);
+            this.connection.onopen = () => {
+                if (this.exists(this.onopen)) this.onopen();
+                resolve();
+            };
 
-        this.connection.onmessage = data => {
-            if (this.exists(this.onmessage)) this.onmessage(data);
+            this.connection.onmessage = data => {
+                if (this.exists(this.onmessage)) this.onmessage(data);
+            }
+        });
+    }
+
+    onmessage(message) {
+        let data = JSON.parse(message.data);
+
+        if (data.type === dataType.volumes) {
+            this.onvolumegetCallbacks.forEach(ele => { ele.callback(data)});
         }
-    },
+    }
 
-    onmessage : (message) => {
-        let data = JSON.parse(message);
-    },
+    sendData(message) {
+        this.connection.send(JSON.stringify(message));
+    }
 
-    sendData : (message) => {
-        this.connection.send(message);
-    },
-
-    getVolumes : () => {
-        this.sendData(createRequest(dataType.volumes));
-    },
+    getVolumes() {
+        return new Promise((resolve, reject) => {
+            let id = new Date().getTime();
+            this.onvolumegetCallbacks.push({id: id, callback: data => {
+                this.onvolumegetCallbacks = this.onvolumegetCallbacks.filter(ele => { ele.id !== id});
+                resolve(data);
+            }});
+            this.sendData(this.createRequest(dataType.volumes));
+        });
+    }
 
     /**
      * Utils method.
      */
-    createRequest : (type) => {
+    createRequest(type) {
         return {"type": type};
-    },
+    }
 
-    exists : (obj) => {
+    exists(obj) {
         return (obj != undefined && obj != null)
     }
 };

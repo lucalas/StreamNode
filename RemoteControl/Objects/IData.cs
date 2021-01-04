@@ -4,7 +4,7 @@ using System.Text;
 
 namespace RemoteControl.Objects
 {
-    class RemoteControlVolumes : List<RemoteControlVolume>, IData
+    interface IData
     {
     }
 }

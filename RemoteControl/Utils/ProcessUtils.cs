@@ -24,7 +24,7 @@ namespace RemoteControl.Utils
         static public string ProcessName(uint processId)
         {
             Process process = Process.GetProcessById((int)processId);
-            return process.MainWindowTitle != "" ? process.MainWindowTitle : process.ProcessName;
+            return process.ProcessName;
         }
     }
 }

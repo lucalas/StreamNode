@@ -31,7 +31,7 @@ namespace RemoteControl
 
         AudioService ac = new AudioService();
         OBSService os = new OBSService();
-        RemoteControlService rcs = new RemoteControlService();
+        RemoteControlService rcs;
 
         public MainWindow()
         {
@@ -39,6 +39,7 @@ namespace RemoteControl
             InitializeComponent();
             getOutputMixers();
             getInputMixers();
+            rcs = new RemoteControlService(ac, os);
             InitOBS();
             rcs.connect();
         }

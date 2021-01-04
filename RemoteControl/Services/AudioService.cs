@@ -81,8 +81,8 @@ namespace RemoteControl.Services
             for (int i = 0; i < sessions.Count; i++)
             {
                 AudioSessionControl session = sessions[i];
-                //if (!session.IsSystemSoundsSession && ProcessUtils.ProcessExists(session.GetProcessID))
-                if (ProcessUtils.ProcessExists(session.GetProcessID))
+                if (!session.IsSystemSoundsSession && ProcessUtils.ProcessExists(session.GetProcessID))
+                //if (ProcessUtils.ProcessExists(session.GetProcessID))
                 {
                     ApplicationController ac = new ApplicationController(device, session.SimpleAudioVolume, ProcessUtils.ProcessName(session.GetProcessID));
                     appsList.Add(ac);
