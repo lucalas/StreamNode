@@ -17,7 +17,7 @@ namespace RemoteControl.Services
 
         public void Connect()
         {
-            _server = new WebSocketServer("ws://0.0.0.0:8181");
+            _server = new WebSocketServer("ws://0.0.0.0:8189");
             _server.Start(Configure);
         }
 
