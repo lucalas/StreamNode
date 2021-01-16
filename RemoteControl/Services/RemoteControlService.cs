@@ -48,6 +48,8 @@ namespace RemoteControl.Services
                         volume.name = app.processName;
                         volume.volume = (int)(app.session.Volume * 100);
                         volume.mute = app.session.Mute;
+                        // TODO add icon
+                        //volume.icon = ...
                         volumes.Add(volume);
                     }
                 }

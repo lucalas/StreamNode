@@ -4,11 +4,8 @@ import { Card, Slider, Button } from 'antd';
 import { SoundOutlined } from '@ant-design/icons';
 
 class VolumeBox extends Component {
-
-    props = {};
-
     constructor(props) {
-        this.props = props;
+        super(props);
     }
     
     render() {

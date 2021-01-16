@@ -28,10 +28,10 @@ class Dashboard extends Component {
     render() {
         let GUIVolumes;
         console.log(JSON.stringify(this.state.volumes));
-        for (let volume in this.state.volumes) {
-            console.log(JSON.stringify(volume));
-            GUIVolumes += <Col span={6}><VolumeBox title={volume.name}/></Col>
-        }
+        GUIVolumes = this.state.volumes.map(audio => {
+            console.log(JSON.stringify(audio));
+            return (<Col span={6}><VolumeBox title={audio.name} volume={audio.volume}/></Col>)
+        });
 
         return (
             <Layout>
