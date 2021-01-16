@@ -5,6 +5,5 @@
         ["preact-cli/babel", { "modules": "commonjs" }]
       ]
     }
-  },
-  "devtool": "source-map"
+  }
 }
