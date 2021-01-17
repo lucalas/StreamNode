@@ -58,7 +58,7 @@ namespace RemoteControl.Services
                 // TODO add input devices
                 dataResponse = volumes;
             } else if (RemoteControlDataType.ChangeVolume.Equals(data.type)) {
-                int i = 0;
+                // TODO manage changevolume
             } else
             {
                 data.status = "Command not found";

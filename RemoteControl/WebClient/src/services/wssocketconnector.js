@@ -17,7 +17,6 @@ class WSSocketConnector {
 
     
     connect(ip, port) {
-        /*
         return new Promise((resolve, reject) => {
             this.connection = new WebSocket('ws://' + ip + ':' + port);
             this.connection.onopen = () => {
@@ -30,8 +29,6 @@ class WSSocketConnector {
                 if (this.exists(this.onmessage)) this.onmessage(data);
             }
         });
-        */
-        return null;
     }
 
     addConnectHandler(method) {

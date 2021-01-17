@@ -8,6 +8,7 @@ import WsSocket from '../../services/WSSocketConnector';
 const {Title} = Typography;
 
 class Dashboard extends Component {
+    sceneList = ['Scena 1','Scena 2','Scena 3'];
     constructor() {
         super();
         this.state = { volumes: [] };
@@ -37,14 +38,13 @@ class Dashboard extends Component {
         console.log(JSON.stringify(this.state.volumes));
         GUIVolumes = this.state.volumes.map(audio => {
             console.log(JSON.stringify(audio));
-            return (<Col span={6}><VolumeBox title={audio.name} volume={audio.volume} onVolumeChange={this.onVolumeChange.bind()} deviceName={audio.device}/></Col>)
+            return (<Col span={6}>
+                        <VolumeBox title={audio.name} volume={audio.volume} onVolumeChange={this.onVolumeChange.bind()} deviceName={audio.device}/>
+                    </Col>)
         });
 
         return (
             <Layout style={{minHeight:'100vh'}}>
-                <Row>
-                    {GUIVolumes}
-                </Row>
 
                 <Space direction="vertical" size={12}>
 
@@ -54,13 +54,16 @@ class Dashboard extends Component {
                     <Title level={2} style={{marginBottom:0}}>MIXER</Title>  
                 </Row>
 
+                <Row>
+                    {GUIVolumes}
+                </Row>
 
                 <Divider type="vertical" />
                 
                 <Row justify="center">
                     <Title level={2} style={{marginBottom:0}}>SCENE</Title>  
                 </Row>
-                
+
                 <Row>
                     {
                         this.sceneList.map( elem => 

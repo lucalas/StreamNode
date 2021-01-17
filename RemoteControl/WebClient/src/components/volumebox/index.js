@@ -17,7 +17,7 @@ class VolumeBox extends Component {
 
     _muteSound(){
         this.setState({
-            muted: !this.state.muted
+            audio: !this.state.audio
         });
     }
 
@@ -62,7 +62,7 @@ class VolumeBox extends Component {
                     <Button 
                         type={this.state.audioLocked ? "primary" : "default"}
                         shape="circle" 
-                        icon={this.state.locked ? <LockOutlined /> : <UnlockOutlined />} 
+                        icon={this.state.audioLocked ? <LockOutlined /> : <UnlockOutlined />} 
                         onClick={() => this._lockSound()}
                     />
                     <Slider 
@@ -84,7 +84,7 @@ class VolumeBox extends Component {
                     <Button 
                         type={this.state.micLocked ? "primary" : "default"}
                         shape="circle" 
-                        icon={this.state.locked ? <LockOutlined /> : <UnlockOutlined />} 
+                        icon={this.state.micLocked ? <LockOutlined /> : <UnlockOutlined />} 
                         onClick={() => this._lockMic()}
                     />
                     <Slider 
