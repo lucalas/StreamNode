@@ -66,7 +66,7 @@ namespace RemoteControl.Services
 
         public ApplicationController GetDeviceController(MMDevice device)
         {
-            return new ApplicationController(device, device.AudioSessionManager.SimpleAudioVolume, device.FriendlyName);
+            return new ApplicationController(device, device.AudioSessionManager.AudioSessionControl, device.FriendlyName);
         }
         /// <summary>
         /// Return Mixers List of every single application.
@@ -84,7 +84,7 @@ namespace RemoteControl.Services
                 if (!session.IsSystemSoundsSession && ProcessUtils.ProcessExists(session.GetProcessID))
                 //if (ProcessUtils.ProcessExists(session.GetProcessID))
                 {
-                    ApplicationController ac = new ApplicationController(device, session.SimpleAudioVolume, ProcessUtils.ProcessName(session.GetProcessID));
+                    ApplicationController ac = new ApplicationController(device, session, ProcessUtils.ProcessName(session.GetProcessID));
                     appsList.Add(ac);
                 }
             }

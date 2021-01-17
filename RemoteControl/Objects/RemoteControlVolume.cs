@@ -10,5 +10,6 @@ namespace RemoteControl.Objects
         public int volume { get; set; }
         public bool mute { get; set; }
         public string icon { get; set; }
+        public string device { get; set; }
     }
 }

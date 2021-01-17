@@ -44,16 +44,24 @@ namespace RemoteControl.Services
                     foreach (ApplicationController app in ac.GetApplicationsMixer(dev))
                     {
                         ApplicationController appC = ac.GetDeviceController(dev);
-                        RemoteControlVolume volume = new RemoteControlVolume();
-                        volume.name = app.processName;
-                        volume.volume = (int)(app.session.Volume * 100);
-                        volume.mute = app.session.Mute;
+                        RemoteControlVolume audio = new RemoteControlVolume();
+                        audio.name = app.processName;
+                        audio.volume = (int)(app.getVolume() * 100);
+                        audio.mute = app.getMute();
+                        audio.device = appC.device.FriendlyName;
                         // TODO add icon
                         //volume.icon = ...
-                        volumes.Add(volume);
+                        volumes.Add(audio);
                     }
                 }
+
+                // TODO add input devices
                 dataResponse = volumes;
+            } else if (RemoteControlDataType.ChangeVolume.Equals(data.type)) {
+                int i = 0;
+            } else
+            {
+                data.status = "Command not found";
             }
 
             data.data = dataResponse;

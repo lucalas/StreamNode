@@ -68,6 +68,7 @@ class VolumeBox extends Component {
                     <Slider 
                         min={0} 
                         max={100}
+                        onChange={this.onVolumeChange.bind(this)}
                         defaultValue={this.props.volume} 
                         disabled={this.state.audioLocked}
                         style={{width: '65%'}}
@@ -89,6 +90,8 @@ class VolumeBox extends Component {
                     <Slider 
                         min={0} 
                         max={100}
+                        // FIXME change volumechanger for microphone
+                        onChange={this.onVolumeChange.bind(this)}
                         defaultValue={this.props.volume} 
                         disabled={this.state.micLocked}
                         style={{width: '65%'}}
@@ -100,8 +103,9 @@ class VolumeBox extends Component {
     }
 
     onVolumeChange(value) {
+        console.log("volume changed");
         if (this.props.onVolumeChange !== undefined) {
-            this.props.onVolumeChange(this.props.title, value);
+            this.props.onVolumeChange(this.props.title, this.props.deviceName, value);
         }
     }
 }

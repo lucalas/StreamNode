@@ -8,9 +8,6 @@ import WsSocket from '../../services/WSSocketConnector';
 const {Title} = Typography;
 
 class Dashboard extends Component {
-    devicesList = ['Steam','Discord','Firefox','Sistema'];
-    sceneList = ['Scena 1','Scena 2','Scena 3'];
-
     constructor() {
         super();
         this.state = { volumes: [] };
@@ -30,8 +27,9 @@ class Dashboard extends Component {
         });
     }
 
-    onVolumeChange(title, volume) {
+    onVolumeChange(name, deviceName, volume) {
         // TODO call websocket servire to change PC-Server volume
+        WsSocket.changeVolume(name, deviceName, volume);
     }
 
     render() {
@@ -39,7 +37,7 @@ class Dashboard extends Component {
         console.log(JSON.stringify(this.state.volumes));
         GUIVolumes = this.state.volumes.map(audio => {
             console.log(JSON.stringify(audio));
-            return (<Col span={6}><VolumeBox title={audio.name} volume={audio.volume} onVolumeChange={this.onVolumeChange.bind()}/></Col>)
+            return (<Col span={6}><VolumeBox title={audio.name} volume={audio.volume} onVolumeChange={this.onVolumeChange.bind()} deviceName={audio.device}/></Col>)
         });
 
         return (
@@ -49,31 +47,20 @@ class Dashboard extends Component {
                 </Row>
 
                 <Space direction="vertical" size={12}>
-                
+
                 <Divider type="vertical" />
 
                 <Row justify="center">
                     <Title level={2} style={{marginBottom:0}}>MIXER</Title>  
                 </Row>
-                
 
-                <Row>
-                    
-                    {
-                        this.devicesList.map( elem => 
-                            <Col span={6} >
-                                <VolumeBox title={elem}/>
-                            </Col>
-                        )
-                    }
-                </Row>
 
                 <Divider type="vertical" />
                 
                 <Row justify="center">
                     <Title level={2} style={{marginBottom:0}}>SCENE</Title>  
                 </Row>
-
+                
                 <Row>
                     {
                         this.sceneList.map( elem => 

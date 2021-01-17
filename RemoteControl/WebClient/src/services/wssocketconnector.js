@@ -54,6 +54,12 @@ class WSSocketConnector {
         this.connection.send(JSON.stringify(message));
     }
 
+    changeVolume(name, deviceName, volume) {
+        let req = this.createRequest(dataType.changeVolume);
+        req.data = { name: name, volume: volume, device: deviceName }
+        this.sendData(req);
+    }
+
     getVolumes() {
         return new Promise((resolve, reject) => {
             let id = new Date().getTime();

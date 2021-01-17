@@ -7,12 +7,12 @@ namespace RemoteControl.Objects
 {
     public class ApplicationController
     {
-        public SimpleAudioVolume session { get; set; }
+        public AudioSessionControl session { get; set; }
         public MMDevice device { get; set; }
 
         public string processName { get; set; }
 
-        public ApplicationController(MMDevice _device, SimpleAudioVolume _session, string _processName)
+        public ApplicationController(MMDevice _device, AudioSessionControl _session, string _processName)
         {
             session = _session;
             device = _device;
@@ -21,27 +21,27 @@ namespace RemoteControl.Objects
 
         public float getVolume()
         {
-            return session.Volume;
+            return session.SimpleAudioVolume.Volume;
         }
 
         public void updateVolume(float value)
         {
-            session.Volume = value;
+            session.SimpleAudioVolume.Volume = value;
         }
 
         public void toggleMute()
         {
-            session.Mute = !session.Mute;
+            session.SimpleAudioVolume.Mute = !session.SimpleAudioVolume.Mute;
         }
 
         public void setMute(bool mute)
         {
-            session.Mute = mute;
+            session.SimpleAudioVolume.Mute = mute;
         }
 
         public bool getMute()
         {
-            return session.Mute;
+            return session.SimpleAudioVolume.Mute;
         }
     }
 }
