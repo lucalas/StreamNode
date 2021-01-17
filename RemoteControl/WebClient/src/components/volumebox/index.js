@@ -98,6 +98,12 @@ class VolumeBox extends Component {
             </Card>
         );
     }
+
+    onVolumeChange(value) {
+        if (this.props.onVolumeChange !== undefined) {
+            this.props.onVolumeChange(this.props.title, value);
+        }
+    }
 }
 
 export default VolumeBox;

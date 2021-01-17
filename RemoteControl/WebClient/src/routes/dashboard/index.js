@@ -30,12 +30,16 @@ class Dashboard extends Component {
         });
     }
 
+    onVolumeChange(title, volume) {
+        // TODO call websocket servire to change PC-Server volume
+    }
+
     render() {
         let GUIVolumes;
         console.log(JSON.stringify(this.state.volumes));
         GUIVolumes = this.state.volumes.map(audio => {
             console.log(JSON.stringify(audio));
-            return (<Col span={6}><VolumeBox title={audio.name} volume={audio.volume}/></Col>)
+            return (<Col span={6}><VolumeBox title={audio.name} volume={audio.volume} onVolumeChange={this.onVolumeChange.bind()}/></Col>)
         });
 
         return (
