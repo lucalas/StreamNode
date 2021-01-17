@@ -1,11 +1,16 @@
 import { Component } from 'preact';
 
-import { Layout, Row, Col } from 'antd';
+import { Layout, Row, Col, Space, Typography, Divider } from 'antd';
 import VolumeBox from '../../components/volumebox';
+import SceneBox from '../../components/scenebox';
 import WsSocket from '../../services/WSSocketConnector';
 
+const {Title} = Typography;
 
 class Dashboard extends Component {
+    devicesList = ['Steam','Discord','Firefox','Sistema'];
+    sceneList = ['Scena 1','Scena 2','Scena 3'];
+
     constructor() {
         super();
         this.state = { volumes: [] };
@@ -34,22 +39,47 @@ class Dashboard extends Component {
         });
 
         return (
-            <Layout>
+            <Layout style={{minHeight:'100vh'}}>
                 <Row>
                     {GUIVolumes}
                 </Row>
-                <Row>
-                    <Col span={6}>cioa</Col>
-                    <Col span={6}>cioa</Col>
-                    <Col span={6}>cioa</Col>
-                    <Col span={6}>cioa</Col>
+
+                <Space direction="vertical" size={12}>
+                
+                <Divider type="vertical" />
+
+                <Row justify="center">
+                    <Title level={2} style={{marginBottom:0}}>MIXER</Title>  
                 </Row>
+                
+
                 <Row>
-                    <Col span={6}>cioa</Col>
-                    <Col span={6}>cioa</Col>
-                    <Col span={6}>cioa</Col>
-                    <Col span={6}>cioa</Col>
+                    
+                    {
+                        this.devicesList.map( elem => 
+                            <Col span={6} >
+                                <VolumeBox title={elem}/>
+                            </Col>
+                        )
+                    }
                 </Row>
+
+                <Divider type="vertical" />
+                
+                <Row justify="center">
+                    <Title level={2} style={{marginBottom:0}}>SCENE</Title>  
+                </Row>
+
+                <Row>
+                    {
+                        this.sceneList.map( elem => 
+                            <Col span={6}>
+                                <SceneBox title={elem}/>
+                            </Col>
+                        )
+                    }
+                </Row>
+                </Space>
             </Layout>
         );
     }
