@@ -60,6 +60,7 @@ namespace RemoteControl.Services
 
                 foreach (MMDevice dev in ac.GetListOfInputDevices())
                 {
+                    // FIXME retrieve devices instead of application mixer because we can't control microphone of an application
                     foreach (ApplicationController appIn in ac.GetApplicationsMixer(dev))
                     {
                         RemoteControlVolume audio = new RemoteControlVolume();
