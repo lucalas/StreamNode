@@ -2,6 +2,7 @@
 using RemoteControl.Objects;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 using System.Text.Json;
 
@@ -33,24 +34,39 @@ namespace RemoteControl.Services
 
             IData dataResponse = null;
 
+            // TODO create method for RemoteControlDataType logics
             if (RemoteControlDataType.Volumes.Equals(data.type))
             {
-                // FIXME comprendere come castare il tipo data
                 RemoteControlVolumes volumes = new RemoteControlVolumes();
-                MMDeviceCollection iDev = ac.GetListOfInputDevices();
 
                 foreach (MMDevice dev in ac.GetListOfOutputDevices())
                 {
-                    foreach (ApplicationController app in ac.GetApplicationsMixer(dev))
+                    foreach (ApplicationController appOut in ac.GetApplicationsMixer(dev))
                     {
-                        ApplicationController appC = ac.GetDeviceController(dev);
+                        ApplicationController appDev = ac.GetDeviceController(dev);
                         RemoteControlVolume audio = new RemoteControlVolume();
-                        audio.name = app.processName;
-                        audio.volume = (int)(app.getVolume() * 100);
-                        audio.mute = app.getMute();
-                        audio.device = appC.device.FriendlyName;
+                        audio.name = appOut.processName;
+                        audio.volume = (int)(appOut.getVolume() * 100);
+                        audio.mute = appOut.getMute();
+                        audio.device = appDev.device.FriendlyName;
+                        audio.output = true;
+                        ApplicationController appIn = ac.GetApplicationInput(audio.name, audio.device);
+
                         // TODO add icon
                         //volume.icon = ...
+                        volumes.Add(audio);
+                    }
+                }
+
+                foreach (MMDevice dev in ac.GetListOfInputDevices())
+                {
+                    foreach (ApplicationController appIn in ac.GetApplicationsMixer(dev))
+                    {
+                        RemoteControlVolume audio = new RemoteControlVolume();
+                        audio.name = appIn.processName;
+                        audio.mute = appIn.getMute();
+                        audio.device = appIn.device.FriendlyName;
+                        audio.output = false;
                         volumes.Add(audio);
                     }
                 }
@@ -58,7 +74,10 @@ namespace RemoteControl.Services
                 // TODO add input devices
                 dataResponse = volumes;
             } else if (RemoteControlDataType.ChangeVolume.Equals(data.type)) {
-                // TODO manage changevolume
+                ChangeVolumeType ChangeVolume = JsonSerializer.Deserialize<ChangeVolumeType>(data.data.ToString());
+                ApplicationController app = ac.GetApplicationOutput(ChangeVolume.name, ChangeVolume.device);
+                app.updateVolume((float)ChangeVolume.volume / 100);
+                Trace.WriteLine(ChangeVolume.name + ": " + ChangeVolume.volume);
             } else
             {
                 data.status = "Command not found";

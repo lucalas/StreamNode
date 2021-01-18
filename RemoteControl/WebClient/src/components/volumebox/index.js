@@ -21,18 +21,6 @@ class VolumeBox extends Component {
         });
     }
 
-    _muteMic(){
-        this.setState({
-            mic: !this.state.mic
-        });
-    }
-
-    _lockMic(){
-        this.setState({
-            micLocked: !this.state.micLocked
-        });
-    }
-
     _lockSound(){
         this.setState({
             audioLocked: !this.state.audioLocked
@@ -52,11 +40,11 @@ class VolumeBox extends Component {
                 </Row>
                 
                 <Col>
-                <Row justify="space-between" style={{marginBottom: 5}}>
+                <Row justify="space-between" style={{marginBottom: 5}} hidden={this.props.volumeHide}>
                     <Button 
                         type={this.state.audio ? "default" : "primary"}
                         shape="circle" 
-                        icon={<SoundOutlined/>} 
+                        icon={this.props.output ? <SoundOutlined/> : this.state.mic ?  <AudioOutlined /> : <AudioMutedOutlined /> } 
                         onClick={this._muteSound}
                     />
                     <Button 
@@ -74,39 +62,23 @@ class VolumeBox extends Component {
                         style={{width: '65%'}}
                     />
                 </Row>
-                <Row justify="space-between">
-                    <Button 
-                        type={this.state.mic ? "default" : "primary"}
-                        shape="circle" 
-                        icon={!this.state.mic ? <AudioOutlined /> : <AudioMutedOutlined />} 
-                        onClick={this._muteMic}
-                    />
-                    <Button 
-                        type={this.state.micLocked ? "primary" : "default"}
-                        shape="circle" 
-                        icon={this.state.micLocked ? <LockOutlined /> : <UnlockOutlined />} 
-                        onClick={this._lockMic}
-                    />
-                    <Slider 
-                        min={0} 
-                        max={100}
-                        // FIXME change volumechanger for microphone
-                        onChange={this.onVolumeChange.bind(this)}
-                        defaultValue={this.props.volume} 
-                        disabled={this.state.micLocked}
-                        style={{width: '65%'}}
-                    />
-                </Row>
                 </Col>
             </Card>
         );
     }
 
+
+    timeoutChangeVolume = null;
     onVolumeChange(value) {
-        console.log("volume changed");
-        if (this.props.onVolumeChange !== undefined) {
-            this.props.onVolumeChange(this.props.title, this.props.deviceName, value);
-        }
+        // If timeout isn't passed we cancel the request and create new one to avoid flodding of requests
+        if (this.timeoutChangeVolume !== null) clearTimeout(this.timeoutChangeVolume);
+        this.timeoutChangeVolume = setTimeout(() => {
+            if (this.props.onVolumeChange !== undefined) {
+                this.props.onVolumeChange(this.props.title, this.props.deviceName, value);
+                console.log(this.props.title + ": " + value);
+            }
+        // We found that a good value of delay to have a gradual change of the volume is 150
+        },150);
     }
 }
 
