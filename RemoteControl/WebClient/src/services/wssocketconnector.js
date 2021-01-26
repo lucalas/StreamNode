@@ -1,9 +1,11 @@
+
 const dataType = {
     volumes: "volumes",
     obs: "obs",
     changeVolume: "change-volume",
     changeObs: "change-obs"
 }
+
 class WSSocketConnector {
     connection = null;
     onopen = null;
@@ -51,9 +53,9 @@ class WSSocketConnector {
         this.connection.send(JSON.stringify(message));
     }
 
-    changeVolume(name, deviceName, volume) {
+    changeVolume(name, deviceName, volume, output) {
         let req = this.createRequest(dataType.changeVolume);
-        req.data = { name: name, volume: volume, device: deviceName }
+        req.data = { name: name, volume: volume, device: deviceName, output }
         this.sendData(req);
     }
 

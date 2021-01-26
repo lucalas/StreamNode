@@ -74,7 +74,7 @@ class VolumeBox extends Component {
         if (this.timeoutChangeVolume !== null) clearTimeout(this.timeoutChangeVolume);
         this.timeoutChangeVolume = setTimeout(() => {
             if (this.props.onVolumeChange !== undefined) {
-                this.props.onVolumeChange(this.props.title, this.props.deviceName, value);
+                this.props.onVolumeChange(this.props.title, this.props.deviceName, value, this.props.output);
                 console.log(this.props.title + ": " + value);
             }
         // We found that a good value of delay to have a gradual change of the volume is 150

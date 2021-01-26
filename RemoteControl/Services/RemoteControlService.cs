@@ -50,7 +50,6 @@ namespace RemoteControl.Services
                         audio.mute = appOut.getMute();
                         audio.device = appDev.device.FriendlyName;
                         audio.output = true;
-                        ApplicationController appIn = ac.GetApplicationInput(audio.name, audio.device);
 
                         // TODO add icon
                         //volume.icon = ...
@@ -61,23 +60,33 @@ namespace RemoteControl.Services
                 foreach (MMDevice dev in ac.GetListOfInputDevices())
                 {
                     // FIXME retrieve devices instead of application mixer because we can't control microphone of an application
-                    foreach (ApplicationController appIn in ac.GetApplicationsMixer(dev))
-                    {
+                    //foreach (ApplicationController appIn in ac.GetApplicationsMixer(dev))
+                    //{
                         RemoteControlVolume audio = new RemoteControlVolume();
-                        audio.name = appIn.processName;
-                        audio.mute = appIn.getMute();
-                        audio.device = appIn.device.FriendlyName;
+                        
+                        audio.name = dev.FriendlyName;
+                        audio.mute = dev.AudioEndpointVolume.Mute;
+                        audio.volume = (int)(dev.AudioEndpointVolume.MasterVolumeLevelScalar * 100);
+                        audio.device = dev.FriendlyName;
                         audio.output = false;
                         volumes.Add(audio);
-                    }
+                    //}
                 }
 
                 // TODO add input devices
                 dataResponse = volumes;
             } else if (RemoteControlDataType.ChangeVolume.Equals(data.type)) {
                 ChangeVolumeType ChangeVolume = JsonSerializer.Deserialize<ChangeVolumeType>(data.data.ToString());
-                ApplicationController app = ac.GetApplicationOutput(ChangeVolume.name, ChangeVolume.device);
-                app.updateVolume((float)ChangeVolume.volume / 100);
+                if (ChangeVolume.output)
+                {
+                    ApplicationController app = ac.GetApplicationOutput(ChangeVolume.name, ChangeVolume.device);
+                    app.updateVolume((float)ChangeVolume.volume / 100);
+                } else
+                {
+                    // TODO change mic volume
+                    MMDevice mic = ac.GetDeviceInput(ChangeVolume.device);
+                    mic.AudioEndpointVolume.MasterVolumeLevelScalar = (float) ChangeVolume.volume / 100;
+                }
                 Trace.WriteLine(ChangeVolume.name + ": " + ChangeVolume.volume);
             } else
             {

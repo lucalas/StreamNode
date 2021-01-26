@@ -28,9 +28,9 @@ class Dashboard extends Component {
         });
     }
 
-    onVolumeChange(name, deviceName, volume) {
+    onVolumeChange(name, deviceName, volume, output) {
         // TODO call websocket servire to change PC-Server volume
-        WsSocket.changeVolume(name, deviceName, volume);
+        WsSocket.changeVolume(name, deviceName, volume, output);
     }
 
     render() {

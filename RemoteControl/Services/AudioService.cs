@@ -106,18 +106,19 @@ namespace RemoteControl.Services
             return foundApp;
         }
 
-        public ApplicationController GetApplicationInput(string application, string device)
+        public MMDevice GetDeviceInput(string device)
         {
-            ApplicationController foundApp = null;
+            MMDevice foundDevice = null;
+            // TODO change foreach into loop with an exit condition
             foreach (MMDevice dev in GetListOfInputDevices())
             {
                 if (dev.FriendlyName.Equals(device))
                 {
-                    foundApp = GetApplicationsMixer(dev).Find(app => { return app.processName.Equals(application); });
+                    foundDevice = dev;//GetApplicationsMixer(dev).Find(app => { return app.processName.Equals(application); });
                 }
             }
 
-            return foundApp;
+            return foundDevice;
         }
     }
 }
