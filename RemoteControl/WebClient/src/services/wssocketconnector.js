@@ -53,9 +53,9 @@ class WSSocketConnector {
         this.connection.send(JSON.stringify(message));
     }
 
-    changeVolume(name, deviceName, volume, output) {
+    changeVolume(name, deviceName, volume, output, mute) {
         let req = this.createRequest(dataType.changeVolume);
-        req.data = { name: name, volume: volume, device: deviceName, output }
+        req.data = { name: name, volume: volume, device: deviceName, output, mute: mute }
         this.sendData(req);
     }
 

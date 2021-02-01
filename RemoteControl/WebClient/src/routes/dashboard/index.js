@@ -28,9 +28,13 @@ class Dashboard extends Component {
         });
     }
 
-    onVolumeChange(name, deviceName, volume, output) {
+    onVolumeChange(name, deviceName, volume, output, mute) {
         // TODO call websocket servire to change PC-Server volume
-        WsSocket.changeVolume(name, deviceName, volume, output);
+        WsSocket.changeVolume(name, deviceName, volume, output, mute);
+    }
+
+    onMutePressed(name, deviceName, volume, output, mute) {
+        WsSocket.changeVolume(name, deviceName, volume, output, mute);
     }
 
     render() {
@@ -39,7 +43,9 @@ class Dashboard extends Component {
         GUIVolumes = this.state.volumes.map(audio => {
             console.log(JSON.stringify(audio));
             return (<Col span={6}>
-                        <VolumeBox title={audio.name} volume={audio.volume} onVolumeChange={this.onVolumeChange.bind()} deviceName={audio.device} output={audio.output}/>
+                        <VolumeBox onVolumeChange={this.onVolumeChange.bind(this)}
+                                    onMutePressed={this.onMutePressed.bind(this)}
+                                    title={audio.name} volume={audio.volume} deviceName={audio.device} output={audio.output} mute={audio.mute}/>
                     </Col>)
         });
 

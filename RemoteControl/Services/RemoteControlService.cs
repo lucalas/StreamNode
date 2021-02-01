@@ -76,16 +76,19 @@ namespace RemoteControl.Services
                 // TODO add input devices
                 dataResponse = volumes;
             } else if (RemoteControlDataType.ChangeVolume.Equals(data.type)) {
+                // TODO Verify input data to avoid exception when unknown data is passed
                 ChangeVolumeType ChangeVolume = JsonSerializer.Deserialize<ChangeVolumeType>(data.data.ToString());
                 if (ChangeVolume.output)
                 {
                     ApplicationController app = ac.GetApplicationOutput(ChangeVolume.name, ChangeVolume.device);
                     app.updateVolume((float)ChangeVolume.volume / 100);
+                    app.setMute(ChangeVolume.mute);
                 } else
                 {
                     // TODO change mic volume
                     MMDevice mic = ac.GetDeviceInput(ChangeVolume.device);
                     mic.AudioEndpointVolume.MasterVolumeLevelScalar = (float) ChangeVolume.volume / 100;
+                    mic.AudioEndpointVolume.Mute = ChangeVolume.mute;
                 }
                 Trace.WriteLine(ChangeVolume.name + ": " + ChangeVolume.volume);
             } else

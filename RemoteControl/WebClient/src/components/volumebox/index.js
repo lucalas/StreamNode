@@ -1,16 +1,17 @@
-import { Component } from 'preact';
+import { Component, createRef } from 'preact';
 
 import { Card, Slider, Button, Row, Avatar, Col } from 'antd';
 import { SoundOutlined, LockOutlined, UnlockOutlined, AudioOutlined, AudioMutedOutlined } from '@ant-design/icons';
 
 
 class VolumeBox extends Component {
+    _slider = createRef();
+
     constructor(props) {
         super(props);
         this.state = {
             audio: false,
             audioLocked: false,
-            mic: false,
             micLocked: false
         }
     }
@@ -19,6 +20,7 @@ class VolumeBox extends Component {
         this.setState({
             audio: !this.state.audio
         });
+        this.props.onMutePressed(this.props.title, this.props.deviceName, this._slider.current.state.value, this.props.output, this.state.audio);
     }
 
     _lockSound(){
@@ -26,7 +28,15 @@ class VolumeBox extends Component {
             audioLocked: !this.state.audioLocked
         });
     }
-    
+
+    getVolumeAudioIcon() {
+        if (this.props.output) {
+            return this.state.audio ? <SoundOutlined/> : <SoundOutlined/>
+        } else {
+            return this.state.audio ? <AudioOutlined/> : <AudioMutedOutlined/>
+        }
+    }
+
     render() {
         return (
             <Card 
@@ -44,16 +54,17 @@ class VolumeBox extends Component {
                     <Button 
                         type={this.state.audio ? "default" : "primary"}
                         shape="circle" 
-                        icon={this.props.output ? <SoundOutlined/> : this.state.mic ?  <AudioOutlined /> : <AudioMutedOutlined /> } 
-                        onClick={this._muteSound}
+                        icon={this.getVolumeAudioIcon()} 
+                        onClick={this._muteSound.bind(this)}
                     />
                     <Button 
                         type={this.state.audioLocked ? "primary" : "default"}
                         shape="circle" 
                         icon={this.state.audioLocked ? <LockOutlined /> : <UnlockOutlined />} 
-                        onClick={this._lockSound}
+                        onClick={this._lockSound.bind(this)}
                     />
                     <Slider 
+                        ref={this._slider}
                         min={0} 
                         max={100}
                         onChange={this.onVolumeChange.bind(this)}
@@ -74,7 +85,7 @@ class VolumeBox extends Component {
         if (this.timeoutChangeVolume !== null) clearTimeout(this.timeoutChangeVolume);
         this.timeoutChangeVolume = setTimeout(() => {
             if (this.props.onVolumeChange !== undefined) {
-                this.props.onVolumeChange(this.props.title, this.props.deviceName, value, this.props.output);
+                this.props.onVolumeChange(this.props.title, this.props.deviceName, value, this.props.output, this.state.audio);
                 console.log(this.props.title + ": " + value);
             }
         // We found that a good value of delay to have a gradual change of the volume is 150
