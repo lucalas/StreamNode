@@ -10,17 +10,18 @@ class VolumeBox extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            audio: false,
+            mute: this.props.defaultMute,
             audioLocked: false,
             micLocked: false
         }
     }
 
     _muteSound(){
+        let newMuteValue = !this.state.mute;
         this.setState({
-            audio: !this.state.audio
+            mute: newMuteValue
         });
-        this.props.onMutePressed(this.props.title, this.props.deviceName, this._slider.current.state.value, this.props.output, this.state.audio);
+        this.props.onMutePressed(this.props.title, this.props.deviceName, this._slider.current.state.value, this.props.output, newMuteValue);
     }
 
     _lockSound(){
@@ -31,9 +32,9 @@ class VolumeBox extends Component {
 
     getVolumeAudioIcon() {
         if (this.props.output) {
-            return this.state.audio ? <SoundOutlined/> : <SoundOutlined/>
+            return <SoundOutlined/>
         } else {
-            return this.state.audio ? <AudioOutlined/> : <AudioMutedOutlined/>
+            return !this.state.mute ? <AudioOutlined/> : <AudioMutedOutlined/>
         }
     }
 
@@ -52,7 +53,7 @@ class VolumeBox extends Component {
                 <Col>
                 <Row justify="space-between" style={{marginBottom: 5}} hidden={this.props.volumeHide}>
                     <Button 
-                        type={this.state.audio ? "default" : "primary"}
+                        type={!this.state.mute ? "primary" : "default"}
                         shape="circle" 
                         icon={this.getVolumeAudioIcon()} 
                         onClick={this._muteSound.bind(this)}
@@ -85,7 +86,7 @@ class VolumeBox extends Component {
         if (this.timeoutChangeVolume !== null) clearTimeout(this.timeoutChangeVolume);
         this.timeoutChangeVolume = setTimeout(() => {
             if (this.props.onVolumeChange !== undefined) {
-                this.props.onVolumeChange(this.props.title, this.props.deviceName, value, this.props.output, this.state.audio);
+                this.props.onVolumeChange(this.props.title, this.props.deviceName, value, this.props.output, this.state.mute);
                 console.log(this.props.title + ": " + value);
             }
         // We found that a good value of delay to have a gradual change of the volume is 150
