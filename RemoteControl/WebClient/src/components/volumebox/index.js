@@ -1,6 +1,6 @@
 import { Component, createRef } from 'preact';
 
-import { Card, Slider, Button, Row, Avatar, Col } from 'antd';
+import { Card, Slider, Button, Row, Avatar, Col, Image } from 'antd';
 import { SoundOutlined, LockOutlined, UnlockOutlined, AudioOutlined, AudioMutedOutlined } from '@ant-design/icons';
 
 
@@ -47,7 +47,7 @@ class VolumeBox extends Component {
                 bordered={false}
             >
                 <Row justify="center">
-                    <Avatar size={64}/>
+                    <Image src={this.props.icon} width={64}/>
                 </Row>
                 
                 <Col>

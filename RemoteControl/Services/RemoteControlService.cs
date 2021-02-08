@@ -1,5 +1,6 @@
 ﻿using NAudio.CoreAudioApi;
 using RemoteControl.Objects;
+using RemoteControl.Utils;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -50,9 +51,7 @@ namespace RemoteControl.Services
                         audio.mute = appOut.getMute();
                         audio.device = appDev.device.FriendlyName;
                         audio.output = true;
-
-                        // TODO add icon
-                        //volume.icon = ...
+                        audio.icon = ProcessUtils.getIcon(appOut.session.GetProcessID);
                         volumes.Add(audio);
                     }
                 }

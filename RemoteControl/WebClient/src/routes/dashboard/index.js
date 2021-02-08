@@ -45,7 +45,7 @@ class Dashboard extends Component {
             return (<Col span={6}>
                         <VolumeBox onVolumeChange={this.onVolumeChange.bind(this)}
                                     onMutePressed={this.onMutePressed.bind(this)}
-                                    title={audio.name} volume={audio.volume} deviceName={audio.device} output={audio.output} defaultMute={audio.mute}/>
+                                    title={audio.name} volume={audio.volume} deviceName={audio.device} output={audio.output} defaultMute={audio.mute} icon={audio.icon}/>
                     </Col>)
         });
 
