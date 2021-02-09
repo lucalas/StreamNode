@@ -51,7 +51,7 @@ namespace RemoteControl.Services
                         audio.mute = appOut.getMute();
                         audio.device = appDev.device.FriendlyName;
                         audio.output = true;
-                        audio.icon = ProcessUtils.getIcon(appOut.session.GetProcessID);
+                        audio.icon = ProcessUtils.ProcessIcon(appOut.session.GetProcessID);
                         volumes.Add(audio);
                     }
                 }
