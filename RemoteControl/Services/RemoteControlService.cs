@@ -1,4 +1,5 @@
 ﻿using NAudio.CoreAudioApi;
+using OBSWebsocketDotNet.Types;
 using RemoteControl.Objects;
 using RemoteControl.Utils;
 using System;
@@ -26,6 +27,7 @@ namespace RemoteControl.Services
         {
             engine.OnMessage += MessageHandler;
             engine.Connect();
+            os.Connect("ws://localhost:4444", "");
         }
 
         public string MessageHandler(object sender, RemoteControlOnMessageArgs message)
@@ -61,14 +63,14 @@ namespace RemoteControl.Services
                     // FIXME retrieve devices instead of application mixer because we can't control microphone of an application
                     //foreach (ApplicationController appIn in ac.GetApplicationsMixer(dev))
                     //{
-                        RemoteControlVolume audio = new RemoteControlVolume();
-                        
-                        audio.name = dev.FriendlyName;
-                        audio.mute = dev.AudioEndpointVolume.Mute;
-                        audio.volume = (int)(dev.AudioEndpointVolume.MasterVolumeLevelScalar * 100);
-                        audio.device = dev.FriendlyName;
-                        audio.output = false;
-                        volumes.Add(audio);
+                    RemoteControlVolume audio = new RemoteControlVolume();
+
+                    audio.name = dev.FriendlyName;
+                    audio.mute = dev.AudioEndpointVolume.Mute;
+                    audio.volume = (int)(dev.AudioEndpointVolume.MasterVolumeLevelScalar * 100);
+                    audio.device = dev.FriendlyName;
+                    audio.output = false;
+                    volumes.Add(audio);
                     //}
                 }
 
@@ -86,10 +88,19 @@ namespace RemoteControl.Services
                 {
                     // TODO change mic volume
                     MMDevice mic = ac.GetDeviceInput(ChangeVolume.device);
-                    mic.AudioEndpointVolume.MasterVolumeLevelScalar = (float) ChangeVolume.volume / 100;
+                    mic.AudioEndpointVolume.MasterVolumeLevelScalar = (float)ChangeVolume.volume / 100;
                     mic.AudioEndpointVolume.Mute = ChangeVolume.mute;
                 }
                 Trace.WriteLine(ChangeVolume.name + ": " + ChangeVolume.volume);
+            } else if (RemoteControlDataType.Obs.Equals(data.type)) {
+                RemoteObsScenes remoteScenes = new RemoteObsScenes();
+                GetSceneListInfo scenes = os.getScenes();
+                foreach (OBSScene scene in scenes.Scenes) {
+                    RemoteObsScene remoteScene = new RemoteObsScene();
+                    remoteScene.name = scene.Name;
+                    remoteScenes.Add(remoteScene);
+                }
+                dataResponse = remoteScenes;
             } else
             {
                 data.status = "Command not found";

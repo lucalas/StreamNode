@@ -11,6 +11,7 @@ class WSSocketConnector {
     onopen = null;
     onvolumechange = null;
     onvolumegetCallbacks = [];
+    onobsscenesCallbacks = [];
     onconnectHandler = [];
 
     constructor() {
@@ -60,15 +61,23 @@ class WSSocketConnector {
     }
 
     getVolumes() {
+        return this._getData(dataType.volumes, this.onvolumegetCallbacks);
+    }
+
+    getObsScenes() {
+        return this._getData(dataType.obs, this.onobsscenesCallbacks);
+    }
+
+    _getData(type, callbacks) {
         return new Promise((resolve, reject) => {
-            let id = new Date().getTime();
+            let id = type + new Date().getTime();
 
             // Handler to get volumes data from a websocket response that is asynchronous
-            this.onvolumegetCallbacks.push({id: id, callback: data => {
-                this.onvolumegetCallbacks = this.onvolumegetCallbacks.filter(ele => { ele.id !== id});
+            callbacks.push({id: id, callback: data => {
+                callbacks = callbacks.filter(ele => { ele.id !== id});
                 resolve(data);
             }});
-            this.sendData(this.createRequest(dataType.volumes));
+            this.sendData(this.createRequest(type));
         });
     }
 

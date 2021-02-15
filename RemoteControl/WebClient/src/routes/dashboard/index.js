@@ -11,7 +11,7 @@ class Dashboard extends Component {
     sceneList = ['Scena 1','Scena 2','Scena 3'];
     constructor() {
         super();
-        this.state = { volumes: [] };
+        this.state = { volumes: [], obsScenes: []};
         this.onConnect = this.onConnect.bind(this);
         WsSocket.addConnectHandler(this.onConnect);
     }
@@ -19,6 +19,7 @@ class Dashboard extends Component {
     onConnect() {
         console.log("connected");
         this.getVolumeTab();
+        this.getObsScenesTab();
     }
 
     getVolumeTab() {
@@ -28,8 +29,14 @@ class Dashboard extends Component {
         });
     }
 
+    getObsScenesTab() {
+        WsSocket.getObsScenes().then(socketObsScenes => {
+            console.log(JSON.stringify(socketObsScenes.data));
+            this.setState({obsScenes: socketObsScenes.data});
+        });
+    }
+
     onVolumeChange(name, deviceName, volume, output, mute) {
-        // TODO call websocket servire to change PC-Server volume
         WsSocket.changeVolume(name, deviceName, volume, output, mute);
     }
 
@@ -37,10 +44,12 @@ class Dashboard extends Component {
         WsSocket.changeVolume(name, deviceName, volume, output, mute);
     }
 
-    render() {
-        let GUIVolumes;
-        console.log(JSON.stringify(this.state.volumes));
-        GUIVolumes = this.state.volumes.map(audio => {
+    onSceneClick(name) {
+        // TODO
+    }
+
+    getGUIVolumes() {
+        return this.state.volumes.map(audio => {
             console.log(JSON.stringify(audio));
             return (<Col span={6}>
                         <VolumeBox onVolumeChange={this.onVolumeChange.bind(this)}
@@ -48,6 +57,21 @@ class Dashboard extends Component {
                                     title={audio.name} volume={audio.volume} deviceName={audio.device} output={audio.output} defaultMute={audio.mute} icon={audio.icon}/>
                     </Col>)
         });
+    }
+
+    getGUIObsScenes() {
+        return this.state.obsScenes.map(scene => {
+            console.log(JSON.stringify(scene));
+            return (<Col span={6}>
+                        <SceneBox onSceneClick={this.onSceneClick.bind(this)} title={scene.name} />
+                    </Col>)
+        });
+    }
+
+    render() {
+        console.log(JSON.stringify(this.state.volumes));
+        const GUIVolumes = this.getGUIVolumes();
+        const GUIObsScenes = this.getGUIObsScenes();
 
         return (
             <Layout style={{minHeight:'100vh'}}>
@@ -71,13 +95,7 @@ class Dashboard extends Component {
                 </Row>
 
                 <Row>
-                    {
-                        this.sceneList.map( elem => 
-                            <Col span={6}>
-                                <SceneBox title={elem}/>
-                            </Col>
-                        )
-                    }
+                    {GUIObsScenes}
                 </Row>
                 </Space>
             </Layout>

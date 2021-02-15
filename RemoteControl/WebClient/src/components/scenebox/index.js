@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Card, Avatar, Col, Row, Typography } from 'antd';
+import { Card, Avatar, Col, Row, Typography, Button } from 'antd';
 
 const {Title} = Typography;
 
@@ -10,8 +10,8 @@ class SceneBox extends Component {
 
     render() {
         return (
-            <Card>
-                <Col span={24}>  
+            <Card onClick={this.onSceneClick?.bind(this)}>
+                <Col span={24}>
                     <Row justify="center">
                         <Title level={5}>{this.props.title}</Title>
                     </Row>

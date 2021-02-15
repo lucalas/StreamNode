@@ -82,7 +82,7 @@ class VolumeBox extends Component {
                         ref={this._slider}
                         min={0} 
                         max={100}
-                        onChange={this.onVolumeChange.bind(this)}
+                        onChange={this.onVolumeChange?.bind(this)}
                         defaultValue={this.props.volume} 
                         disabled={this.state.audioLocked}
                         style={{width: '65%'}}
