@@ -1,6 +1,6 @@
 import { Component, createRef } from 'preact';
 
-import { Card, Slider, Button, Row, Avatar, Col, Image } from 'antd';
+import { Card, Slider, Button, Row, Col, Image, Avatar } from 'antd';
 import { SoundOutlined, LockOutlined, UnlockOutlined, AudioOutlined, AudioMutedOutlined } from '@ant-design/icons';
 
 
@@ -32,10 +32,24 @@ class VolumeBox extends Component {
 
     getVolumeAudioIcon() {
         if (this.props.output) {
-            return <SoundOutlined/>
+            return <SoundOutlined/>;
         } else {
-            return !this.state.mute ? <AudioOutlined/> : <AudioMutedOutlined/>
+            return !this.state.mute ? <AudioOutlined/> : <AudioMutedOutlined/>;
         }
+    }
+
+    getAudioIcon() {
+        let Icon = null;
+        if (this.props.output) {
+            Icon = <Image src={this.props.icon} width={64}/>;
+        } else {
+            if (this.state.mute) {
+                Icon = <Avatar size={64} icon={<AudioMutedOutlined height={64}/>}/>;
+            } else {
+                Icon = <Avatar size={64} icon={<AudioOutlined/>}/>;
+            }
+        }
+        return Icon;
     }
 
     render() {
@@ -47,7 +61,7 @@ class VolumeBox extends Component {
                 bordered={false}
             >
                 <Row justify="center">
-                    <Image src={this.props.icon} width={64}/>
+                    {this.getAudioIcon()}
                 </Row>
                 
                 <Col>

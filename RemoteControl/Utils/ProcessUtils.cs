@@ -59,13 +59,13 @@ namespace RemoteControl.Utils
 
                             if (bitmap != null)
                             {
-                                bitmap.Save(stream, ImageFormat.Jpeg);
+                                bitmap.Save(stream, ImageFormat.Png);
                             }
                             //icon.Save(stream);
                         }
 
                         byte[] iconBytes = stream.ToArray();
-                        blob = "data:image/jpeg;base64, " + Convert.ToBase64String(iconBytes);
+                        blob = "data:image/png;base64, " + Convert.ToBase64String(iconBytes);
                     }
                 }
             }
