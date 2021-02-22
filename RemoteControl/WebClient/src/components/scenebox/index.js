@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Card, Col, Row, Typography } from 'antd';
+import { Card, Col, Row, Typography, Image } from 'antd';
 import ObsSceneIcon from '../../assets/icons/OBS.svg';
 
 const {Title} = Typography;
@@ -7,6 +7,7 @@ const {Title} = Typography;
 class SceneBox extends Component {
     constructor(props){
         super(props);
+        console.log(ObsSceneIcon);
     }
 
     render() {
@@ -17,7 +18,7 @@ class SceneBox extends Component {
                         <Title level={5}>{this.props.title}</Title>
                     </Row>
                     <Row justify="center">
-                        <Avatar shape="square" size={128}/>
+                        <Image src={ObsSceneIcon} width={100}/>
                     </Row>
                 </Col>
             </Card>

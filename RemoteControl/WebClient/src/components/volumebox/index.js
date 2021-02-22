@@ -41,7 +41,11 @@ class VolumeBox extends Component {
     getAudioIcon() {
         let Icon = null;
         if (this.props.output) {
-            Icon = <Image src={this.props.icon} width={64}/>;
+            if (this.props.icon) {
+                Icon = <Image src={this.props.icon} width={64}/>;
+            } else {
+                Icon = <Avatar size={64} icon={<SoundOutlined/>}/>;
+            }
         } else {
             if (this.state.mute) {
                 Icon = <Avatar size={64} icon={<AudioMutedOutlined height={64}/>}/>;
@@ -55,7 +59,7 @@ class VolumeBox extends Component {
     render() {
         return (
             <Card 
-                title={this.props.title} 
+                title={this.props.title + " " + this.props.deviceName} 
                 headStyle={{textAlign: 'center', backgroundColor:'rgba(24,144,255,0.8)', color:'white'}}
                 style={{borderRight: '1px solid #f2f2f2'}}
                 bordered={false}
