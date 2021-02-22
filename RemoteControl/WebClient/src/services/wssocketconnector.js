@@ -47,6 +47,8 @@ class WSSocketConnector {
 
         if (data.type === dataType.volumes) {
             this.onvolumegetCallbacks.forEach(ele => { ele.callback(data)});
+        } else if (data.type === dataType.obs) {
+            this.onobsscenesCallbacks.forEach(ele => { ele.callback(data)});
         }
     }
 
@@ -57,6 +59,12 @@ class WSSocketConnector {
     changeVolume(name, deviceName, volume, output, mute) {
         let req = this.createRequest(dataType.changeVolume);
         req.data = { name: name, volume: volume, device: deviceName, output, mute: mute }
+        this.sendData(req);
+    }
+
+    selectScene(name) {
+        let req = this.createRequest(dataType.changeObs);
+        req.data = {name: name};
         this.sendData(req);
     }
 

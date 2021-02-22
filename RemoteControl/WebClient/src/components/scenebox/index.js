@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
-import { Card, Avatar, Col, Row, Typography, Button } from 'antd';
+import { Card, Col, Row, Typography } from 'antd';
+import ObsSceneIcon from '../../assets/icons/OBS.svg';
 
 const {Title} = Typography;
 
@@ -10,7 +11,7 @@ class SceneBox extends Component {
 
     render() {
         return (
-            <Card onClick={this.onSceneClick?.bind(this)}>
+            <Card onClick={this.onClick.bind(this)}>
                 <Col span={24}>
                     <Row justify="center">
                         <Title level={5}>{this.props.title}</Title>
@@ -18,10 +19,15 @@ class SceneBox extends Component {
                     <Row justify="center">
                         <Avatar shape="square" size={128}/>
                     </Row>
-                    
                 </Col>
             </Card>
         )
+    }
+
+    onClick(event) {
+        if (this.props.onSceneClick) {
+            this.props.onSceneClick(event, this.props.title);
+        }
     }
 }
 

@@ -101,6 +101,10 @@ namespace RemoteControl.Services
                     remoteScenes.Add(remoteScene);
                 }
                 dataResponse = remoteScenes;
+            } else if(RemoteControlDataType.ChangeObs.Equals(data.type))
+            {
+                RemoteObsScene ObsScene = JsonSerializer.Deserialize<RemoteObsScene>(data.data.ToString());
+                os.setCurrentScene(ObsScene.name);
             } else
             {
                 data.status = "Command not found";

@@ -47,9 +47,5 @@ namespace RemoteControl.Objects
         {
             return _obs.GetSceneList();
         }
-
-        public void SetScene(string name) { 
-        
-        }
     }
 }

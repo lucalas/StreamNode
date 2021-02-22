@@ -24,7 +24,7 @@ class Dashboard extends Component {
 
     getVolumeTab() {
         WsSocket.getVolumes().then(socketVolumes => {
-            console.log(JSON.stringify(socketVolumes.data));
+            //console.log(JSON.stringify(socketVolumes.data));
             this.setState({volumes: socketVolumes.data});
         });
     }
@@ -44,13 +44,13 @@ class Dashboard extends Component {
         WsSocket.changeVolume(name, deviceName, volume, output, mute);
     }
 
-    onSceneClick(name) {
-        // TODO
+    onSceneClick(event, name) {
+        WsSocket.selectScene(name);
     }
 
     getGUIVolumes() {
         return this.state.volumes.map(audio => {
-            console.log(JSON.stringify(audio));
+            //console.log(JSON.stringify(audio));
             return (<Col span={6}>
                         <VolumeBox onVolumeChange={this.onVolumeChange.bind(this)}
                                     onMutePressed={this.onMutePressed.bind(this)}
@@ -69,7 +69,7 @@ class Dashboard extends Component {
     }
 
     render() {
-        console.log(JSON.stringify(this.state.volumes));
+        //console.log(JSON.stringify(this.state.volumes));
         const GUIVolumes = this.getGUIVolumes();
         const GUIObsScenes = this.getGUIObsScenes();
 
