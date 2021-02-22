@@ -1,6 +1,6 @@
 import { Component } from 'preact';
 
-import { Layout, Row, Col, Space, Typography, Divider } from 'antd';
+import { Layout, Row, Col, Space, Typography, Divider, Select, Option } from 'antd';
 import VolumeBox from '../../components/volumebox';
 import SceneBox from '../../components/scenebox';
 import WsSocket from '../../services/WSSocketConnector';
@@ -68,10 +68,18 @@ class Dashboard extends Component {
         });
     }
 
+    getSourceList() {
+        return [...new Set(this.state.volumes.filter(vol => vol.output).map(vol => vol.device))].map(device => {
+            return (<Option value={device.device}>{device.device}</Option>)
+        })
+
+    }
+
     render() {
         //console.log(JSON.stringify(this.state.volumes));
         const GUIVolumes = this.getGUIVolumes();
         const GUIObsScenes = this.getGUIObsScenes();
+        const optionSourcesList = this.getSourceList();
 
         return (
             <Layout style={{minHeight:'100vh'}}>
@@ -81,7 +89,10 @@ class Dashboard extends Component {
                 <Divider type="vertical" />
 
                 <Row justify="center">
-                    <Title level={2} style={{marginBottom:0}}>MIXER</Title>  
+                    <Title level={2} style={{marginBottom:0}}>MIXER</Title>
+                    <Select style={{ width: 120 }}>
+                        {optionSourcesList}
+                    </Select>
                 </Row>
 
                 <Row>
