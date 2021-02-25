@@ -1,14 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
-using System.Text;
-using System.Management;
 using System.Linq;
+using System.Management;
 
-namespace RemoteControl.Utils
+namespace StreamdeckEngine.Utils
 {
     static class ProcessUtils
     {
@@ -98,7 +96,7 @@ namespace RemoteControl.Utils
             try
             {
                 byte[] srcBuf = null;
-                using (System.IO.MemoryStream stream = new System.IO.MemoryStream())
+                using (MemoryStream stream = new MemoryStream())
                 { icoIcon.Save(stream); srcBuf = stream.ToArray(); }
                 const int SizeICONDIR = 6;
                 const int SizeICONDIRENTRY = 16;
@@ -112,10 +110,10 @@ namespace RemoteControl.Utils
                     {
                         int iImageSize = BitConverter.ToInt32(srcBuf, SizeICONDIR + SizeICONDIRENTRY * iIndex + 8);
                         int iImageOffset = BitConverter.ToInt32(srcBuf, SizeICONDIR + SizeICONDIRENTRY * iIndex + 12);
-                        System.IO.MemoryStream destStream = new System.IO.MemoryStream();
-                        System.IO.BinaryWriter writer = new System.IO.BinaryWriter(destStream);
+                        MemoryStream destStream = new MemoryStream();
+                        BinaryWriter writer = new BinaryWriter(destStream);
                         writer.Write(srcBuf, iImageOffset, iImageSize);
-                        destStream.Seek(0, System.IO.SeekOrigin.Begin);
+                        destStream.Seek(0, SeekOrigin.Begin);
                         bmpPngExtracted = new Bitmap(destStream); // This is PNG! :)
                         break;
                     }

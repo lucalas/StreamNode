@@ -4,9 +4,9 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace RemoteControl.Objects
+namespace StreamdeckSocketManager.Engine.Services
 {
-    class OBSService
+    public class OBSService
     {
         private OBSWebsocket _obs;
         private String _url;

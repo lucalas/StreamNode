@@ -2,15 +2,16 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace RemoteControl.Objects
+namespace StreamdeckEngine.Objects
 {
-    class RemoteControlVolume
+    class ChangeVolumeType
     {
+
         public string name { get; set; }
-        public int volume { get; set; } = -1;
+
+        public string device { get; set; }
+        public int volume { get; set; }
         public bool output { get; set; }
         public bool mute { get; set; }
-        public string icon { get; set; }
-        public string device { get; set; }
     }
 }

@@ -1,9 +1,6 @@
-﻿using RemoteControl.Objects;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using StreamdeckEngine.Objects;
 
-namespace RemoteControl.Services
+namespace StreamdeckEngine.Engine
 {
     interface IRemoteControlEngine
     {

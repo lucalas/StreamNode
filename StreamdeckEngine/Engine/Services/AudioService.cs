@@ -1,14 +1,11 @@
 ﻿using NAudio.CoreAudioApi;
-using System;
 using System.Collections.Generic;
-using System.Text;
-using RemoteControl.Utils;
-using System.Windows.Input;
-using RemoteControl.Objects;
+using StreamdeckEngine.Utils;
+using StreamdeckEngine.Objects;
 
-namespace RemoteControl.Services
+namespace StreamdeckSocketManager.Engine.Services
 {
-    class AudioService
+    public class AudioService
     {
         MMDeviceEnumerator devicesController = new MMDeviceEnumerator();
         public AudioService()
@@ -88,7 +85,7 @@ namespace RemoteControl.Services
                     appsList.Add(ac);
                 }
             }
-
+            
             return appsList;
         }
 

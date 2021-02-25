@@ -1,13 +1,9 @@
 ﻿using Fleck;
-using RemoteControl.Objects;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Text;
-using System.Text.Json;
-using static RemoteControl.Services.IRemoteControlEngine;
+using StreamdeckEngine.Objects;
+using static StreamdeckEngine.Engine.IRemoteControlEngine;
 
-namespace RemoteControl.Services
+namespace StreamdeckEngine.Engine
 {
     class FleckEngine : IRemoteControlEngine
     {

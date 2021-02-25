@@ -1,9 +1,6 @@
 ﻿using NAudio.CoreAudioApi;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace RemoteControl.Objects
+namespace StreamdeckEngine.Objects
 {
     public class ApplicationController
     {
