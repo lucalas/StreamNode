@@ -94,20 +94,30 @@ namespace RemoteControl.Services
                 Trace.WriteLine(ChangeVolume.name + ": " + ChangeVolume.volume);
             } else if (RemoteControlDataType.Obs.Equals(data.type)) {
                 RemoteObsScenes remoteScenes = new RemoteObsScenes();
-                GetSceneListInfo scenes = os.getScenes();
-                foreach (OBSScene scene in scenes.Scenes) {
-                    RemoteObsScene remoteScene = new RemoteObsScene();
-                    remoteScene.name = scene.Name;
-                    remoteScenes.Add(remoteScene);
+                if (os.isConnected)
+                {
+                    GetSceneListInfo scenes = os.getScenes();
+                    foreach (OBSScene scene in scenes.Scenes)
+                    {
+                        RemoteObsScene remoteScene = new RemoteObsScene();
+                        remoteScene.name = scene.Name;
+                        remoteScenes.Add(remoteScene);
+                    }
+                } else
+                {
+                    data.status = "OBS_WEBSOCKET_ERROR";
                 }
                 dataResponse = remoteScenes;
             } else if(RemoteControlDataType.ChangeObs.Equals(data.type))
             {
-                RemoteObsScene ObsScene = JsonSerializer.Deserialize<RemoteObsScene>(data.data.ToString());
-                os.setCurrentScene(ObsScene.name);
+                if (os.isConnected)
+                {
+                    RemoteObsScene ObsScene = JsonSerializer.Deserialize<RemoteObsScene>(data.data.ToString());
+                    os.setCurrentScene(ObsScene.name);
+                }
             } else
             {
-                data.status = "Command not found";
+                data.status = "COMMAND_NOT_FOUND";
             }
 
             data.data = dataResponse;

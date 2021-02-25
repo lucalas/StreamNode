@@ -12,6 +12,8 @@ namespace RemoteControl.Objects
         private String _url;
         private String _password;
         private EventHandler _connected;
+        public bool isConnected { get { return _obs.IsConnected; } }
+
         public EventHandler Connected {
             get { return _connected; }
             set {
