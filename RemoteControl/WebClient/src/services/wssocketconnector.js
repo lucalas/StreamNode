@@ -13,6 +13,8 @@ class WSSocketConnector {
     onvolumegetCallbacks = [];
     onobsscenesCallbacks = [];
     onconnectHandler = [];
+    reconnectionInterval = 2000;
+    timeoutInterval = null;
 
     constructor() {
         this.connect("127.0.0.1", "8189");
@@ -30,6 +32,13 @@ class WSSocketConnector {
 
             this.connection.onmessage = data => {
                 if (this.exists(this.onmessage)) this.onmessage(data);
+            }
+
+            this.connection.onclose = event => {
+                this.timeoutInterval = setTimeout(() => {
+                    console.log("trying to reconnect");
+                    this.connect("127.0.0.1", "8189");
+                  }, this.reconnectionInterval);
             }
         });
     }
