@@ -1,19 +1,24 @@
 import { Component } from 'preact';
 
-import { Layout, Row, Col, Space, Typography, Divider, Select, Option } from 'antd';
+import { Layout, Row, Col, Space, Typography, Divider, Select } from 'antd';
 import VolumeBox from '../../components/volumebox';
 import SceneBox from '../../components/scenebox';
 import WsSocket from '../../services/WSSocketConnector';
 
 const {Title} = Typography;
+const { Option } = Select;
+
+const deviceFilterNone = "none";
 
 class Dashboard extends Component {
     sceneList = ['Scena 1','Scena 2','Scena 3'];
     constructor() {
         super();
-        this.state = { volumes: [], obsScenes: []};
-        this.onConnect = this.onConnect.bind(this);
-        WsSocket.addConnectHandler(this.onConnect);
+        this.state = { volumes: [], obsScenes: [], deviceFilter : deviceFilterNone};
+    }
+
+    componentDidMount() {
+        WsSocket.addConnectHandler(this.onConnect.bind(this));
     }
 
     onConnect() {
@@ -31,7 +36,6 @@ class Dashboard extends Component {
 
     getObsScenesTab() {
         WsSocket.getObsScenes().then(socketObsScenes => {
-            console.log(JSON.stringify(socketObsScenes.data));
             this.setState({obsScenes: socketObsScenes.data});
         });
     }
@@ -49,7 +53,13 @@ class Dashboard extends Component {
     }
 
     getGUIVolumes() {
-        return this.state.volumes.map(audio => {
+        return this.state.volumes.filter(volume => {
+            let valid = true;
+            if (this.state.deviceFilter !== deviceFilterNone && volume.output) {
+                 valid = volume.device === this.state.deviceFilter;
+            }
+            return valid;
+        }).map(audio => {
             //console.log(JSON.stringify(audio));
             return (<Col span={6}>
                         <VolumeBox onVolumeChange={this.onVolumeChange.bind(this)}
@@ -61,7 +71,6 @@ class Dashboard extends Component {
 
     getGUIObsScenes() {
         return this.state.obsScenes.map(scene => {
-            console.log(JSON.stringify(scene));
             return (<Col span={6}>
                         <SceneBox onSceneClick={this.onSceneClick.bind(this)} title={scene.name} />
                     </Col>)
@@ -69,10 +78,11 @@ class Dashboard extends Component {
     }
 
     getSourceList() {
-        return [...new Set(this.state.volumes.filter(vol => vol.output).map(vol => vol.device))].map(device => {
-            return (<Option value={device.device}>{device.device}</Option>)
-        })
+        return Array.from(new Set(this.state.volumes.filter(vol => vol.output).map(vol => vol.device))).map(device => <Option key={device} value={device}>{device}</Option>);
+    }
 
+    onChangeDevice(device) {
+        this.setState({deviceFilter: device});
     }
 
     render() {
@@ -90,7 +100,8 @@ class Dashboard extends Component {
 
                 <Row justify="center">
                     <Title level={2} style={{marginBottom:0}}>MIXER</Title>
-                    <Select style={{ width: 120 }}>
+                    <Select defaultValue={deviceFilterNone} style={{ width: '100%' }} onChange={this.onChangeDevice.bind(this)}>
+                        <Option value={deviceFilterNone}>None</Option>
                         {optionSourcesList}
                     </Select>
                 </Row>

@@ -7,7 +7,6 @@ const {Title} = Typography;
 class SceneBox extends Component {
     constructor(props){
         super(props);
-        console.log(ObsSceneIcon);
     }
 
     render() {
@@ -18,7 +17,7 @@ class SceneBox extends Component {
                         <Title level={5}>{this.props.title}</Title>
                     </Row>
                     <Row justify="center">
-                        <Image src={ObsSceneIcon} width={100}/>
+                        <Image src={ObsSceneIcon} width={100} preview={false}/>
                     </Row>
                 </Col>
             </Card>
