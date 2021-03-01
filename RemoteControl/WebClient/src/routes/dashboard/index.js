@@ -61,10 +61,13 @@ class Dashboard extends Component {
             return valid;
         }).map(audio => {
             //console.log(JSON.stringify(audio));
-            return (<Col span={6}>
+            return (<Col span={6} hidden={audio.hidden}>
                         <VolumeBox onVolumeChange={this.onVolumeChange.bind(this)}
                                     onMutePressed={this.onMutePressed.bind(this)}
-                                    title={audio.name} volume={audio.volume} deviceName={audio.device} output={audio.output} defaultMute={audio.mute} icon={audio.icon}/>
+                                    title={audio.name} volume={audio.volume} deviceName={audio.device} output={audio.output} defaultMute={audio.mute} icon={audio.icon}
+                                    onHideEvent={hide => {
+                                        audio.hidden = hide; this.setState({volumes: this.state.volumes})
+                                        }}/>
                     </Col>)
         });
     }

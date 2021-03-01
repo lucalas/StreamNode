@@ -1,8 +1,9 @@
 import { Component, createRef } from 'preact';
 
-import { Card, Slider, Button, Row, Col, Image, Avatar } from 'antd';
-import { SoundOutlined, LockOutlined, UnlockOutlined, AudioOutlined, AudioMutedOutlined } from '@ant-design/icons';
+import { Card, Slider, Button, Row, Col, Image, Avatar, Menu, Dropdown, Typography } from 'antd';
+import { SoundOutlined, LockOutlined, UnlockOutlined, AudioOutlined, AudioMutedOutlined, EllipsisOutlined } from '@ant-design/icons';
 
+const { Text } = Typography;
 
 class VolumeBox extends Component {
     _slider = createRef();
@@ -12,7 +13,8 @@ class VolumeBox extends Component {
         this.state = {
             mute: this.props.defaultMute,
             audioLocked: false,
-            micLocked: false
+            micLocked: false,
+            hide: false
         }
     }
 
@@ -56,6 +58,19 @@ class VolumeBox extends Component {
         return Icon;
     }
 
+    setHideValue(value) {
+        this.setState({hide: value});
+        this.props.onHideEvent(value);
+    }
+
+    getMenu() {
+        return (<Menu>
+                    <Menu.Item>
+                        <Text onClick={event => this.setHideValue(!this.state.hide)}>Hide me</Text>
+                    </Menu.Item>
+                </Menu>)
+    }
+
     render() {
         return (
             <Card 
@@ -63,6 +78,11 @@ class VolumeBox extends Component {
                 headStyle={{textAlign: 'center', backgroundColor:'rgba(24,144,255,0.8)', color:'white'}}
                 style={{borderRight: '1px solid #f2f2f2'}}
                 bordered={false}
+                extra={
+                    <Dropdown overlay={this.getMenu()}>
+                        <EllipsisOutlined style={"transform: rotate(90deg);"}/>
+                    </Dropdown>
+                }
             >
                 <Row justify="center">
                     {this.getAudioIcon()}
