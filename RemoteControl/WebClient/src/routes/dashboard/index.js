@@ -1,6 +1,6 @@
 import { Component } from 'preact';
 
-import { Layout, Row, Col, Space, Typography, Divider, Select } from 'antd';
+import { Layout, Row, Col, Space, Typography, Divider, Select, Spin } from 'antd';
 import VolumeBox from '../../components/volumebox';
 import SceneBox from '../../components/scenebox';
 import WsSocket from '../../services/WSSocketConnector';
@@ -53,6 +53,10 @@ class Dashboard extends Component {
     }
 
     getGUIVolumes() {
+        if (this.state.volumes.length == 0) {
+            return <Col span={6}><Spin/></Col>;
+        }
+
         return this.state.volumes.filter(volume => {
             let valid = true;
             if (this.state.deviceFilter !== deviceFilterNone && volume.output) {
@@ -65,14 +69,15 @@ class Dashboard extends Component {
                         <VolumeBox onVolumeChange={this.onVolumeChange.bind(this)}
                                     onMutePressed={this.onMutePressed.bind(this)}
                                     title={audio.name} volume={audio.volume} deviceName={audio.device} output={audio.output} defaultMute={audio.mute} icon={audio.icon}
-                                    onHideEvent={hide => {
-                                        audio.hidden = hide; this.setState({volumes: this.state.volumes})
-                                        }}/>
+                                    onHideEvent={hide => {audio.hidden = hide}}/>
                     </Col>)
         });
     }
 
     getGUIObsScenes() {
+        if (this.state.obsScenes.length == 0) {
+            return <Col span={6}><Spin/></Col>;
+        }
         return this.state.obsScenes.map(scene => {
             return (<Col span={6}>
                         <SceneBox onSceneClick={this.onSceneClick.bind(this)} title={scene.name} />
@@ -96,7 +101,6 @@ class Dashboard extends Component {
 
         return (
             <Layout style={{minHeight:'100vh'}}>
-
                 <Space direction="vertical" size={12}>
 
                 <Divider type="vertical" />
