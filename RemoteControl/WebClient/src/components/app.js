@@ -1,6 +1,6 @@
 
 
-import { Layout } from 'antd';
+import { Layout, Typography, Row, Col } from 'antd';
 
 import CustomHeader from './customheader';
 import Routes from '../routes';
@@ -8,6 +8,7 @@ import CustomSidebar from './sidebar';
 
 
 const { Footer, Sider, Content } = Layout;
+const {Title} = Typography;
 
 
 const App = () => (
@@ -19,7 +20,11 @@ const App = () => (
 				<Content>
 					<Routes/>
 				</Content>
-				<Footer>Footer</Footer>
+				<Footer style={{backgroundColor: "#001529"}}>
+					<Row justify="end">
+						<Col><Title level={5} style={{color: "#fff"}}>v 1.0</Title></Col>
+					</Row>
+				</Footer>
 			</Layout>
 		</Layout>
 	</div>
