@@ -5,7 +5,7 @@ import VolumeBox from '../../components/volumebox';
 import SceneBox from '../../components/scenebox';
 import WsSocket from '../../services/WSSocketConnector';
 
-const {Title} = Typography;
+const {Title, Text} = Typography;
 const { Option } = Select;
 
 const deviceFilterNone = "none";
@@ -14,28 +14,56 @@ class Dashboard extends Component {
     sceneList = ['Scena 1','Scena 2','Scena 3'];
     constructor() {
         super();
-        this.state = { volumes: [], obsScenes: [], deviceFilter : deviceFilterNone};
+        this.state = { 
+            volumes: [], 
+            obsScenes: [], 
+            deviceFilter : deviceFilterNone, 
+            VolumesLoaded: false, 
+            ScenesLoaded: false,
+            isMobile: false
+        };
     }
 
     componentDidMount() {
         WsSocket.addConnectHandler(this.onConnect.bind(this));
+        if(window.innerWidth <= 480){
+            this.setState({isMobile: true});
+        }
+        window.addEventListener("resize", this._checkWindowSize.bind(this));
+    }
+
+    componentWillUnmount(){
+        window.removeEventListener("resize", this._checkWindowSize.bind(this));
+    }
+
+    _checkWindowSize(){
+        if(window.innerWidth <= 480){
+            this.setState({isMobile: true});
+        }else{
+            this.setState({isMobile: false});
+        }
     }
 
     onConnect() {
         console.log("connected");
-        this.getVolumeTab();
-        this.getObsScenesTab();
+        this.getVolumeTab()
+            .then(()=> this.setState({ VolumesLoaded: true}) )
+            .catch(err => console.log(err));
+        
+        this.getObsScenesTab()
+            .then(() => this.setState({ ScenesLoaded: true}) )
+            .catch(err => console.log(err));
     }
 
-    getVolumeTab() {
-        WsSocket.getVolumes().then(socketVolumes => {
+    async getVolumeTab() {
+        await WsSocket.getVolumes().then(socketVolumes => {
             //console.log(JSON.stringify(socketVolumes.data));
             this.setState({volumes: socketVolumes.data});
         });
     }
 
-    getObsScenesTab() {
-        WsSocket.getObsScenes().then(socketObsScenes => {
+    async getObsScenesTab() {
+        await WsSocket.getObsScenes().then(socketObsScenes => {
             this.setState({obsScenes: socketObsScenes.data});
         });
     }
@@ -54,7 +82,7 @@ class Dashboard extends Component {
 
     getGUIVolumes() {
         if (this.state.volumes.length == 0) {
-            return <Col span={6}><Spin/></Col>;
+            return <Row justify="center"> <Text>NO VOLUMES FOUND</Text> </Row>
         }
 
         return this.state.volumes.filter(volume => {
@@ -65,7 +93,7 @@ class Dashboard extends Component {
             return valid;
         }).map(audio => {
             //console.log(JSON.stringify(audio));
-            return (<Col span={6} hidden={audio.hidden}>
+            return (<Col span={this.state.isMobile ? 24 : 6} hidden={audio.hidden}>
                         <VolumeBox onVolumeChange={this.onVolumeChange.bind(this)}
                                     onMutePressed={this.onMutePressed.bind(this)}
                                     title={audio.name} volume={audio.volume} deviceName={audio.device} output={audio.output} defaultMute={audio.mute} icon={audio.icon}
@@ -75,14 +103,16 @@ class Dashboard extends Component {
     }
 
     getGUIObsScenes() {
-        if (this.state.obsScenes.length == 0) {
-            return <Col span={6}><Spin/></Col>;
+        if(this.state.obsScenes.length == 0){
+            return <Row justify="center"> <Text>NO OBS SCENES FOUND</Text> </Row>
         }
+
         return this.state.obsScenes.map(scene => {
             return (<Col span={6}>
                         <SceneBox onSceneClick={this.onSceneClick.bind(this)} title={scene.name} />
                     </Col>)
         });
+        
     }
 
     getSourceList() {
@@ -105,27 +135,65 @@ class Dashboard extends Component {
 
                 <Divider type="vertical" />
 
-                <Row justify="center">
+                <Row justify="center" id="mixer">
                     <Title level={2} style={{marginBottom:0}}>MIXER</Title>
-                    <Select defaultValue={deviceFilterNone} style={{ width: '100%' }} onChange={this.onChangeDevice.bind(this)}>
-                        <Option value={deviceFilterNone}>None</Option>
-                        {optionSourcesList}
-                    </Select>
                 </Row>
 
-                <Row>
-                    {GUIVolumes}
+                <Row justify="center" align="middle">
+                    <Col span={this.state.isMobile ? 3 : 2} >
+                        <Row justify="center">
+                        <Text strong >Filtro: </Text>
+                        </Row>
+                    </Col>
+                    <Col span={this.state.isMobile ? 18 : 20}>
+                        
+                        <Select defaultValue={deviceFilterNone} onChange={this.onChangeDevice.bind(this)} style={{width: "100%"}}>
+                            <Option value={deviceFilterNone}>None</Option>
+                            {optionSourcesList}
+                        </Select>
+                    </Col>
                 </Row>
+
+                {   //VOLUMES DECK
+                    this.state.VolumesLoaded 
+                    
+                    ?
+
+                    <Row justify={"start"}>
+                        {GUIVolumes}
+                    </Row>
+
+                    :
+
+                    <Row justify="center">
+                        <Col><Spin/></Col>
+                    </Row>
+                }
 
                 <Divider type="vertical" />
                 
-                <Row justify="center">
+                <Row justify="center" id="obs-scenes">
                     <Title level={2} style={{marginBottom:0}}>SCENE</Title>  
                 </Row>
 
-                <Row>
-                    {GUIObsScenes}
-                </Row>
+                {   //OBS SCENES
+                    this.state.ScenesLoaded 
+
+                    ?
+
+                    <Row justify={this.state.obsScenes.length == 0 ? "center" : "start"}>
+                        {GUIObsScenes}
+                    </Row>
+
+                    :
+
+                    <Row justify="center">
+                        <Col><Spin/></Col>
+                    </Row>
+                }
+
+                <Divider type="vertical" />
+
                 </Space>
             </Layout>
         );
