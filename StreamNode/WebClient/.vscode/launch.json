@@ -1,0 +1,22 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        
+        {
+            "type": "chrome",
+            "request": "launch",
+            "name": "Launch Chrome against localhost",
+            "url": "http://localhost:8080",
+            "preLaunchTask": "develop",
+            "sourceMaps": true,
+            "webRoot": "${workspaceFolder}\\src",
+            "sourceMapPathOverrides": {
+                "webpack:///*": "${workspaceFolder}\\src\\*",
+                "webpack:///./*": "${workspaceFolder}\\src\\*",
+                "webpack:///src/*": "${workspaceFolder}\\src\\*",
+                "webpack:///./~/*": "${workspaceFolder}\\node_modules\\*"
+            },
+            "trace": true
+        }
+    ]
+}
