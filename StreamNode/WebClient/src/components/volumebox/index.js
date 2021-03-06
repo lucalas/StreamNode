@@ -44,7 +44,7 @@ class VolumeBox extends Component {
         let Icon = null;
         if (this.props.output) {
             if (this.props.icon) {
-                Icon = <Image src={this.props.icon} width={64}/>;
+                Icon = <Image src={this.props.icon} width={64} preview={false}/>;
             } else {
                 Icon = <Avatar size={64} icon={<SoundOutlined/>}/>;
             }
