@@ -15,15 +15,17 @@ class WSSocketConnector {
     onconnectHandler = [];
     reconnectionInterval = 2000;
     timeoutInterval = null;
+    host = location.hostname;
+    port = 8189;
 
     constructor() {
-        this.connect("192.168.1.198", "8189");
+        this.connect();
     }
 
     
-    connect(ip, port) {
+    connect() {
         return new Promise((resolve, reject) => {
-            this.connection = new WebSocket('ws://' + ip + ':' + port);
+            this.connection = new WebSocket('ws://' + this.host + ':' + this.port);
             this.connection.onopen = () => {
                 this.onconnectHandler.forEach(method => method());
                 if (this.exists(this.onopen)) this.onopen();
@@ -37,7 +39,7 @@ class WSSocketConnector {
             this.connection.onclose = event => {
                 this.timeoutInterval = setTimeout(() => {
                     console.log("trying to reconnect");
-                    this.connect("127.0.0.1", "8189");
+                    this.connect(this.host, this.port);
                   }, this.reconnectionInterval);
             }
         });
