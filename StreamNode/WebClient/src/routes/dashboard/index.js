@@ -1,6 +1,6 @@
 import { Component } from 'preact';
 
-import { Layout, Row, Col, Space, Typography, Divider, Select, Spin } from 'antd';
+import { Layout, Row, Col, Space, Typography, Divider, Select, Spin, Switch } from 'antd';
 import VolumeBox from '../../components/volumebox';
 import SceneBox from '../../components/scenebox';
 import WsSocket from '../../services/WSSocketConnector';
@@ -20,7 +20,9 @@ class Dashboard extends Component {
             deviceFilter : deviceFilterNone, 
             VolumesLoaded: false, 
             ScenesLoaded: false,
-            isMobile: false
+            isMobile: false,
+            //STATE FOR TOOGLE BUTTON: VERTICAL OR HORIZONTAL CARD
+            isVertical: true
         };
     }
 
@@ -93,11 +95,13 @@ class Dashboard extends Component {
             return valid;
         }).map(audio => {
             //console.log(JSON.stringify(audio));
-            return (<Col span={this.state.isMobile ? 24 : 6} hidden={audio.hidden}>
+            return (<Col span={this.state.isMobile ? (this.state.isVertical ? 8 : 24) : (this.state.isVertical ? 2 : 6)} hidden={audio.hidden}>
                         <VolumeBox onVolumeChange={this.onVolumeChange.bind(this)}
                                     onMutePressed={this.onMutePressed.bind(this)}
                                     title={audio.name} volume={audio.volume} deviceName={audio.device} output={audio.output} defaultMute={audio.mute} icon={audio.icon}
-                                    onHideEvent={hide => {audio.hidden = hide}}/>
+                                    onHideEvent={hide => {audio.hidden = hide}}
+                                    isVertical={this.state.isVertical}
+                        />
                     </Col>)
         });
     }
@@ -139,27 +143,35 @@ class Dashboard extends Component {
                     <Title level={2} style={{marginBottom:0}}>MIXER</Title>
                 </Row>
 
-                <Row justify="center" align="middle">
-                    <Col span={this.state.isMobile ? 3 : 2} >
+                { //FILTRI
+                <Row justify= {this.state.isMobile ? "start" : "center"} align="middle">
+                    <Col span={this.state.isMobile ? 3 : 1} offset={this.state.isMobile && 1}>
                         <Row justify="center">
                         <Text strong >Filtro: </Text>
                         </Row>
                     </Col>
-                    <Col span={this.state.isMobile ? 18 : 20}>
-                        
+                    <Col span={this.state.isMobile ? 15 : 18}>
                         <Select defaultValue={deviceFilterNone} onChange={this.onChangeDevice.bind(this)} style={{width: "100%"}}>
-                            <Option value={deviceFilterNone}>None</Option>
+                            <Option value={deviceFilterNone}>All</Option>
                             {optionSourcesList}
                         </Select>
                     </Col>
+                    <Col offset={1} span={this.state.isMobile ? 2 : 2}>
+                        <Switch onChange={ () => this.setState({ isVertical: !this.state.isVertical }) } 
+                            checkedChildren="V"
+                            unCheckedChildren="H"
+                            defaultChecked={this.state.isVertical}
+                        />
+                    </Col>
                 </Row>
+                }
 
                 {   //VOLUMES DECK
                     this.state.VolumesLoaded 
                     
                     ?
 
-                    <Row justify={"start"}>
+                    <Row justify={"start"} style={{ margin: this.state.isVertical ? (!this.state.isMobile ? "0 5%" : "0 auto") : "0 auto"}}>
                         {GUIVolumes}
                     </Row>
 

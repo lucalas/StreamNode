@@ -2,11 +2,38 @@ import { Component, createRef } from 'preact';
 
 import { Card, Slider, Button, Row, Col, Image, Avatar, Menu, Dropdown, Typography } from 'antd';
 import { SoundOutlined, LockOutlined, UnlockOutlined, AudioOutlined, AudioMutedOutlined, EllipsisOutlined } from '@ant-design/icons';
+import { useMediaQuery }  from "react-responsive";
 
 const { Text } = Typography;
 
+const resolutions = [
+    {
+        name: "mobile",
+        resolution: 480    
+    },
+    {
+        name: "tablet",
+        resolution: 960    
+    },
+    {
+        name: "desktop",
+        resolution: 1024    
+    }
+]
+
+const Tablet = ({ children }) => {
+    const isTablet = useMediaQuery({ minWidth: 768, maxWidth: 991 })
+    return isTablet ? children : null
+}
+
+const Mobile = ({children}) => {
+    const isMobile = useMediaQuery({ maxWidth: 480 })
+    return isMobile ? children : null
+}
+
 class VolumeBox extends Component {
     _slider = createRef();
+
 
     constructor(props) {
         super(props);
@@ -44,15 +71,15 @@ class VolumeBox extends Component {
         let Icon = null;
         if (this.props.output) {
             if (this.props.icon) {
-                Icon = <Image src={this.props.icon} width={64} preview={false}/>;
+                Icon = <Image src={this.props.icon} width={this.props.isVertical ? 32 : 64} preview={false}/>;
             } else {
-                Icon = <Avatar size={64} icon={<SoundOutlined/>}/>;
+                Icon = <Avatar size={this.props.isVertical ? 32 : 64} icon={<SoundOutlined/>}/>;
             }
         } else {
             if (this.state.mute) {
-                Icon = <Avatar size={64} icon={<AudioMutedOutlined height={64}/>}/>;
+                Icon = <Avatar size={this.props.isVertical ? 32 : 64} icon={<AudioMutedOutlined height="auto" />}/>;
             } else {
-                Icon = <Avatar size={64} icon={<AudioOutlined/>}/>;
+                Icon = <Avatar size={this.props.isVertical ? 32 : 64} icon={<AudioOutlined/>}/>;
             }
         }
         return Icon;
@@ -73,6 +100,10 @@ class VolumeBox extends Component {
 
     render() {
         return (
+            !this.props.isVertical
+            ?
+
+            // HORIZONTAL
             <Card 
                 title={this.props.title + " " + this.props.deviceName} 
                 headStyle={{textAlign: 'center', backgroundColor:'rgba(24,144,255,0.8)', color:'white'}}
@@ -87,33 +118,83 @@ class VolumeBox extends Component {
                 <Row justify="center">
                     {this.getAudioIcon()}
                 </Row>
-                
+
                 <Col>
-                <Row justify="space-between" style={{marginBottom: 5}} hidden={this.props.volumeHide}>
+                    <Row justify="space-between" style={{marginBottom: 5}} hidden={this.props.volumeHide}>
+                        <Button 
+                            type={!this.state.mute ? "primary" : "default"}
+                            shape="circle" 
+                            icon={this.getVolumeAudioIcon()} 
+                            onClick={this._muteSound.bind(this)}
+                        />
+                        <Button 
+                            type={this.state.audioLocked ? "primary" : "default"}
+                            shape="circle" 
+                            icon={this.state.audioLocked ? <LockOutlined /> : <UnlockOutlined />} 
+                            onClick={this._lockSound.bind(this)}
+                        />
+                        <Slider
+                            className="slider-test-css-t"
+                            ref={this._slider}
+                            min={0} 
+                            max={100}
+                            onChange={this.onVolumeChange?.bind(this)}
+                            defaultValue={this.props.volume} 
+                            disabled={this.state.audioLocked}
+                            style={
+                                {
+                                    width: '65%'
+                                }
+                            }
+                        />
+                    </Row>
+                </Col>
+            </Card>
+            :
+
+            //VERTICAL
+           <Card 
+            title={
+                <Row justify="center">
+                    {this.getAudioIcon()}
+                </Row>
+            } 
+            headStyle={{textAlign: 'center', backgroundColor:'rgba(24,144,255,0.8)', color:'white'}}
+            style={{borderRight: '1px solid #f2f2f2'}}
+            bodyStyle={{height: "auto", display: "flex", justifyContent:"center"}}
+            bordered={false}
+           >
+            <Col>
+                
+                <Row style={{margin: "10px 0"}}>
+                <Slider vertical
+                        ref={this._slider} 
+                        min={0} 
+                        max={100} 
+                        onChange={this.onVolumeChange.bind(this)}
+                        defaultValue={this.props.volume} 
+                        disabled={this.state.audioLocked} 
+                        style={{ height:"200px"}}
+                    />
+                </Row>
+                <Row style={{margin: "10px 0"}}>
                     <Button 
                         type={!this.state.mute ? "primary" : "default"}
                         shape="circle" 
                         icon={this.getVolumeAudioIcon()} 
                         onClick={this._muteSound.bind(this)}
                     />
+                </Row>
+                <Row style={{margin: "10px 0"}}>
                     <Button 
                         type={this.state.audioLocked ? "primary" : "default"}
                         shape="circle" 
                         icon={this.state.audioLocked ? <LockOutlined /> : <UnlockOutlined />} 
                         onClick={this._lockSound.bind(this)}
                     />
-                    <Slider 
-                        ref={this._slider}
-                        min={0} 
-                        max={100}
-                        onChange={this.onVolumeChange?.bind(this)}
-                        defaultValue={this.props.volume} 
-                        disabled={this.state.audioLocked}
-                        style={{width: '65%'}}
-                    />
                 </Row>
-                </Col>
-            </Card>
+            </Col>
+           </Card>
         );
     }
 
