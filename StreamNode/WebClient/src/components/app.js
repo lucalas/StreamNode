@@ -14,11 +14,11 @@ const {Title} = Typography;
 const App = () => (
 	<div id="app" class="bg-white">
 		<Layout>
-			<CustomSidebar/>
+			<CustomSidebar />
 			<Layout>
 				<CustomHeader />
 				<Content>
-					<Routes/>
+					<Routes />
 				</Content>
 				<Footer style={{backgroundColor: "#001529"}}>
 					<Row justify="end">
