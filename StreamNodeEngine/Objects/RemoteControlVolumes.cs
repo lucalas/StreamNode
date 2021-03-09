@@ -2,7 +2,7 @@
 
 namespace StreamNodeEngine.Objects
 {
-    class RemoteControlVolumes : List<RemoteControlVolume>, IData
+    public class RemoteControlVolumes : List<RemoteControlVolume>, IData
     {
     }
 }

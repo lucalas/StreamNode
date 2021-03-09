@@ -2,14 +2,24 @@
 using System.Collections.Generic;
 using StreamNodeEngine.Utils;
 using StreamNodeEngine.Objects;
+using System.Threading;
+using System.Threading.Tasks;
+using System;
 
 namespace StreamNodeSocketManager.Engine.Services
 {
     public class AudioService
     {
+        Task RefreshApplicationList;
+        int RefreshApplicationListDelay = 3000;
+        AudioServiceUpdate AudioServiceUpdate;
+        public event EventHandler<AudioServiceUpdate> OnIOUpdate;
+
         MMDeviceEnumerator devicesController = new MMDeviceEnumerator();
         public AudioService()
         {
+            AudioServiceUpdate = new AudioServiceUpdate();
+            RefreshApplicationList = Task.Run(RefreshApplicationListTask);
         }
 
         /// <summary>
@@ -85,7 +95,7 @@ namespace StreamNodeSocketManager.Engine.Services
                     appsList.Add(ac);
                 }
             }
-            
+
             return appsList;
         }
 
@@ -116,6 +126,77 @@ namespace StreamNodeSocketManager.Engine.Services
             }
 
             return foundDevice;
+        }
+
+        private async Task RefreshApplicationListTask()
+        {
+            while (true)
+            {
+                RemoteControlVolumes volumes = GetVolumeIO();
+
+                string hashCalculated = GetStringSha256Hash(volumes);
+
+                if (!hashCalculated.Equals(AudioServiceUpdate.hashUpdate))
+                {
+                    AudioServiceUpdate.volumes = volumes; 
+                    AudioServiceUpdate.tsUpdate = DateTime.Now.Millisecond;
+                    AudioServiceUpdate.hashUpdate = hashCalculated;
+                    OnIOUpdate(this, AudioServiceUpdate);
+                }
+
+                Task.Delay(RefreshApplicationListDelay);
+            }
+        }
+
+        private RemoteControlVolumes GetVolumeIO()
+        {
+            RemoteControlVolumes volumes = new RemoteControlVolumes();
+
+            foreach (MMDevice dev in GetListOfOutputDevices())
+            {
+                foreach (ApplicationController appOut in GetApplicationsMixer(dev))
+                {
+                    ApplicationController appDev = GetDeviceController(dev);
+                    RemoteControlVolume audio = new RemoteControlVolume();
+                    audio.name = appOut.processName;
+                    audio.volume = (int)(appOut.getVolume() * 100);
+                    audio.mute = appOut.getMute();
+                    audio.device = appDev.device.FriendlyName;
+                    audio.output = true;
+                    audio.icon = ProcessUtils.ProcessIcon(appOut.session.GetProcessID);
+                    volumes.Add(audio);
+                }
+            }
+
+            foreach (MMDevice dev in GetListOfInputDevices())
+            {
+                RemoteControlVolume audio = new RemoteControlVolume();
+
+                audio.name = dev.FriendlyName;
+                audio.mute = dev.AudioEndpointVolume.Mute;
+                audio.volume = (int)(dev.AudioEndpointVolume.MasterVolumeLevelScalar * 100);
+                audio.device = dev.FriendlyName;
+                audio.output = false;
+                volumes.Add(audio);
+            }
+
+            return volumes;
+        }
+        private string GetStringSha256Hash(RemoteControlVolumes volumes)
+        {
+            string toCalculateHash = "";
+
+            foreach (RemoteControlVolume volume in volumes)
+            {
+                toCalculateHash += volume.name;
+            }
+
+            using (var sha = new System.Security.Cryptography.SHA256Managed())
+            {
+                byte[] textData = System.Text.Encoding.UTF8.GetBytes(toCalculateHash);
+                byte[] hash = sha.ComputeHash(textData);
+                return BitConverter.ToString(hash).Replace("-", String.Empty);
+            }
         }
     }
 }
