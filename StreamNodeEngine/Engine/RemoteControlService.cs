@@ -9,7 +9,6 @@ namespace StreamNodeEngine.Engine
     class RemoteControlService
     {
         private IRemoteControlEngine engine;
-        public event EventHandler<RemoteControlOnMessageArgs> OnMessage;
         private Dictionary<string, Func<RemoteControlData, RemoteControlData>> routes = new Dictionary<string, Func<RemoteControlData, RemoteControlData>>();
 
         public RemoteControlService() {
@@ -44,6 +43,11 @@ namespace StreamNodeEngine.Engine
 
 
             return JsonConvert.SerializeObject(data);
+        }
+
+        public void SendData(object data2Send)
+        {
+            engine.SendMessage(JsonConvert.SerializeObject(data2Send));
         }
 
         private RemoteControlData getUnknownCommand(RemoteControlData wsData)

@@ -3,7 +3,8 @@ const dataType = {
     volumes: "volumes",
     obs: "obs",
     changeVolume: "change-volume",
-    changeObs: "change-obs"
+    changeObs: "change-obs",
+    volumeUpdate: "volume-update"
 }
 
 class WSSocketConnector {
@@ -12,6 +13,7 @@ class WSSocketConnector {
     onvolumechange = null;
     onvolumegetCallbacks = [];
     onobsscenesCallbacks = [];
+    onvolumeupdate = [];
     onconnectHandler = [];
     reconnectionInterval = 2000;
     timeoutInterval = null;
@@ -45,6 +47,10 @@ class WSSocketConnector {
         });
     }
 
+    addVolumeUpdateHandler(method) {
+        this.onvolumeupdate.push(method);
+    }
+
     addConnectHandler(method) {
         this.onconnectHandler.push(method);
     }
@@ -60,6 +66,8 @@ class WSSocketConnector {
             this.onvolumegetCallbacks.forEach(ele => { ele.callback(data)});
         } else if (data.type === dataType.obs) {
             this.onobsscenesCallbacks.forEach(ele => { ele.callback(data)});
+        } else if (data.type === dataType.volumeUpdate) {
+            this.onvolumeupdate.forEach(ele => { ele(data)});
         }
     }
 

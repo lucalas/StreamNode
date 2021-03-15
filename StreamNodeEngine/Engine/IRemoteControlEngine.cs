@@ -8,5 +8,6 @@ namespace StreamNodeEngine.Engine
         event OnMessageEventHandler OnMessage;
 
         void Connect();
+        void SendMessage(string data);
     }
 }

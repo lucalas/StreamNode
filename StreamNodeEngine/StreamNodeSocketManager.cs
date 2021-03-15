@@ -7,6 +7,7 @@ using StreamNodeEngine.Utils;
 using StreamNodeSocketManager.Engine.Services;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 
 namespace StreamNodeEngine
@@ -27,11 +28,23 @@ namespace StreamNodeEngine
 
         private void initRoutes()
         {
+            audioService.OnIOUpdate += IOUpdateHandler;
+
             webSocketEngine.AddRoute(RemoteControlDataType.Volumes, GetVolumes);
             webSocketEngine.AddRoute(RemoteControlDataType.ChangeVolume, ChangeVolume);
             webSocketEngine.AddRoute(RemoteControlDataType.Obs, GetObs);
             webSocketEngine.AddRoute(RemoteControlDataType.ChangeObs, ChangeObs);
 
+        }
+
+        private void IOUpdateHandler(object sender, AudioServiceUpdate message)
+        {
+            RemoteControlData WSData = new RemoteControlData();
+            WSData.data = message.volumes;
+            WSData.type = RemoteControlDataType.VolumeUpdate;
+
+            // TODO Send volumes update to client
+            webSocketEngine.SendData(WSData);
         }
 
         private RemoteControlData GetVolumes(RemoteControlData wsData)
@@ -65,6 +78,7 @@ namespace StreamNodeEngine
                 audio.output = false;
                 volumes.Add(audio);
             }
+
             wsData.data = volumes;
 
             return wsData;

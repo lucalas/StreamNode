@@ -35,6 +35,8 @@ class Dashboard extends Component {
     }
 
     componentDidMount() {
+        WsSocket.addVolumeUpdateHandler(this.getVolumeUpdate.bind(this));
+
         WsSocket.addConnectHandler(this.onConnect.bind(this));
         if(window.innerWidth <= 480){
             this.setState({isMobile: true});
@@ -66,9 +68,12 @@ class Dashboard extends Component {
             .catch(err => console.log(err));
     }
 
+    getVolumeUpdate(socketVolumes) {
+        this.setState({volumes: socketVolumes.data});
+    }
+
     async getVolumeTab() {
         await WsSocket.getVolumes().then(socketVolumes => {
-            //console.log(JSON.stringify(socketVolumes.data));
             this.setState({volumes: socketVolumes.data});
         });
     }

@@ -1,6 +1,6 @@
 ﻿namespace StreamNodeEngine.Objects
 {
-    class RemoteControlVolume
+    public class RemoteControlVolume
     {
         public string name { get; set; }
         public int volume { get; set; } = -1;

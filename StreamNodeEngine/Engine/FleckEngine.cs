@@ -14,6 +14,7 @@ namespace StreamNodeEngine.Engine
         public void Connect()
         {
             _server = new WebSocketServer("ws://0.0.0.0:8189");
+            
             _server.Start(Configure);
         }
 
@@ -27,6 +28,10 @@ namespace StreamNodeEngine.Engine
                 Trace.WriteLine("Disconnected");
             };
             _socket.OnMessage = HandlerMessage;
+        }
+
+        public void SendMessage(string data) {
+            _socket.Send(data);
         }
 
         private void HandlerMessage(string message)
