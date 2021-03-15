@@ -33,7 +33,9 @@
     "postcss": "^7.0.35",
     "preact": "^10.5.10",
     "preact-render-to-string": "^5.1.12",
-    "preact-router": "^3.2.1"
+    "preact-router": "^3.2.1",
+    "react-dnd": "^14.0.1",
+    "react-dnd-html5-backend": "^14.0.0"
   },
   "jest": {
     "preset": "jest-preset-preact",
