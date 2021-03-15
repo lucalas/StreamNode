@@ -10,11 +10,10 @@ const dataType = {
 class WSSocketConnector {
     connection = null;
     onopen = null;
-    onvolumechange = null;
-    onvolumegetCallbacks = [];
-    onobsscenesCallbacks = [];
-    onvolumeupdate = [];
-    onconnectHandler = [];
+    onVolumeGetCallbacks = [];
+    onObsScenesCallbacks = [];
+    onVolumeUpdate = [];
+    onConnectHandler = [];
     reconnectionInterval = 2000;
     timeoutInterval = null;
     host = location.hostname;
@@ -29,7 +28,7 @@ class WSSocketConnector {
         return new Promise((resolve, reject) => {
             this.connection = new WebSocket('ws://' + this.host + ':' + this.port);
             this.connection.onopen = () => {
-                this.onconnectHandler.forEach(method => method());
+                this.onConnectHandler.forEach(method => method());
                 if (this.exists(this.onopen)) this.onopen();
                 resolve();
             };
@@ -48,11 +47,11 @@ class WSSocketConnector {
     }
 
     addVolumeUpdateHandler(method) {
-        this.onvolumeupdate.push(method);
+        this.onVolumeUpdate.push(method);
     }
 
     addConnectHandler(method) {
-        this.onconnectHandler.push(method);
+        this.onConnectHandler.push(method);
     }
 
     getConnectionStatus() {
@@ -63,11 +62,11 @@ class WSSocketConnector {
         let data = JSON.parse(message.data);
 
         if (data.type === dataType.volumes) {
-            this.onvolumegetCallbacks.forEach(ele => { ele.callback(data)});
+            this.onVolumeGetCallbacks.forEach(ele => { ele.callback(data)});
         } else if (data.type === dataType.obs) {
-            this.onobsscenesCallbacks.forEach(ele => { ele.callback(data)});
+            this.onObsScenesCallbacks.forEach(ele => { ele.callback(data)});
         } else if (data.type === dataType.volumeUpdate) {
-            this.onvolumeupdate.forEach(ele => { ele(data)});
+            this.onVolumeUpdate.forEach(ele => { ele(data)});
         }
     }
 
@@ -88,11 +87,11 @@ class WSSocketConnector {
     }
 
     getVolumes() {
-        return this._getData(dataType.volumes, this.onvolumegetCallbacks);
+        return this._getData(dataType.volumes, this.onVolumeGetCallbacks);
     }
 
     getObsScenes() {
-        return this._getData(dataType.obs, this.onobsscenesCallbacks);
+        return this._getData(dataType.obs, this.onObsScenesCallbacks);
     }
 
     _getData(type, callbacks) {
