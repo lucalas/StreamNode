@@ -6,7 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System;
 
-namespace StreamNodeSocketManager.Engine.Services
+namespace StreamNodeEngine.Engine.Services
 {
     public class AudioService
     {

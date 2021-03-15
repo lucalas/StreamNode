@@ -4,11 +4,7 @@ using OBSWebsocketDotNet.Types;
 using StreamNodeEngine.Engine;
 using StreamNodeEngine.Objects;
 using StreamNodeEngine.Utils;
-using StreamNodeSocketManager.Engine.Services;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Text;
+using StreamNodeEngine.Engine.Services;
 
 namespace StreamNodeEngine
 {
@@ -17,6 +13,7 @@ namespace StreamNodeEngine
 
         public OBSService obsService { get; } = new OBSService();
         public AudioService audioService { get; } = new AudioService();
+        public StoreService storeService { get; } = new StoreService();
         RemoteControlService webSocketEngine = new RemoteControlService();
 
         public StreamNodeSocketManager()
@@ -34,6 +31,7 @@ namespace StreamNodeEngine
             webSocketEngine.AddRoute(RemoteControlDataType.ChangeVolume, ChangeVolume);
             webSocketEngine.AddRoute(RemoteControlDataType.Obs, GetObs);
             webSocketEngine.AddRoute(RemoteControlDataType.ChangeObs, ChangeObs);
+            webSocketEngine.AddRoute(RemoteControlDataType.StoreDeck, StoreDeck);
 
         }
 
@@ -45,6 +43,13 @@ namespace StreamNodeEngine
 
             // TODO Send volumes update to client
             webSocketEngine.SendData(WSData);
+        }
+
+
+        private RemoteControlData StoreDeck(RemoteControlData wsData)
+        {
+            storeService.store(wsData);
+            return null;
         }
 
         private RemoteControlData GetVolumes(RemoteControlData wsData)

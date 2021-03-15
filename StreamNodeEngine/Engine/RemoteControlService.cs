@@ -42,7 +42,7 @@ namespace StreamNodeEngine.Engine
             }
 
 
-            return JsonConvert.SerializeObject(data);
+            return data != null ? JsonConvert.SerializeObject(data) : null;
         }
 
         public void SendData(object data2Send)
