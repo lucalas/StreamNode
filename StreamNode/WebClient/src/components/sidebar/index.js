@@ -8,25 +8,45 @@ class CustomSidebar extends Component {
 
     constructor() {
         super();
+        this.state = {
+            hideSidebar: false
+        }
+    }
+
+    componentDidMount() {
+        window.addEventListener("resize", this.hide.bind(this));
+        this.hide();
+    }
+    
+    hide() {
+        this.setState({hideSidebar: window.innerWidth <= 480});
+    }
+    
+    componentWillUnmount() {
+        window.removeEventListener("hide", this.resize.bind(this));
     }
 
     render() {
-        return (
-        <Sider collapsible defaultCollapsed>
-            <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline">
-                <Menu.Item key="1" icon={<DesktopOutlined />}>
-                    <Link href="/">Dashboard</Link>
-                </Menu.Item>
-                <Menu.Item key="2" icon={<CustomerServiceOutlined />}>
-                    <a href="#mixer">Mixer</a> {/*Con <Link> Non funziona */}
-                </Menu.Item>
-                <Menu.Item key="3" icon={<BlockOutlined />}>
-                    <a href="#obs-scenes">OBS Scenes</a> {/*Con <Link> Non funziona */}
-                </Menu.Item>
-            </Menu>
-        </Sider>
-        );
+        if(!this.state.hideSidebar) {
+            return (
+                <Sider collapsible defaultCollapsed>
+                    <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline">
+                        <Menu.Item key="1" icon={<DesktopOutlined />}>
+                            <Link href="/">Dashboard</Link>
+                        </Menu.Item>
+                        <Menu.Item key="2" icon={<CustomerServiceOutlined />}>
+                            <a href="#mixer">Mixer</a> {/*Con <Link> Non funziona */}
+                        </Menu.Item>
+                        <Menu.Item key="3" icon={<BlockOutlined />}>
+                            <a href="#obs-scenes">OBS Scenes</a> {/*Con <Link> Non funziona */}
+                        </Menu.Item>
+                    </Menu>
+                </Sider>
+                );
+        }
+
+        return null;
     }
-};
+}
 
 export default CustomSidebar;
