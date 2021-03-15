@@ -1,10 +1,11 @@
 import { Component, createRef } from 'preact';
 
+import { useDrag, useDrop } from 'react-dnd'
+
 import { Card, Slider, Button, Row, Col, Image, Avatar, Menu, Dropdown, Typography } from 'antd';
-import { SoundOutlined, LockOutlined, UnlockOutlined, AudioOutlined, AudioMutedOutlined, EllipsisOutlined } from '@ant-design/icons';
+import { SoundOutlined, DragOutlined, AudioOutlined, AudioMutedOutlined, EllipsisOutlined } from '@ant-design/icons';
 
 const { Text } = Typography;
-
 
 class VolumeBox extends Component {
     _slider = createRef();
@@ -45,13 +46,13 @@ class VolumeBox extends Component {
         let Icon = null;
         if (this.props.output) {
             if (this.props.icon) {
-                Icon = <Image src={this.props.icon} width={this.props.isVertical ? 32 : 64} preview={false} />;
+                Icon = <Image src={this.props.icon} width={this.props.isVertical ? 32 : 64} preview={false} style={{filter: this.props.isEditable ? "grayscale(80%)":""}} />;
             } else {
                 Icon = <Avatar size={this.props.isVertical ? 32 : 64} icon={<SoundOutlined/>} />;
             }
         } else {
             if (this.state.mute) {
-                Icon = <Avatar size={this.props.isVertical ? 32 : 64} icon={<AudioMutedOutlined height="auto" />} />;
+                Icon = <Avatar size={this.props.isVertical ? 32 : 64} icon={<AudioMutedOutlined />} />;
             } else {
                 Icon = <Avatar size={this.props.isVertical ? 32 : 64} icon={<AudioOutlined />} />;
             }
@@ -73,15 +74,38 @@ class VolumeBox extends Component {
     }
 
     render() {
+        const [{ isDragging }, drag, dragPreview] = useDrag(() => ({
+            type: 'BOX',
+            item: {
+                id: this.props.index
+            },
+            collect: (monitor) => ({
+                item: monitor.getItem(),
+                isDragging: monitor.isDragging()
+            })
+        }))
+
+        const [{ isOver, item }, drop] = useDrop(() => ({
+            accept: "BOX",
+            drop: obj => this.props.dropEvent(obj.id, this.props.index),
+            collect: monitor => ({
+              isOver: !!monitor.isOver(),
+              item: monitor.getDropResult()
+            }),
+        }))
+
         return (
             !this.props.isVertical
+
             ?
 
             // HORIZONTAL
+            <div ref={dragPreview}>
+            <div ref={drop}>
             <Card 
                 title={this.props.title + " " + this.props.deviceName} 
-                headStyle={{textAlign: 'center', backgroundColor:'rgba(24,144,255,0.8)', color:'white'}}
-                style={{borderRight: '1px solid #f2f2f2'}}
+                headStyle={{textAlign: 'center', backgroundColor: isOver ? 'rgba(24,144,255,0.5)' : this.props.isEditable ? "#ccc" : 'rgba(24,144,255,0.8)', color:'white'}}
+                style={{borderRight: '1px solid #f2f2f2', backgroundColor: isDragging ? 'rgba(24,144,255,0.5)' : ""}}
                 bordered={false}
                 extra={
                     <Dropdown overlay={this.getMenu()}>
@@ -94,12 +118,23 @@ class VolumeBox extends Component {
                 </Row>
 
                 <Col>
-                    <Row justify="" hidden={this.props.volumeHide}>
+                    <Row justify="space-between" hidden={this.props.volumeHide}>
+                        {this.props.isEditable &&
+                            <Button 
+                                ref={drag} 
+                                icon={<DragOutlined /> } 
+                                style={{cursor: "move"}} 
+                                type="primary"
+                                shape="circle"
+                            />
+                        }
+
                         <Button 
                             type={!this.state.mute ? "primary" : "default"}
                             shape="circle" 
                             icon={this.getVolumeAudioIcon()} 
                             onClick={this._muteSound.bind(this)}
+                            disabled={this.props.isEditable}
                         />
                         
                         <Slider
@@ -109,28 +144,33 @@ class VolumeBox extends Component {
                             max={100}
                             onChange={this.onVolumeChange?.bind(this)}
                             defaultValue={this.props.volume} 
-                            disabled={this.state.audioLocked}
+                            disabled={this.state.audioLocked || this.props.isEditable}
                             style={{
-                                width: "75%"
+                                width: this.props.isEditable ? "65%" : "80%"
                             }}
                         />
                     </Row>
                 </Col>
             </Card>
+            </div>
+            </div>
+
             :
 
             //VERTICAL
-           <Card 
-            title={
-                <Row justify="center">
-                    {this.getAudioIcon()}
-                </Row>
-            } 
-            headStyle={{textAlign: 'center', backgroundColor:'rgba(24,144,255,0.8)', color:'white'}}
-            style={{borderRight: '1px solid #f2f2f2'}}
-            bodyStyle={{height: "auto", display: "flex", justifyContent:"center"}}
-            bordered={false}
-           >
+            <div ref={dragPreview}>
+            <div ref={drop}>
+            <Card 
+                title={
+                    <Row justify="center">
+                        {this.getAudioIcon()}
+                    </Row>
+                } 
+                headStyle={{textAlign: 'center', backgroundColor: isOver ? 'rgba(24,144,255,0.5)' : this.props.isEditable ? "#ccc" : 'rgba(24,144,255,0.8)', color:'white'}}
+                style={{borderRight: '1px solid #f2f2f2', backgroundColor: isDragging ? 'rgba(24,144,255,0.5)' : ""}}
+                bodyStyle={{height: "auto", display: "flex", justifyContent:"center"}}
+                bordered={false}
+            >
             <Col>
                 <Row style={{margin: "10px 0"}}>
                 <Slider vertical
@@ -139,7 +179,7 @@ class VolumeBox extends Component {
                         max={100} 
                         onChange={this.onVolumeChange.bind(this)}
                         defaultValue={this.props.volume} 
-                        disabled={this.state.audioLocked} 
+                        disabled={this.state.audioLocked || this.props.isEditable} 
                         style={{ height:"200px"}}
                     />
                 </Row>
@@ -149,10 +189,25 @@ class VolumeBox extends Component {
                         shape="circle" 
                         icon={this.getVolumeAudioIcon()} 
                         onClick={this._muteSound.bind(this)}
+                        disabled={this.props.isEditable}
                     />
                 </Row>
+                { this.props.isEditable &&
+                <Row>
+                    <Button 
+                        ref={drag} 
+                        id="dragPoint" 
+                        type="primary"
+                        shape="circle"
+                        icon={<DragOutlined />} 
+                        style={{cursor: isDragging ? "move" : "pointer"}} 
+                    />
+                </Row>
+                }
             </Col>
-           </Card>
+            </Card>
+            </div>
+            </div>
         );
     }
 

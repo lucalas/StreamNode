@@ -1,9 +1,15 @@
 import { Component } from 'preact';
 
-import { Layout, Row, Col, Space, Typography, Divider, Select, Spin, Switch } from 'antd';
+import { Layout, Row, Col, Space, Typography, Divider, Select, Spin, Switch, Button } from 'antd';
+import { EditOutlined } from '@ant-design/icons'
 import VolumeBox from '../../components/volumebox';
 import SceneBox from '../../components/scenebox';
 import WsSocket from '../../services/WSSocketConnector';
+
+//REACT DND
+import { DndProvider, useDrop } from 'react-dnd'
+import { HTML5Backend } from 'react-dnd-html5-backend'
+
 
 const {Title, Text} = Typography;
 const { Option } = Select;
@@ -22,7 +28,9 @@ class Dashboard extends Component {
             ScenesLoaded: false,
             isMobile: false,
             //STATE FOR TOOGLE BUTTON: VERTICAL OR HORIZONTAL CARD
-            isVertical: true
+            isVertical: true,
+            //STATE TO CONTROL EDITABLE MODE
+            isEditable: false
         };
     }
 
@@ -94,7 +102,7 @@ class Dashboard extends Component {
                  valid = volume.device === this.state.deviceFilter;
             }
             return valid;
-        }).map(audio => {
+        }).map( (audio, idx) => {
             //console.log(JSON.stringify(audio));
             return (
                 <Col 
@@ -105,12 +113,16 @@ class Dashboard extends Component {
                     xl={this.state.isVertical ? 2 : 6}
                     xxl={this.state.isVertical ? 2 : 4}
                     hidden={audio.hidden}
-                >
+                    id="volumeBox"
+                >    
                     <VolumeBox onVolumeChange={this.onVolumeChange.bind(this)}
                                 onMutePressed={this.onMutePressed.bind(this)}
                                 title={audio.name} volume={audio.volume} deviceName={audio.device} output={audio.output} defaultMute={audio.mute} icon={audio.icon}
                                 onHideEvent={hide => {audio.hidden = hide}}
                                 isVertical={this.state.isVertical}
+                                isEditable={this.state.isEditable}
+                                dropEvent={this.onDroppedEvent.bind(this)}
+                                index={idx}
                     />
                 </Col>
             )
@@ -138,6 +150,15 @@ class Dashboard extends Component {
         this.setState({deviceFilter: device});
     }
 
+    onDroppedEvent(fromIndex, toIndex){
+        if(fromIndex === toIndex) return;
+        const data = [...this.state.volumes];
+        const item = data.splice(fromIndex, 1)[0];
+        //console.log(fromIndex, toIndex);
+        data.splice(toIndex, 0, item);
+        this.setState({ volumes: data });
+    }
+
     render() {
         //console.log(JSON.stringify(this.state.volumes));
         const GUIVolumes = this.getGUIVolumes();
@@ -151,7 +172,17 @@ class Dashboard extends Component {
                 <Divider type="vertical" />
 
                 <Row justify="center" id="mixer">
-                    <Title level={2} style={{marginBottom:0}}>MIXER</Title>
+                    <Col>
+                    <Row justify="center">
+                        <Title level={2} style={{marginBottom:0}}>MIXER</Title>
+                    </Row>
+                    
+                    {this.state.isEditable && 
+                    <Row justify="center">
+                        <Title level={4} style={{marginBottom: 0}}>(Edit Mode)</Title>
+                    </Row>
+                    }
+                    </Col>
                 </Row>
 
                 { //FILTRI - TODO Quando è mobile togliere la parola filtro oppure trovare un componente switch verticale
@@ -170,13 +201,27 @@ class Dashboard extends Component {
                             {optionSourcesList}
                         </Select>
                     </Col>
-                    <Col offset={this.state.isMobile ? 2: 1} span={2}>
+                    <Col offset={this.state.isMobile ? 2: 1} span={1}>
                         <Switch onChange={ () => this.setState({ isVertical: !this.state.isVertical }) } 
                             checkedChildren="V"
                             unCheckedChildren="H"
                             defaultChecked={this.state.isVertical}
                         />
                     </Col>
+                    { !this.state.isMobile &&
+                    <Col >
+                        <Row align="middle"> 
+                            <Button 
+                                icon={<EditOutlined />} 
+                                type={this.state.isEditable ? "primary" : "default"}
+                                size={32} 
+                                shape="circle" 
+                                onClick={()=>this.setState({isEditable: !this.state.isEditable}) }
+                            />
+                            <p style={{margin: "0 0 0 5px"}}>Edit Mode</p>
+                        </Row>
+                    </Col>
+                    }
                 </Row>
                 }
 
@@ -184,16 +229,22 @@ class Dashboard extends Component {
                     this.state.VolumesLoaded 
                     
                     ?
-
-                    <Row justify={"start"} style={{ margin: this.state.isVertical ? (!this.state.isMobile ? "0 5%" : "0 auto") : "0 auto"}}>
+                    
+                    <DndProvider backend={HTML5Backend}>
+                    <Row 
+                        justify={"start"} 
+                        style={{ margin: this.state.isVertical ? (!this.state.isMobile ? "0 5%" : "0 auto") : "0 auto"}} 
+                    >
                         {GUIVolumes}
                     </Row>
-
+                    </DndProvider>
+    
                     :
 
                     <Row justify="center">
                         <Col><Spin/></Col>
                     </Row>
+                    
                 }
 
                 <Divider type="vertical" />
