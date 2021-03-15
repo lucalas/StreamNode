@@ -41,6 +41,7 @@ namespace StreamNodeEngine
         {
             RemoteControlData WSData = new RemoteControlData();
             WSData.data = message.volumes;
+            WSData.type = RemoteControlDataType.VolumeUpdate;
 
             // TODO Send volumes update to client
             webSocketEngine.SendData(WSData);
