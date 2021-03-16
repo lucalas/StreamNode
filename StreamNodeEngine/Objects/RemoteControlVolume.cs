@@ -2,6 +2,7 @@
 {
     public class RemoteControlVolume
     {
+        public string id { get; set; }
         public string name { get; set; }
         public int volume { get; set; } = -1;
         public bool output { get; set; }

@@ -49,7 +49,10 @@ namespace StreamNodeEngine
         private RemoteControlData StoreDeck(RemoteControlData wsData)
         {
             storeService.store(wsData);
-            return null;
+            RemoteControlData WSDataResponse = new RemoteControlData();
+            WSDataResponse.type = RemoteControlDataType.StoreDeck;
+            WSDataResponse.status = "OK";
+            return WSDataResponse;
         }
 
         private RemoteControlData GetVolumes(RemoteControlData wsData)
@@ -68,6 +71,7 @@ namespace StreamNodeEngine
                     audio.device = appDev.device.FriendlyName;
                     audio.output = true;
                     audio.icon = ProcessUtils.ProcessIcon(appOut.session.GetProcessID);
+                    audio.id = audio.name + "|" + audio.device;
                     volumes.Add(audio);
                 }
             }

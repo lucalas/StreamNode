@@ -164,6 +164,10 @@ class Dashboard extends Component {
         this.setState({ volumes: data });
     }
 
+    saveState() {
+        WsSocket.storeDeck(this.state.volumes);
+    }
+
     render() {
         //console.log(JSON.stringify(this.state.volumes));
         const GUIVolumes = this.getGUIVolumes();
@@ -221,7 +225,7 @@ class Dashboard extends Component {
                                             type={this.state.isEditable ? "primary" : "default"}
                                             size={32}
                                             shape="circle"
-                                            onClick={() => this.setState({ isEditable: !this.state.isEditable })}
+                                            onClick={() => { this.setState({ isEditable: !this.state.isEditable }); this.saveState(); }}
                                         />
                                         <p style={{ margin: "0 0 0 5px" }}>Edit Mode</p>
                                     </Row>
