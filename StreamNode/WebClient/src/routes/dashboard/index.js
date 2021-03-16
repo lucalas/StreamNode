@@ -1,7 +1,7 @@
 import { Component } from 'preact';
 
 import { Layout, Row, Col, Space, Typography, Divider, Select, Spin, Switch, Button } from 'antd';
-import { EditOutlined } from '@ant-design/icons'
+import { EditOutlined, UndoOutlined, CheckOutlined } from '@ant-design/icons'
 import VolumeBox from '../../components/volumebox';
 import SceneBox from '../../components/scenebox';
 import WsSocket from '../../services/WSSocketConnector';
@@ -17,7 +17,8 @@ const { Option } = Select;
 const deviceFilterNone = "none";
 
 class Dashboard extends Component {
-    sceneList = ['Scena 1', 'Scena 2', 'Scena 3'];
+
+    backupDeck = [];
     constructor() {
         super();
         this.state = {
@@ -164,8 +165,19 @@ class Dashboard extends Component {
         this.setState({ volumes: data });
     }
 
-    saveState() {
+    makeEditable() {
+        this.backupDeck = this.state.volumes.slice();
+        this.setState({ isEditable: true });
+    }
+
+    saveDeckState() {
         WsSocket.storeDeck(this.state.volumes);
+        this.setState({ isEditable: false });
+    }
+
+    undoDeckState() {
+        this.setState({ isEditable: false, volumes: this.backupDeck });
+        this.backupDeck = [];
     }
 
     render() {
@@ -219,16 +231,26 @@ class Dashboard extends Component {
                             </Col>
                             {!this.state.isMobile &&
                                 <Col >
+                                {
+                                    !this.state.isEditable 
+                                    ?
                                     <Row align="middle">
                                         <Button
                                             icon={<EditOutlined />}
                                             type={this.state.isEditable ? "primary" : "default"}
                                             size={32}
                                             shape="circle"
-                                            onClick={() => { this.setState({ isEditable: !this.state.isEditable }); this.saveState(); }}
+                                            onClick={this.makeEditable.bind(this)}
                                         />
                                         <p style={{ margin: "0 0 0 5px" }}>Edit Mode</p>
                                     </Row>
+                                    :
+                                    <Row align="middle">
+                                        <Button icon={<CheckOutlined />} size={32} shape="circle" type="primary" onClick={this.saveDeckState.bind(this)}/>
+                                        <Button icon={<UndoOutlined/>} size={32} shape="circle" type="primary" danger  onClick={this.undoDeckState.bind(this)}/>
+                                        <p style={{ margin: "0 0 0 5px" }}>Edit Mode</p>
+                                    </Row>
+                                }
                                 </Col>
                             }
                         </Row>
