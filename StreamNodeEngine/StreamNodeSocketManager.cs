@@ -48,7 +48,7 @@ namespace StreamNodeEngine
 
         private RemoteControlData StoreDeck(RemoteControlData wsData)
         {
-            storeService.store(wsData);
+            storeService.store(wsData.data);
             RemoteControlData WSDataResponse = new RemoteControlData();
             WSDataResponse.type = RemoteControlDataType.StoreDeck;
             WSDataResponse.status = "OK";
@@ -58,7 +58,7 @@ namespace StreamNodeEngine
         private RemoteControlData GetVolumes(RemoteControlData wsData)
         {
             RemoteControlVolumes volumes = new RemoteControlVolumes();
-
+            VolumeOrderData[] orderVolumes = storeService.read<VolumeOrderData[]>();
             foreach (MMDevice dev in audioService.GetListOfOutputDevices())
             {
                 foreach (ApplicationController appOut in audioService.GetApplicationsMixer(dev))
@@ -72,6 +72,7 @@ namespace StreamNodeEngine
                     audio.output = true;
                     audio.icon = ProcessUtils.ProcessIcon(appOut.session.GetProcessID);
                     audio.id = audio.name + "|" + audio.device;
+                    audio.order = GetVolumeOrder(orderVolumes, audio.device + audio.name);
                     volumes.Add(audio);
                 }
             }
@@ -85,12 +86,27 @@ namespace StreamNodeEngine
                 audio.volume = (int)(dev.AudioEndpointVolume.MasterVolumeLevelScalar * 100);
                 audio.device = dev.FriendlyName;
                 audio.output = false;
+                audio.order = GetVolumeOrder(orderVolumes, audio.device + audio.name);
                 volumes.Add(audio);
             }
 
             wsData.data = volumes;
 
             return wsData;
+        }
+
+        private int GetVolumeOrder(VolumeOrderData[] data, string id) {
+            int order = -1;
+
+            if (data != null)
+            {
+                foreach (VolumeOrderData volume in data)
+                {
+                    if (volume.id.Equals(id)) order = volume.order;
+                }
+            }
+
+            return order;
         }
 
         private RemoteControlData ChangeVolume(RemoteControlData wsData)

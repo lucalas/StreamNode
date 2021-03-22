@@ -12,6 +12,16 @@ namespace StreamNodeEngine.Engine.Services
 
         public void store(object data) => System.IO.File.WriteAllText(tempDir + storeFile, JsonConvert.SerializeObject(data));
 
-        public T read<T>() => JsonConvert.DeserializeObject<T>(System.IO.File.ReadAllText(tempDir + storeFile));
+        public T read<T>()
+        {
+            try
+            {
+                return JsonConvert.DeserializeObject<T>(System.IO.File.ReadAllText(tempDir + storeFile));
+            }catch (Exception ex)
+            {
+                // TODO report exception
+                return default;
+            }
+        }
     }
 }

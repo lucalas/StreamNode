@@ -102,7 +102,9 @@ class Dashboard extends Component {
             return <Row justify="center"> <Text>NO VOLUMES FOUND</Text> </Row>
         }
 
-        return this.state.volumes.filter(volume => {
+        return this.state.volumes
+        .sort((a, b) => a.order - b.order)
+        .filter(volume => {
             let valid = true;
             if (this.state.deviceFilter !== deviceFilterNone && volume.output) {
                 valid = volume.device === this.state.deviceFilter;
@@ -162,6 +164,7 @@ class Dashboard extends Component {
         const item = data.splice(fromIndex, 1)[0];
         //console.log(fromIndex, toIndex);
         data.splice(toIndex, 0, item);
+        data.forEach((vl, index) => vl.order = index);
         this.setState({ volumes: data });
     }
 
@@ -171,7 +174,8 @@ class Dashboard extends Component {
     }
 
     saveDeckState() {
-        WsSocket.storeDeck(this.state.volumes);
+        WsSocket.storeDeck(this.state.volumes
+            .map((vol, index) => {return{id: vol.device + vol.name, order: vol.order != -1 ? vol.order : index}}));
         this.setState({ isEditable: false });
     }
 

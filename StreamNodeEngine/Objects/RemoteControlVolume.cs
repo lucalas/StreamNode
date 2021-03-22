@@ -9,5 +9,7 @@
         public bool mute { get; set; }
         public string icon { get; set; }
         public string device { get; set; }
+        public int order { get; set; } = -1;
+
     }
 }
