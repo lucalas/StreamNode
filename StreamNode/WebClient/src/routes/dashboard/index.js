@@ -1,7 +1,7 @@
 import { Component } from 'preact';
 
 import { Layout, Row, Col, Space, Typography, Divider, Select, Spin, Switch, Button } from 'antd';
-import { EditOutlined } from '@ant-design/icons'
+import { EditOutlined, UndoOutlined, CheckOutlined } from '@ant-design/icons'
 import VolumeBox from '../../components/volumebox';
 import SceneBox from '../../components/scenebox';
 import WsSocket from '../../services/WSSocketConnector';
@@ -17,7 +17,8 @@ const { Option } = Select;
 const deviceFilterNone = "none";
 
 class Dashboard extends Component {
-    sceneList = ['Scena 1', 'Scena 2', 'Scena 3'];
+
+    backupDeck = [];
     constructor() {
         super();
         this.state = {
@@ -101,7 +102,9 @@ class Dashboard extends Component {
             return <Row justify="center"> <Text>NO VOLUMES FOUND</Text> </Row>
         }
 
-        return this.state.volumes.filter(volume => {
+        return this.state.volumes
+        .sort((a, b) => a.order - b.order)
+        .filter(volume => {
             let valid = true;
             if (this.state.deviceFilter !== deviceFilterNone && volume.output) {
                 valid = volume.device === this.state.deviceFilter;
@@ -161,7 +164,24 @@ class Dashboard extends Component {
         const item = data.splice(fromIndex, 1)[0];
         //console.log(fromIndex, toIndex);
         data.splice(toIndex, 0, item);
+        data.forEach((vl, index) => vl.order = index);
         this.setState({ volumes: data });
+    }
+
+    makeEditable() {
+        this.backupDeck = this.state.volumes.slice();
+        this.setState({ isEditable: true });
+    }
+
+    saveDeckState() {
+        WsSocket.storeDeck(this.state.volumes
+            .map((vol, index) => {return{id: vol.device + vol.name, order: vol.order != -1 ? vol.order : index}}));
+        this.setState({ isEditable: false });
+    }
+
+    undoDeckState() {
+        this.setState({ isEditable: false, volumes: this.backupDeck });
+        this.backupDeck = [];
     }
 
     render() {
@@ -215,16 +235,26 @@ class Dashboard extends Component {
                             </Col>
                             {!this.state.isMobile &&
                                 <Col >
+                                {
+                                    !this.state.isEditable 
+                                    ?
                                     <Row align="middle">
                                         <Button
                                             icon={<EditOutlined />}
                                             type={this.state.isEditable ? "primary" : "default"}
                                             size={32}
                                             shape="circle"
-                                            onClick={() => this.setState({ isEditable: !this.state.isEditable })}
+                                            onClick={this.makeEditable.bind(this)}
                                         />
                                         <p style={{ margin: "0 0 0 5px" }}>Edit Mode</p>
                                     </Row>
+                                    :
+                                    <Row align="middle">
+                                        <Button icon={<CheckOutlined />} size={32} shape="circle" type="primary" onClick={this.saveDeckState.bind(this)}/>
+                                        <Button icon={<UndoOutlined/>} size={32} shape="circle" type="primary" danger  onClick={this.undoDeckState.bind(this)}/>
+                                        <p style={{ margin: "0 0 0 5px" }}>Edit Mode</p>
+                                    </Row>
+                                }
                                 </Col>
                             }
                         </Row>

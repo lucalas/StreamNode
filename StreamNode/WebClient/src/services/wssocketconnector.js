@@ -4,7 +4,8 @@ const dataType = {
     obs: "obs",
     changeVolume: "change-volume",
     changeObs: "change-obs",
-    volumeUpdate: "volume-update"
+    volumeUpdate: "volume-update",
+    storeDeck: "store-deck"
 }
 
 class WSSocketConnector {
@@ -69,9 +70,13 @@ class WSSocketConnector {
             this.onVolumeUpdate.forEach(ele => { ele(data)});
         }
     }
-
+    
     sendData(message) {
         this.connection.send(JSON.stringify(message));
+    }
+
+    storeDeck(data2Store) {
+        this._getMessageAckData(dataType.storeDeck, data2Store, []);
     }
 
     changeVolume(name, deviceName, volume, output, mute) {
@@ -95,6 +100,10 @@ class WSSocketConnector {
     }
 
     _getData(type, callbacks) {
+        return this._getMessageAckData(type, null, callbacks);
+    }
+
+    _getMessageAckData(type, data, callbacks) {
         return new Promise((resolve, reject) => {
             let id = type + new Date().getTime();
 
@@ -103,7 +112,9 @@ class WSSocketConnector {
                 callbacks = callbacks.filter(ele => { ele.id !== id});
                 resolve(data);
             }});
-            this.sendData(this.createRequest(type));
+            let req = this.createRequest(type);
+            req.data = data;
+            this.sendData(req);
         });
     }
 

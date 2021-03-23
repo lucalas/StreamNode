@@ -4,11 +4,7 @@ using OBSWebsocketDotNet.Types;
 using StreamNodeEngine.Engine;
 using StreamNodeEngine.Objects;
 using StreamNodeEngine.Utils;
-using StreamNodeSocketManager.Engine.Services;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Text;
+using StreamNodeEngine.Engine.Services;
 
 namespace StreamNodeEngine
 {
@@ -17,6 +13,7 @@ namespace StreamNodeEngine
 
         public OBSService obsService { get; } = new OBSService();
         public AudioService audioService { get; } = new AudioService();
+        public StoreService storeService { get; } = new StoreService();
         RemoteControlService webSocketEngine = new RemoteControlService();
 
         public StreamNodeSocketManager()
@@ -34,6 +31,7 @@ namespace StreamNodeEngine
             webSocketEngine.AddRoute(RemoteControlDataType.ChangeVolume, ChangeVolume);
             webSocketEngine.AddRoute(RemoteControlDataType.Obs, GetObs);
             webSocketEngine.AddRoute(RemoteControlDataType.ChangeObs, ChangeObs);
+            webSocketEngine.AddRoute(RemoteControlDataType.StoreDeck, StoreDeck);
 
         }
 
@@ -47,10 +45,20 @@ namespace StreamNodeEngine
             webSocketEngine.SendData(WSData);
         }
 
+
+        private RemoteControlData StoreDeck(RemoteControlData wsData)
+        {
+            storeService.store(wsData.data);
+            RemoteControlData WSDataResponse = new RemoteControlData();
+            WSDataResponse.type = RemoteControlDataType.StoreDeck;
+            WSDataResponse.status = "OK";
+            return WSDataResponse;
+        }
+
         private RemoteControlData GetVolumes(RemoteControlData wsData)
         {
             RemoteControlVolumes volumes = new RemoteControlVolumes();
-
+            VolumeOrderData[] orderVolumes = storeService.read<VolumeOrderData[]>();
             foreach (MMDevice dev in audioService.GetListOfOutputDevices())
             {
                 foreach (ApplicationController appOut in audioService.GetApplicationsMixer(dev))
@@ -63,6 +71,8 @@ namespace StreamNodeEngine
                     audio.device = appDev.device.FriendlyName;
                     audio.output = true;
                     audio.icon = ProcessUtils.ProcessIcon(appOut.session.GetProcessID);
+                    audio.id = audio.name + "|" + audio.device;
+                    audio.order = GetVolumeOrder(orderVolumes, audio.device + audio.name);
                     volumes.Add(audio);
                 }
             }
@@ -76,12 +86,27 @@ namespace StreamNodeEngine
                 audio.volume = (int)(dev.AudioEndpointVolume.MasterVolumeLevelScalar * 100);
                 audio.device = dev.FriendlyName;
                 audio.output = false;
+                audio.order = GetVolumeOrder(orderVolumes, audio.device + audio.name);
                 volumes.Add(audio);
             }
 
             wsData.data = volumes;
 
             return wsData;
+        }
+
+        private int GetVolumeOrder(VolumeOrderData[] data, string id) {
+            int order = -1;
+
+            if (data != null)
+            {
+                foreach (VolumeOrderData volume in data)
+                {
+                    if (volume.id.Equals(id)) order = volume.order;
+                }
+            }
+
+            return order;
         }
 
         private RemoteControlData ChangeVolume(RemoteControlData wsData)

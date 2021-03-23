@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace StreamNodeSocketManager.Engine.Services
+namespace StreamNodeEngine.Engine.Services
 {
     public class OBSService
     {

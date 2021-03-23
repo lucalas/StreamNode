@@ -31,18 +31,24 @@ namespace StreamNodeEngine.Engine
         }
 
         public void SendMessage(string data) {
-            _socket.Send(data);
+            if (_socket != null)
+            {
+                _socket.Send(data);
+            }
         }
 
         private void HandlerMessage(string message)
         {
-            RemoteControlOnMessageArgs args = new RemoteControlOnMessageArgs();
-            args.message = message;
-            string response = OnMessage(this, args);
-
-            if (response != null)
+            if (_socket != null)
             {
-                _socket.Send(response);
+                RemoteControlOnMessageArgs args = new RemoteControlOnMessageArgs();
+                args.message = message;
+                string response = OnMessage(this, args);
+
+                if (response != null)
+                {
+                    _socket.Send(response);
+                }
             }
         }
     }
