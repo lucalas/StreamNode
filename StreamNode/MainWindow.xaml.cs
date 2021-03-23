@@ -1,11 +1,14 @@
-﻿using NAudio.CoreAudioApi;
+﻿
+using EmbedIO;
+using EmbedIO.Actions;
+using EmbedIO.Files;
 using OBSWebsocketDotNet.Types;
 using RemoteControl.Controllers;
-using StreamNodeEngine.Objects;
+using StreamNode.Services;
 using System;
-using System.Collections.Generic;
 using System.Windows;
 using static RemoteControl.Controllers.SceneController;
+
 
 namespace RemoteControl
 {
@@ -19,12 +22,37 @@ namespace RemoteControl
 
         StreamNodeEngine.StreamNodeSocketManager engine = new StreamNodeEngine.StreamNodeSocketManager();
 
+        HttpServerService server;
         public MainWindow()
         {
             _singleton = this;
             InitializeComponent();
+            StartServer();
             // getOutputMixers();
             // getInputMixers();
+        }
+
+        private void StartServer()
+        {
+            server = new HttpServerService(8000);
+            server.Start();
+        }
+
+        private static WebServer CreateWebServer(string url)
+        {
+            var server = new WebServer(o => o
+                    .WithUrlPrefix(url)
+                    .WithMode(HttpListenerMode.EmbedIO))
+                // First, we will configure our web server by adding Modules.
+                .WithLocalSessionManager()
+                .WithStaticFolder("/", "F:/Progetti/StreamNode/StreamNode/WebClient/build/", true, m => m
+                    .WithContentCaching(true))
+                .WithModule(new ActionModule("/", HttpVerbs.Any, ctx => ctx.SendDataAsync(new { Message = "Error" }))); ;
+
+            // Listen for state changes.
+            //server.StateChanged += (s, e) => $"WebServer New State - {e.NewState}";
+
+            return server;
         }
 
         /*public void getOutputMixers()
