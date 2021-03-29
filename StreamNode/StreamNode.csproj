@@ -7,10 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="build.zip" />
     <None Remove="Resources\Icons\microphone-off.svg" />
     <None Remove="Resources\Icons\microphone.svg" />
     <None Remove="Resources\Icons\volume-high.svg" />
     <None Remove="Resources\Icons\volume-off.svg" />
+    <None Remove="WebClient\wwwroot\WebClient.zip" />
   </ItemGroup>
 
   <ItemGroup>
@@ -18,6 +20,7 @@
     <EmbeddedResource Include="Resources\Icons\microphone.svg" />
     <EmbeddedResource Include="Resources\Icons\volume-high.svg" />
     <EmbeddedResource Include="Resources\Icons\volume-off.svg" />
+    <EmbeddedResource Include="WebClient\wwwroot\WebClient.zip" />
   </ItemGroup>
 
   <ItemGroup>
@@ -26,11 +29,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="WebClient\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\StreamNodeEngine\StreamNodeEngine.csproj" />
   </ItemGroup>
+
+  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+    <Exec Command="mkdir $(ProjectDir)WebClient\wwwroot&#xD;&#xA;cd WebClient&#xD;&#xA;npm install&#xD;&#xA;npm run np-build&#xD;&#xA;cd ..&#xD;&#xA;Compress-Archive $(ProjectDir)WebClient\build\*.* $(ProjectDir)WebClient.zip -Force" />
+  </Target>
 
 </Project>

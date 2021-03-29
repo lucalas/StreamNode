@@ -1,7 +1,7 @@
 ﻿
 namespace StreamNodeEngine.Objects
 {
-    class RemoteControlData
+    public class RemoteControlData
     {
         public string type { get; set; }
         public object data { get; set; }

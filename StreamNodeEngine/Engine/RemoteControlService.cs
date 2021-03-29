@@ -6,7 +6,7 @@ using StreamNodeEngine.Objects;
 
 namespace StreamNodeEngine.Engine
 {
-    class RemoteControlService
+    public class RemoteControlService
     {
         private IRemoteControlEngine engine;
         private Dictionary<string, Func<RemoteControlData, RemoteControlData>> routes = new Dictionary<string, Func<RemoteControlData, RemoteControlData>>();

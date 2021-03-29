@@ -14,7 +14,7 @@ namespace StreamNodeEngine
         public OBSService obsService { get; } = new OBSService();
         public AudioService audioService { get; } = new AudioService();
         public StoreService storeService { get; } = new StoreService();
-        RemoteControlService webSocketEngine = new RemoteControlService();
+        public RemoteControlService webSocketEngine { get; } = new RemoteControlService();
 
         public StreamNodeSocketManager()
         {

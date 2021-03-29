@@ -3,6 +3,8 @@ using EmbedIO.Actions;
 using EmbedIO.Files;
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Reflection;
 using System.Text;
 
 namespace StreamNode.Services
@@ -24,8 +26,11 @@ namespace StreamNode.Services
                     .WithUrlPrefix($"http://192.168.1.198:{port}")
                     .WithMode(HttpListenerMode.EmbedIO))
                 .WithLocalSessionManager()
-                .WithStaticFolder("/", "F:/Progetti/StreamNode/StreamNode/WebClient/build/", true, m => m
+                .WithZipFileStream("/", Assembly.GetExecutingAssembly().GetManifestResourceStream("StreamNode.build.zip"), m => m
                     .WithContentCaching(true))
+                //.WithZipFile("/", "F:/Progetti/StreamNode/StreamNode/build.zip")
+                //.WithStaticFolder("/", "F:/Progetti/StreamNode/StreamNode/WebClient/build/", true, m => m
+                //.WithContentCaching(true))
                 .WithModule(new ActionModule("/", HttpVerbs.Any, ctx => ctx.SendDataAsync(new { Message = "Error" })));
             server.RunAsync();
         }
