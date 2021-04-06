@@ -1,5 +1,4 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
-
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
@@ -20,7 +19,7 @@
     <EmbeddedResource Include="Resources\Icons\microphone.svg" />
     <EmbeddedResource Include="Resources\Icons\volume-high.svg" />
     <EmbeddedResource Include="Resources\Icons\volume-off.svg" />
-    <EmbeddedResource Include="WebClient\wwwroot\WebClient.zip" />
+    <EmbeddedResource Include="wwwroot\WebClient.zip" />
   </ItemGroup>
 
   <ItemGroup>
@@ -33,7 +32,8 @@
   </ItemGroup>
 
   <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
-    <Exec Command="mkdir $(ProjectDir)WebClient\wwwroot&#xD;&#xA;cd WebClient&#xD;&#xA;npm install&#xD;&#xA;npm run np-build&#xD;&#xA;cd ..&#xD;&#xA;Compress-Archive $(ProjectDir)WebClient\build\*.* $(ProjectDir)WebClient.zip -Force" />
+    <Exec Command="rmdir  /S /Q $(ProjectDir)wwwroot&#xD;&#xA;mkdir $(ProjectDir)wwwroot&#xD;&#xA;cd WebClient&#xD;&#xA;npm install&#xD;&#xA;npm run np-build" />
+    <ZipDirectory SourceDirectory="$(ProjectDir)WebClient\build" DestinationFile="$(ProjectDir)wwwroot\WebClient.zip" />
   </Target>
 
 </Project>
