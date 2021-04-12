@@ -3,15 +3,20 @@
     <OutputType>WinExe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <UseWPF>true</UseWPF>
+    <Authors>StreamNode</Authors>
+    <RepositoryUrl>https://github.com/lucalas/StreamNode</RepositoryUrl>
+    <PublishSingleFile>true</PublishSingleFile>
+    <SelfContained>true</SelfContained>
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+    <DebugType>None</DebugType>
+    <DebugSymbols>false</DebugSymbols>
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="build.zip" />
     <None Remove="Resources\Icons\microphone-off.svg" />
     <None Remove="Resources\Icons\microphone.svg" />
     <None Remove="Resources\Icons\volume-high.svg" />
     <None Remove="Resources\Icons\volume-off.svg" />
-    <None Remove="WebClient\wwwroot\WebClient.zip" />
   </ItemGroup>
 
   <ItemGroup>
