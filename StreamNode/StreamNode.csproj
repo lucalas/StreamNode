@@ -3,13 +3,15 @@
     <OutputType>WinExe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <UseWPF>true</UseWPF>
-    <Authors>StreamNode</Authors>
+    <Authors>Luca Taddeo</Authors>
     <RepositoryUrl>https://github.com/lucalas/StreamNode</RepositoryUrl>
     <PublishSingleFile>true</PublishSingleFile>
     <SelfContained>true</SelfContained>
     <RuntimeIdentifier>win-x64</RuntimeIdentifier>
     <DebugType>None</DebugType>
     <DebugSymbols>false</DebugSymbols>
+    <Version>0.0.1</Version>
+    <Company />
   </PropertyGroup>
 
   <ItemGroup>
