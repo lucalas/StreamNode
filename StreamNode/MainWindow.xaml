@@ -1,57 +1,23 @@
-﻿<Window x:Class="RemoteControl.MainWindow"
+﻿<Window x:Class="StreamNode.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:RemoteControl"
+        xmlns:local="clr-namespace:StreamNode"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
         <TabControl>
-            <TabItem Header="Output">
-                <ListView Name="MixerOutput" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
-                    <ListView.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <WrapPanel Orientation="Horizontal" />
-                        </ItemsPanelTemplate>
-                    </ListView.ItemsPanel>
-                </ListView>
-            </TabItem>
-            <TabItem Header="Input">
-                <ListView Name="MixerInput" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
-                    <ListView.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <WrapPanel Orientation="Horizontal" />
-                        </ItemsPanelTemplate>
-                    </ListView.ItemsPanel>
-                </ListView>
-            </TabItem>
             <TabItem Header="OBS">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="1*"/>
-                        <ColumnDefinition Width="1*"/>
-                        <ColumnDefinition Width="1*"/>
-                        <ColumnDefinition Width="1*"/>
-                        <ColumnDefinition Width="1*"/>
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="1*"/>
-                        <RowDefinition Height="9*"/>
                     </Grid.RowDefinitions>
-                    <Label Grid.Column="0" Content="ip:port:"/>
-                    <TextBox  Grid.Column="1" Name="ipport"/>
-                    <Label Grid.Column="2" Content="password:"/>
-                    <TextBox Grid.Column="3" Name="pwd"/>
-                    <Button Grid.Column="4" Name="Connect" Content="Connect" Click="Connect_Click"/>
-
-                    <ListView Grid.Row="2" Grid.ColumnSpan="5" Name="OBSScenes" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
-                        <ListView.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <WrapPanel Orientation="Horizontal" />
-                            </ItemsPanelTemplate>
-                        </ListView.ItemsPanel>
-                    </ListView>
+                    <Image HorizontalAlignment="Left" Height="100" Margin="320,311,0,0" VerticalAlignment="Top" Width="100" OpacityMask="Black" Source="/Resources/Icons/server-on.png"/>
+                    
                 </Grid>
             </TabItem>
             <TabItem Header="Settings"></TabItem>

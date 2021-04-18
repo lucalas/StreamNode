@@ -12,7 +12,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace RemoteControl.Controllers
+namespace StreamNode.Controllers
 {
     /// <summary>
     /// Logica di interazione per SceneController.xaml

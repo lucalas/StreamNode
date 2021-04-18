@@ -12,7 +12,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace RemoteControl
+namespace StreamNode
 {
     /// <summary>
     /// Logica di interazione per ApplicationMixer.xaml

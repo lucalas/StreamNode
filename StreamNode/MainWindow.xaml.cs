@@ -3,14 +3,14 @@ using EmbedIO;
 using EmbedIO.Actions;
 using EmbedIO.Files;
 using OBSWebsocketDotNet.Types;
-using RemoteControl.Controllers;
+using StreamNode.Controllers;
 using StreamNode.Services;
 using System;
 using System.Windows;
-using static RemoteControl.Controllers.SceneController;
+using static StreamNode.Controllers.SceneController;
 
 
-namespace RemoteControl
+namespace StreamNode
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -92,13 +92,7 @@ namespace RemoteControl
             {
                 SceneController sc = new SceneController(scene);
                 sc.onButtonClick += OnButtonClickEventHandler;
-                OBSScenes.Items.Add(sc);
             }
-        }
-
-        private void Connect_Click(object sender, RoutedEventArgs e)
-        {
-            engine.obsService.Connect(ipport.Text, pwd.Text);
         }
 
         static void e_OBSConnected(object sender, EventArgs e)
