@@ -13,14 +13,11 @@ StreamNode is an usefull tool created to simplify the control of OBS and audio m
 You can control a pc for streaming from a tablet for example.
 
 ## Requirements
-___
 Requirements
 
 ## Technologies
-___
 Technologies
 ___
-<br />
 
 ### TODO:
   - [ ] TODO
