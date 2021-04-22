@@ -69,7 +69,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 <table>
   <tr>
     <td align="center">
-        <a href="http://tomma5o.com">
+        <a href="https://github.com/saliougaye">
             <img src="https://avatars.githubusercontent.com/u/72109418?v=4" width="100px;" alt=""/>
             <br />
             <sub>
@@ -94,7 +94,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
         </a>  
     </td>
     <td align="center">
-        <a href="">
+        <a href="https://github.com/peppepol">
             <img src="https://avatars.githubusercontent.com/u/6475246?v=4" width="100px;" alt=""/>
             <br />
             <sub>
