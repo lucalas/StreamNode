@@ -29,7 +29,6 @@ ___
 
 
 ## 💡 Idea by
-___
 
 <!-- markdownlint-disable -->
 <table>
@@ -65,8 +64,6 @@ ___
 </table>
 
 ## ✨ Contributors
-___  
-
 Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
 <!-- markdownlint-disable -->
 <table>
