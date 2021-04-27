@@ -19,8 +19,15 @@ namespace StreamNodeEngine
         public StreamNodeSocketManager()
         {
             initRoutes();
+        }
+
+        public void Connect() {
             webSocketEngine.Connect();
             obsService.Connect("ws://localhost:4444", "");
+        }
+
+        public void Disconnect() {
+            webSocketEngine.Disconnect();
         }
 
         private void initRoutes()

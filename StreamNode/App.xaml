@@ -1,8 +1,9 @@
-﻿<Application x:Class="RemoteControl.App"
+﻿<Application x:Class="StreamNode.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:RemoteControl"
-             StartupUri="MainWindow.xaml">
+             xmlns:local="clr-namespace:StreamNode"
+             StartupUri="MainWindow.xaml"
+             Exit="StopApp">
     <Application.Resources>
          
     </Application.Resources>
