@@ -82,7 +82,7 @@
     </Window.Resources>
     <Grid>
         <TabControl>
-            <TabItem Header="OBS">
+            <TabItem Header="Server">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="1*"/>

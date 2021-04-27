@@ -33,7 +33,7 @@ namespace StreamNode
 
         private void SaveSettings(object sender, RoutedEventArgs e)
         {
-            // TODO
+            engine.ConfigOBSWebSocket(context.IpValue, context.PortValue, context.PwdValue);
         }
         private void StartServer(object sender, RoutedEventArgs e)
         {

@@ -8,6 +8,10 @@ namespace StreamNodeEngine.Engine.Services
 {
     public class OBSService
     {
+        private static string IP = "127.0.0.1";
+        private static int PORT = 4444;
+        private static string PASSWORD = "";
+
         private OBSWebsocket _obs;
         private String _url;
         private String _password;
@@ -25,14 +29,19 @@ namespace StreamNodeEngine.Engine.Services
         public OBSService()
         {
             _obs = new OBSWebsocket();
+            // Default configuration
+            Configure(IP, PORT, PASSWORD);
         }
 
-        public void Connect(String url, String password)
+        public void Configure(string ip, int port, string pwd) {
+            _url = "ws://" + ip + ":" + port;
+            _password = pwd;
+        }
+
+        public void Connect()
         {
             try
             {
-                _url = url;
-                _password = password;
                 _obs.Connect(_url, _password);
                 // AuthFailureException & ErrorResponseException possible exceptions
             } catch (Exception ex) {
