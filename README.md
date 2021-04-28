@@ -34,9 +34,10 @@ Requirements
   - [ ] Log Library
   - [ ] Documentaion
 
-  
-<br />
-
+## ✔️ Preview 
+<p align="center">
+  <img  src="media/preview.png">
+</p>
 
 ## 💡 Idea by
 
