@@ -12,17 +12,22 @@ StreamNode is an usefull tool created to simplify the control of OBS and audio m
 
 You can control a pc for streaming from a tablet for example.
 
-## Requirements
-Requirements
 
 ## Technologies
-Technologies
+Built with  
+```
+- Backend: C# with NAudio and OBSWebsocketDotNet Library
+- Frontend: Preact JS and Ant Design
+```
+
+## Requirements
+Requirements
 ___
 
 ### TODO:
-  - [ ] TODO
-  - [ ] TODO
-  - [ ] TODO
+  - [ ] UX WPF Application for Start and change settings of the StreamDeck
+  - [ ] Log Library
+  - [ ] Documentaion
 
   
 <br />
@@ -42,22 +47,22 @@ ___
             </sub>
         </a>
         <br />
-        <a href="" title="Ideas, Planning, & Feedback">
+        <a href="#" title="Ideas, Planning, & Feedback">
             🤔
         </a>
-        <a href="" title="Code">
+        <a href="#" title="Code">
             💻
         </a>
-        <a href="" title="Reviewed Pull Requests">
+        <a href="#" title="Reviewed Pull Requests">
             👀
         </a> 
-        <a href="" title="Documentation">
+        <a href="#" title="Documentation">
             📖
         </a>
-        <a href="" title="Bug Reports">
+        <a href="#" title="Bug Reports">
             🐛
         </a> 
-        <a href="" title="Maintenance">
+        <a href="#" title="Maintenance">
             🚧
         </a>
     </td>
@@ -77,19 +82,19 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
             </sub>
         </a>
         <br />
-        <a href="" title="Code">
+        <a href="#" title="Code">
             💻
         </a>
-        <a href="" title="User Testing">
+        <a href="#" title="User Testing">
             📓
         </a> 
-        <a href="" title="Documentation">
+        <a href="#" title="Documentation">
             📖
         </a>
-        <a href="" title="Bug Reports">
+        <a href="#" title="Bug Reports">
             🐛
         </a>
-        <a href="#design-tomma5o" title="Design">
+        <a href="#" title="Design">
             🎨
         </a>  
     </td>
@@ -102,16 +107,16 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
             </sub>
         </a>
         <br />
-        <a href="" title="Design">
+        <a href="#" title="Design">
             🎨
         </a>
-        <a href="" title="Code">
+        <a href="#" title="Code">
             💻
         </a>
-        <a href="" title="User Testing">
+        <a href="#" title="User Testing">
             📓
         </a>
-        <a href="" title="Bug Reports">
+        <a href="#" title="Bug Reports">
             🐛
         </a>
     </td>
