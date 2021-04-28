@@ -1,28 +1,33 @@
+<!-- markdownlint-disable -->
+<p align="center">
+  <img width="300" src="media/logo.png">
+</p>
+
 # StreamNode
 ![Author](https://img.shields.io/badge/Author-Luca%20Taddeo-blue)
 ![Backend](https://img.shields.io/badge/Backend-C%23-orange)
 ![Frontend](https://img.shields.io/badge/Frontend-JS-orange)
 [![Open Source? Yes](https://badgen.net/badge/Open%20Source%20%3F/Yes/blue?icon=github)](https://github.com/Naereen/badges/)  
 
-## Description
-___
-A work in progress tool used to remote control Windows Audio source and OBS.  
+## 📖 Description
 
 StreamNode is an usefull tool created to simplify the control of OBS and audio mixers, all in one web application available for smartphone, tablet and pc.
 
-You can control a pc for streaming from a tablet for example.
+A work in progress tool used to remote control Windows Audio source and OBS.  
 
 
-## Technologies
+## 💊 Features
+Features
+
+## 💻 Technologies
 Built with  
 ```
 - Backend: C# with NAudio and OBSWebsocketDotNet Library
 - Frontend: Preact JS and Ant Design
 ```
 
-## Requirements
+## ❗ Requirements
 Requirements
-___
 
 ### TODO:
   - [ ] UX WPF Application for Start and change settings of the StreamDeck
