@@ -2,8 +2,10 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:dragablz="clr-namespace:Dragablz;assembly=Dragablz"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" TextElement.Foreground="{DynamicResource MaterialDesignBody}" TextElement.FontWeight="Regular" TextElement.FontSize="13" TextOptions.TextFormattingMode="Ideal" TextOptions.TextRenderingMode="Auto" Background="{DynamicResource MaterialDesignPaper}" FontFamily="{DynamicResource MaterialDesignFont}"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:local="clr-namespace:StreamNode" mc:Ignorable="d" Title="MainWindow" ResizeMode="CanMinimize" Width="400" Height="250">
+    xmlns:local="clr-namespace:StreamNode" mc:Ignorable="d" Title="MainWindow" ResizeMode="CanMinimize" Width="700" Height="400">
 
     <Window.Resources>
         <Style x:Key="CheckBoxStyle1" TargetType="{x:Type CheckBox}">
@@ -81,7 +83,11 @@
         </Style>
     </Window.Resources>
     <Grid>
-        <TabControl>
+
+        <dragablz:TabablzControl>
+            <dragablz:TabablzControl.InterTabController>
+                <dragablz:InterTabController/>
+            </dragablz:TabablzControl.InterTabController>
             <TabItem Header="Server">
                 <Grid>
                     <Grid.ColumnDefinitions>
@@ -91,39 +97,53 @@
                         <RowDefinition Height="1*"/>
                     </Grid.RowDefinitions>
 
-                    <CheckBox IsChecked="True" Checked="StartServer" Unchecked="StopServer" HorizontalAlignment="Center" Style="{DynamicResource CheckBoxStyle1}" VerticalAlignment="Center" Content="Server"/>
+                    <materialDesign:Card Padding="32" Margin="16">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="1*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="1*"/>
+                                <RowDefinition Height="2*"/>
+                            </Grid.RowDefinitions>
+                            <TextBlock Grid.ColumnSpan="3" Style="{StaticResource MaterialDesignHeadline5TextBlock}" Text="Server Status" HorizontalAlignment="Center"/>
+                            <Viewbox Grid.Column="1" Grid.Row="1" Margin="60">
+                                <ToggleButton Checked="StartServer" Unchecked="StopServer" Style="{StaticResource MaterialDesignSwitchDarkToggleButton}" ToolTip="MaterialDesignSwitchDarkToggleButton" IsChecked="True" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                            </Viewbox>
+                        </Grid>
+                    </materialDesign:Card>
                 </Grid>
             </TabItem>
             <TabItem Header="Settings">
 
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="1*"/>
-                        <ColumnDefinition Width="1*"/>
-                        <ColumnDefinition Width="1*"/>
-                        <ColumnDefinition Width="1*"/>
-                        <ColumnDefinition Width="1*"/>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="1*"/>
-                        <RowDefinition Height="1*"/>
-                        <RowDefinition Height="1*"/>
-                        <RowDefinition Height="3*"/>
-                        <RowDefinition Height="1*"/>
-                    </Grid.RowDefinitions>
-                    <Label Grid.Row="0" Grid.Column="0" Content="OBS"/>
+                <materialDesign:Card Padding="32" Margin="16">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="1*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="30"/>
+                            <RowDefinition Height="60"/>
+                            <RowDefinition Height="50"/>
+                            <RowDefinition Height="30"/>
+                            <RowDefinition Height="30"/>
+                            <RowDefinition Height="30"/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Style="{StaticResource MaterialDesignHeadline5TextBlock}" Text="OBS Configuration" />
 
-                    <Label Grid.Row="1" Grid.Column="0" Content="ip:"/>
-                    <TextBox Grid.Row="1" Grid.Column="1" Name="ip" Text="{Binding IpValue, Mode = TwoWay}"/>
-                    <Label Grid.Row="1" Grid.Column="2" Content="port:"/>
-                    <TextBox Grid.Row="1" Grid.Column="3" Name="port" Text="{Binding PortValue, Mode = TwoWay}"/>
+                        <TextBox Grid.Row="1" Grid.Column="0" Margin="2" materialDesign:HintAssist.Hint="OBS IP" materialDesign:HintAssist.HelperText="Insert OBS ip" Name="ip" Text="{Binding IpValue, Mode = TwoWay}"/>
 
-                    <Label Grid.Row="2" Grid.Column="0" Content="password:"/>
-                    <TextBox Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="4" Name="pwd" Text="{Binding PwdValue, Mode = TwoWay}"/>
+                        <TextBox Grid.Row="1" Grid.Column="1" Margin="2" materialDesign:HintAssist.Hint="OBS Port" materialDesign:HintAssist.HelperText="Insert OBS port" Name="port" Text="{Binding PortValue, Mode = TwoWay}"/>
 
-                    <Button Click="SaveSettings" Grid.Row="4" Grid.Column="2" >Save</Button>
-                </Grid>
+                        <TextBox Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Margin="2" materialDesign:HintAssist.Hint="OBS Password" materialDesign:HintAssist.HelperText="Insert OBS password (empty if none)" Name="pwd" Text="{Binding PwdValue, Mode = TwoWay}"/>
+
+                        <Button Click="SaveSettings" Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2">Save</Button>
+                    </Grid>
+                </materialDesign:Card>
             </TabItem>
-        </TabControl>
+        </dragablz:TabablzControl>
     </Grid>
 </Window>

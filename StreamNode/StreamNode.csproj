@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
@@ -6,41 +6,40 @@
     <Authors>Luca Taddeo</Authors>
     <RepositoryUrl>https://github.com/lucalas/StreamNode</RepositoryUrl>
     <Version>0.0.1</Version>
-    <Company />
+    <Company/>
   </PropertyGroup>
-
   <ItemGroup>
-    <None Remove="Resources\Icons\microphone-off.svg" />
-    <None Remove="Resources\Icons\microphone.svg" />
-    <None Remove="Resources\Icons\volume-high.svg" />
-    <None Remove="Resources\Icons\volume-off.svg" />
+    <None Remove="Resources\Icons\microphone-off.svg"/>
+    <None Remove="Resources\Icons\microphone.svg"/>
+    <None Remove="Resources\Icons\volume-high.svg"/>
+    <None Remove="Resources\Icons\volume-off.svg"/>
   </ItemGroup>
-
   <ItemGroup>
-    <EmbeddedResource Include="Resources\Icons\microphone-off.svg" />
-    <EmbeddedResource Include="Resources\Icons\microphone.svg" />
-    <EmbeddedResource Include="Resources\Icons\volume-high.svg" />
-    <EmbeddedResource Include="Resources\Icons\volume-off.svg" />
-    <EmbeddedResource Include="wwwroot\WebClient.zip" />
+    <EmbeddedResource Include="Resources\Icons\microphone-off.svg"/>
+    <EmbeddedResource Include="Resources\Icons\microphone.svg"/>
+    <EmbeddedResource Include="Resources\Icons\volume-high.svg"/>
+    <EmbeddedResource Include="Resources\Icons\volume-off.svg"/>
+    <EmbeddedResource Include="wwwroot\WebClient.zip"/>
   </ItemGroup>
-
   <ItemGroup>
-    <Resource Include="Resources\Icons\server-on.png" />
-    <Resource Include="Resources\Icons\server-off.png" />
+    <Resource Include="Resources\Icons\server-on.png"/>
+    <Resource Include="Resources\Icons\server-off.png"/>
   </ItemGroup>
-
   <ItemGroup>
-    <PackageReference Include="EmbedIO" Version="3.4.3" />
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <PackageReference Include="EmbedIO" Version="3.4.3"/>
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3"/>
+    <PackageReference Include="MaterialDesignThemes" Version="4.0.0"/>
+    <PackageReference Include="Dragablz" Version="0.0.3.223"/>
   </ItemGroup>
-
   <ItemGroup>
-    <ProjectReference Include="..\StreamNodeEngine\StreamNodeEngine.csproj" />
+    <ProjectReference Include="..\StreamNodeEngine\StreamNodeEngine.csproj"/>
   </ItemGroup>
-
   <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
-    <Exec Command="rmdir  /S /Q $(ProjectDir)wwwroot&#xD;&#xA;mkdir $(ProjectDir)wwwroot&#xD;&#xA;cd WebClient&#xD;&#xA;npm install&#xD;&#xA;npm run np-build" />
-    <ZipDirectory SourceDirectory="$(ProjectDir)WebClient\build" DestinationFile="$(ProjectDir)wwwroot\WebClient.zip" />
+    <Exec Command="rmdir  /S /Q $(ProjectDir)wwwroot
+mkdir $(ProjectDir)wwwroot
+cd WebClient
+npm install
+npm run np-build"/>
+    <ZipDirectory SourceDirectory="$(ProjectDir)WebClient\build" DestinationFile="$(ProjectDir)wwwroot\WebClient.zip"/>
   </Target>
-
 </Project>
