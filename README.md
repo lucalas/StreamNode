@@ -17,7 +17,11 @@ A work in progress tool used to remote control Windows Audio source and OBS.
 
 
 ## 💊 Features
-Features
+- Handle Volumes in Web App
+- Change OBS Scenes in Web App
+- Desktop App to Run or Stop the Server
+- Avaible on smartphone, tablet and PC
+- Change Server Settings
 
 ## 💻 Technologies
 Built with  
@@ -28,11 +32,6 @@ Built with
 
 ## ❗ Requirements
 Requirements
-
-### TODO:
-  - [ ] UX WPF Application for Start and change settings of the StreamDeck
-  - [ ] Log Library
-  - [ ] Documentaion
 
 ## ✔️ Preview 
 <p align="center">
