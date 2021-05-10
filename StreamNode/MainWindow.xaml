@@ -30,11 +30,17 @@
                                 <ColumnDefinition Width="1*"/>
                             </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
+                                <RowDefinition Height="3*"/>
                                 <RowDefinition Height="1*"/>
                                 <RowDefinition Height="2*"/>
                             </Grid.RowDefinitions>
-                            <TextBlock Grid.ColumnSpan="3" Style="{StaticResource MaterialDesignHeadline5TextBlock}" Text="Server Status" HorizontalAlignment="Center"/>
-                            <Viewbox Grid.Column="1" Grid.Row="1" Margin="60">
+                            <Image Grid.Column="1" Width="500">
+                                <Image.Source>
+                                    <BitmapImage DecodePixelWidth="200" UriSource="pack://application:,,,/Resources/logo.png" />
+                                </Image.Source>
+                            </Image>
+                            <TextBlock Grid.ColumnSpan="3" Grid.Row="1" Style="{StaticResource MaterialDesignHeadline5TextBlock}" Text="Server Status" HorizontalAlignment="Center"/>
+                            <Viewbox Grid.Column="1" Grid.Row="2" Margin="20">
                                 <ToggleButton Checked="StartServer" Unchecked="StopServer" Style="{StaticResource MaterialDesignSwitchDarkToggleButton}" ToolTip="MaterialDesignSwitchDarkToggleButton" IsChecked="True" HorizontalAlignment="Center" VerticalAlignment="Center" />
                             </Viewbox>
                         </Grid>
@@ -59,9 +65,9 @@
                         </Grid.RowDefinitions>
                         <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Style="{StaticResource MaterialDesignHeadline5TextBlock}" Text="OBS Configuration" />
 
-                        <TextBox Grid.Row="1" Grid.Column="0" Margin="2" materialDesign:HintAssist.Hint="OBS IP" materialDesign:HintAssist.HelperText="Insert OBS ip" Name="ip" Text="{Binding IpValue, Mode = TwoWay}"/>
+                        <TextBox Grid.Row="1" Grid.Column="0" Margin="2,32,2,2" materialDesign:HintAssist.Hint="OBS IP" materialDesign:HintAssist.HelperText="Insert OBS ip" Name="ip" Text="{Binding IpValue, Mode = TwoWay}"/>
 
-                        <TextBox Grid.Row="1" Grid.Column="1" Margin="2" materialDesign:HintAssist.Hint="OBS Port" materialDesign:HintAssist.HelperText="Insert OBS port" Name="port" Text="{Binding PortValue, Mode = TwoWay}"/>
+                        <TextBox Grid.Row="1" Grid.Column="1" Margin="2,32,2,2" materialDesign:HintAssist.Hint="OBS Port" materialDesign:HintAssist.HelperText="Insert OBS port" Name="port" Text="{Binding PortValue, Mode = TwoWay}"/>
 
                         <TextBox Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Margin="2" materialDesign:HintAssist.Hint="OBS Password" materialDesign:HintAssist.HelperText="Insert OBS password (empty if none)" Name="pwd" Text="{Binding PwdValue, Mode = TwoWay}"/>
 

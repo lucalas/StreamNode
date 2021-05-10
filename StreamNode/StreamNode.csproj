@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
@@ -9,21 +9,10 @@
     <Company/>
   </PropertyGroup>
   <ItemGroup>
-    <None Remove="Resources\Icons\microphone-off.svg"/>
-    <None Remove="Resources\Icons\microphone.svg"/>
-    <None Remove="Resources\Icons\volume-high.svg"/>
-    <None Remove="Resources\Icons\volume-off.svg"/>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Resources\Icons\microphone-off.svg"/>
-    <EmbeddedResource Include="Resources\Icons\microphone.svg"/>
-    <EmbeddedResource Include="Resources\Icons\volume-high.svg"/>
-    <EmbeddedResource Include="Resources\Icons\volume-off.svg"/>
     <EmbeddedResource Include="wwwroot\WebClient.zip"/>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\Icons\server-on.png"/>
-    <Resource Include="Resources\Icons\server-off.png"/>
+    <Resource Include="Resources\logo.png"/>
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="EmbedIO" Version="3.4.3"/>
