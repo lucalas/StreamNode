@@ -13,8 +13,12 @@ namespace StreamNode.Services
 {
     public class HttpServerService
     {
+        private static int PORT = 8000;
         WebServer server;
         int port;
+
+        public HttpServerService() : this(PORT) {
+        }
 
         public HttpServerService(int port)
         {

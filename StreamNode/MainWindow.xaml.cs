@@ -22,7 +22,8 @@ namespace StreamNode
         private static MainWindow _singleton;
         public static MainWindow singleton { get { return _singleton; } }
 
-        StreamNodeEngine.StreamNodeSocketManager engine = new StreamNodeEngine.StreamNodeSocketManager();
+        private StreamNodeEngine.StreamNodeSocketManager engine = new StreamNodeEngine.StreamNodeSocketManager();
+        private HttpServerService httpServer = new HttpServerService();
 
         public MainWindow()
         {
@@ -37,6 +38,7 @@ namespace StreamNode
         }
         private void StartServer(object sender, RoutedEventArgs e)
         {
+            httpServer.Start();
             engine.Connect();
         }
 
