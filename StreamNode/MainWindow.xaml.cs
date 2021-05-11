@@ -34,7 +34,34 @@ namespace StreamNode
 
         private void SaveSettings(object sender, RoutedEventArgs e)
         {
-            engine.ConfigOBSWebSocket(context.IpValue, context.PortValue, context.PwdValue);
+            if (!engine.isConnected)
+            {
+                engine.ConfigOBSWebSocket(context.IpValue, context.PortValue, context.PwdValue);
+                SaveResult.MessageQueue?.Enqueue(
+                    "Saved successfully",
+                    null,
+                    null,
+                    null,
+                    false,
+                    true,
+                    TimeSpan.FromSeconds(3));
+            }
+            else
+            {
+                SaveResult.MessageQueue?.Enqueue(
+                    "Server is running, do you want to save and restart server?",
+                    "RESTART",
+                    action =>
+                    {
+                        engine.Disconnect();
+                        engine.ConfigOBSWebSocket(context.IpValue, context.PortValue, context.PwdValue);
+                        engine.Connect();
+                    },
+                    null,
+                    false,
+                    true,
+                    TimeSpan.FromSeconds(3));
+            }
         }
         private void StartServer(object sender, RoutedEventArgs e)
         {
