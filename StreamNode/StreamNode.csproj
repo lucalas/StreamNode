@@ -6,29 +6,33 @@
     <Authors>Luca Taddeo</Authors>
     <RepositoryUrl>https://github.com/lucalas/StreamNode</RepositoryUrl>
     <Version>0.0.1</Version>
-    <Company/>
+    <Company />
   </PropertyGroup>
   <ItemGroup>
-    <EmbeddedResource Include="wwwroot\WebClient.zip"/>
+    <EmbeddedResource Include="wwwroot\WebClient.zip" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\logo.png"/>
+    <Resource Include="Resources\logo.png" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="EmbedIO" Version="3.4.3"/>
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.3"/>
-    <PackageReference Include="MaterialDesignThemes" Version="4.0.0"/>
-    <PackageReference Include="Dragablz" Version="0.0.3.223"/>
+    <PackageReference Include="EmbedIO" Version="3.4.3" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <PackageReference Include="MaterialDesignThemes" Version="4.0.0" />
+    <PackageReference Include="Dragablz" Version="0.0.3.223" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\StreamNodeEngine\StreamNodeEngine.csproj"/>
+    <ProjectReference Include="..\StreamNodeEngine\StreamNodeEngine.csproj" />
   </ItemGroup>
-  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
-    <Exec Command="rmdir  /S /Q $(ProjectDir)wwwroot
-mkdir $(ProjectDir)wwwroot
-cd WebClient
-npm install
-npm run np-build"/>
-    <ZipDirectory SourceDirectory="$(ProjectDir)WebClient\build" DestinationFile="$(ProjectDir)wwwroot\WebClient.zip"/>
+  <PropertyGroup>
+    <Configuration>Debug</Configuration>
+    <WebClient>WebClient\</WebClient>
+    <ApplicationIcon>ico.ico</ApplicationIcon>
+  </PropertyGroup>
+  <Target Name="PreBuild" BeforeTargets="PreBuildEvent" Condition="'$(Configuration)'=='Release'">
+    <Exec Command="rmdir  /S /Q $(ProjectDir)wwwroot" />
+    <Exec Command="mkdir $(ProjectDir)wwwroot" />
+    <Exec WorkingDirectory="$(WebClient)" Command="npm install" />
+    <Exec WorkingDirectory="$(WebClient)" Command="npm run np-build" />
+    <ZipDirectory SourceDirectory="$(WebClient)\build" DestinationFile="$(ProjectDir)wwwroot\WebClient.zip" />
   </Target>
 </Project>
