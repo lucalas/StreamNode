@@ -1,60 +1,84 @@
-﻿<Window x:Class="RemoteControl.MainWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:RemoteControl"
-        mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+﻿<Window x:Class="StreamNode.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:dragablz="clr-namespace:Dragablz;assembly=Dragablz"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" TextElement.Foreground="{DynamicResource MaterialDesignBody}" TextElement.FontWeight="Regular" TextElement.FontSize="13" TextOptions.TextFormattingMode="Ideal" TextOptions.TextRenderingMode="Auto" Background="{DynamicResource MaterialDesignPaper}" FontFamily="{DynamicResource MaterialDesignFont}"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:local="clr-namespace:StreamNode" mc:Ignorable="d" Title="MainWindow" ResizeMode="CanMinimize" Width="700" Height="400">
+
     <Grid>
-        <TabControl>
-            <TabItem Header="Output">
-                <ListView Name="MixerOutput" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
-                    <ListView.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <WrapPanel Orientation="Horizontal" />
-                        </ItemsPanelTemplate>
-                    </ListView.ItemsPanel>
-                </ListView>
-            </TabItem>
-            <TabItem Header="Input">
-                <ListView Name="MixerInput" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
-                    <ListView.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <WrapPanel Orientation="Horizontal" />
-                        </ItemsPanelTemplate>
-                    </ListView.ItemsPanel>
-                </ListView>
-            </TabItem>
-            <TabItem Header="OBS">
+
+        <dragablz:TabablzControl>
+            <dragablz:TabablzControl.InterTabController>
+                <dragablz:InterTabController/>
+            </dragablz:TabablzControl.InterTabController>
+            <TabItem Header="Server">
                 <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="1*"/>
-                        <ColumnDefinition Width="1*"/>
-                        <ColumnDefinition Width="1*"/>
-                        <ColumnDefinition Width="1*"/>
                         <ColumnDefinition Width="1*"/>
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="1*"/>
-                        <RowDefinition Height="9*"/>
                     </Grid.RowDefinitions>
-                    <Label Grid.Column="0" Content="ip:port:"/>
-                    <TextBox  Grid.Column="1" Name="ipport"/>
-                    <Label Grid.Column="2" Content="password:"/>
-                    <TextBox Grid.Column="3" Name="pwd"/>
-                    <Button Grid.Column="4" Name="Connect" Content="Connect" Click="Connect_Click"/>
 
-                    <ListView Grid.Row="2" Grid.ColumnSpan="5" Name="OBSScenes" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
-                        <ListView.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <WrapPanel Orientation="Horizontal" />
-                            </ItemsPanelTemplate>
-                        </ListView.ItemsPanel>
-                    </ListView>
+                    <materialDesign:Card Padding="32" Margin="16">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="1*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="3*"/>
+                                <RowDefinition Height="1*"/>
+                                <RowDefinition Height="2*"/>
+                            </Grid.RowDefinitions>
+                            <Image Grid.Column="1" Width="500">
+                                <Image.Source>
+                                    <BitmapImage DecodePixelWidth="200" UriSource="pack://application:,,,/Resources/logo.png" />
+                                </Image.Source>
+                            </Image>
+                            <TextBlock Grid.ColumnSpan="3" Grid.Row="1" Style="{StaticResource MaterialDesignHeadline5TextBlock}" Text="Server Status" HorizontalAlignment="Center"/>
+                            <Viewbox Grid.Column="1" Grid.Row="2" Margin="20">
+                                <ToggleButton Checked="StartServer" Unchecked="StopServer" Style="{StaticResource MaterialDesignSwitchDarkToggleButton}" ToolTip="MaterialDesignSwitchDarkToggleButton" IsChecked="True" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                            </Viewbox>
+                        </Grid>
+                    </materialDesign:Card>
                 </Grid>
             </TabItem>
-            <TabItem Header="Settings"></TabItem>
-        </TabControl>
+            <TabItem Header="Settings">
+                <Grid>
+                    <materialDesign:Card Padding="32" Margin="16">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="1*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="30"/>
+                                <RowDefinition Height="60"/>
+                                <RowDefinition Height="50"/>
+                                <RowDefinition Height="30"/>
+                                <RowDefinition Height="30"/>
+                                <RowDefinition Height="30"/>
+                            </Grid.RowDefinitions>
+                            <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Style="{StaticResource MaterialDesignHeadline5TextBlock}" Text="OBS Configuration" />
+
+                            <TextBox Grid.Row="1" Grid.Column="0" Margin="2,32,2,2" materialDesign:HintAssist.Hint="OBS IP" materialDesign:HintAssist.HelperText="Insert OBS ip" Name="ip" Text="{Binding IpValue, Mode = TwoWay}"/>
+
+                            <TextBox Grid.Row="1" Grid.Column="1" Margin="2,32,2,2" materialDesign:HintAssist.Hint="OBS Port" materialDesign:HintAssist.HelperText="Insert OBS port" Name="port" Text="{Binding PortValue, Mode = TwoWay}"/>
+
+                            <TextBox Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Margin="2" materialDesign:HintAssist.Hint="OBS Password" materialDesign:HintAssist.HelperText="Insert OBS password (empty if none)" Name="pwd" Text="{Binding PwdValue, Mode = TwoWay}"/>
+
+                            <Button Click="SaveSettings" Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2">Save</Button>
+                        </Grid>
+                    </materialDesign:Card>
+
+                    <materialDesign:Snackbar x:Name="SaveResult" MessageQueue="{materialDesign:MessageQueue}"/>
+                    <materialDesign:Snackbar x:Name="WarningResult" MessageQueue="{materialDesign:MessageQueue}"/>
+                </Grid>
+            </TabItem>
+        </dragablz:TabablzControl>
     </Grid>
 </Window>

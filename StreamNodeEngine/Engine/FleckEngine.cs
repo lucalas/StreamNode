@@ -18,6 +18,10 @@ namespace StreamNodeEngine.Engine
             _server.Start(Configure);
         }
 
+        public void Disconnect() {
+            _server.Dispose();
+        }
+
         public void Configure(IWebSocketConnection socket)
         {
             _socket = socket;

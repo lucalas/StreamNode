@@ -5,42 +5,30 @@
     <UseWPF>true</UseWPF>
     <Authors>Luca Taddeo</Authors>
     <RepositoryUrl>https://github.com/lucalas/StreamNode</RepositoryUrl>
-    <PublishSingleFile>true</PublishSingleFile>
-    <SelfContained>true</SelfContained>
-    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
-    <DebugType>None</DebugType>
-    <DebugSymbols>false</DebugSymbols>
     <Version>0.0.1</Version>
-    <Company />
+    <Company/>
   </PropertyGroup>
-
   <ItemGroup>
-    <None Remove="Resources\Icons\microphone-off.svg" />
-    <None Remove="Resources\Icons\microphone.svg" />
-    <None Remove="Resources\Icons\volume-high.svg" />
-    <None Remove="Resources\Icons\volume-off.svg" />
+    <EmbeddedResource Include="wwwroot\WebClient.zip"/>
   </ItemGroup>
-
   <ItemGroup>
-    <EmbeddedResource Include="Resources\Icons\microphone-off.svg" />
-    <EmbeddedResource Include="Resources\Icons\microphone.svg" />
-    <EmbeddedResource Include="Resources\Icons\volume-high.svg" />
-    <EmbeddedResource Include="Resources\Icons\volume-off.svg" />
-    <EmbeddedResource Include="wwwroot\WebClient.zip" />
+    <Resource Include="Resources\logo.png"/>
   </ItemGroup>
-
   <ItemGroup>
-    <PackageReference Include="EmbedIO" Version="3.4.3" />
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <PackageReference Include="EmbedIO" Version="3.4.3"/>
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3"/>
+    <PackageReference Include="MaterialDesignThemes" Version="4.0.0"/>
+    <PackageReference Include="Dragablz" Version="0.0.3.223"/>
   </ItemGroup>
-
   <ItemGroup>
-    <ProjectReference Include="..\StreamNodeEngine\StreamNodeEngine.csproj" />
+    <ProjectReference Include="..\StreamNodeEngine\StreamNodeEngine.csproj"/>
   </ItemGroup>
-
   <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
-    <Exec Command="rmdir  /S /Q $(ProjectDir)wwwroot&#xD;&#xA;mkdir $(ProjectDir)wwwroot&#xD;&#xA;cd WebClient&#xD;&#xA;npm install&#xD;&#xA;npm run np-build" />
-    <ZipDirectory SourceDirectory="$(ProjectDir)WebClient\build" DestinationFile="$(ProjectDir)wwwroot\WebClient.zip" />
+    <Exec Command="rmdir  /S /Q $(ProjectDir)wwwroot
+mkdir $(ProjectDir)wwwroot
+cd WebClient
+npm install
+npm run np-build"/>
+    <ZipDirectory SourceDirectory="$(ProjectDir)WebClient\build" DestinationFile="$(ProjectDir)wwwroot\WebClient.zip"/>
   </Target>
-
 </Project>

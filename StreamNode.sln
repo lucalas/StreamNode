@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.30621.155
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StreamNode", "StreamNode\StreamNode.csproj", "{7F61EC0C-C4CA-4216-938C-D52FD5DE86CC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StreamNodeEngine", "StreamNodeEngine\StreamNodeEngine.csproj", "{A3AF9DAC-6B9A-48A5-B82F-DB3F0FBC00EB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StreamNodeEngine", "StreamNodeEngine\StreamNodeEngine.csproj", "{A3AF9DAC-6B9A-48A5-B82F-DB3F0FBC00EB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

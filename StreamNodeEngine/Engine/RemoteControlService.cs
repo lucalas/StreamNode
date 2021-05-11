@@ -13,13 +13,19 @@ namespace StreamNodeEngine.Engine
 
         public RemoteControlService() {
             engine = new FleckEngine();
+            engine.OnMessage += MessageHandler;
         }
 
         public void Connect()
         {
-            engine.OnMessage += MessageHandler;
             engine.Connect();
         }
+
+        public void Disconnect()
+        {
+            engine.Disconnect();
+        }
+
 
         public void AddRoute(string key, Func<RemoteControlData, RemoteControlData> route)
         {

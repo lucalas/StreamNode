@@ -11,6 +11,8 @@ namespace StreamNodeEngine
     public class StreamNodeSocketManager
     {
 
+        public bool isConnected {get {return _isConnected;}}
+        private bool _isConnected = false;
         public OBSService obsService { get; } = new OBSService();
         public AudioService audioService { get; } = new AudioService();
         public StoreService storeService { get; } = new StoreService();
@@ -19,8 +21,21 @@ namespace StreamNodeEngine
         public StreamNodeSocketManager()
         {
             initRoutes();
+        }
+
+        public void ConfigOBSWebSocket(string ip, int port, string pwd) {
+            obsService.Configure(ip, port, pwd);
+        }
+
+        public void Connect() {
             webSocketEngine.Connect();
-            obsService.Connect("ws://localhost:4444", "");
+            obsService.Connect();
+            _isConnected = true;
+        }
+
+        public void Disconnect() {
+            webSocketEngine.Disconnect();
+            _isConnected = false;
         }
 
         private void initRoutes()
