@@ -1,6 +1,6 @@
 {
-  "name": "streamnode-app",
-  "short_name": "streamnode-app",
+  "name": "StreamNode",
+  "short_name": "StreamNode",
   "start_url": "/",
   "display": "standalone",
   "orientation": "portrait",

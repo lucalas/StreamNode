@@ -2,9 +2,9 @@ import { Router } from 'preact-router';
 
 import Dashboard from './dashboard';
 
-const Routes = () => (
+const Routes = ({language}) => (
     <Router>
-        <Dashboard path="/" />
+        <Dashboard path="/" language={language}/>
     </Router>
 )
 

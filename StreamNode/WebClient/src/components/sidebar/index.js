@@ -3,6 +3,9 @@ import { Layout, Menu } from 'antd';
 import { Link } from 'preact-router/match';
 import { DesktopOutlined, BlockOutlined, CustomerServiceOutlined } from '@ant-design/icons';
 
+//LANGUAGES
+import languages from '../../data/languages.json'
+
 const { Sider } = Layout;
 class CustomSidebar extends Component {
 
@@ -38,7 +41,7 @@ class CustomSidebar extends Component {
                             <a href="#mixer">Mixer</a> {/*Con <Link> Non funziona */}
                         </Menu.Item>
                         <Menu.Item key="3" icon={<BlockOutlined />}>
-                            <a href="#obs-scenes">OBS Scenes</a> {/*Con <Link> Non funziona */}
+                            <a href="#obs-scenes">{languages[this.props.language].sidebar.obs_scenes}</a> {/*Con <Link> Non funziona */}
                         </Menu.Item>
                     </Menu>
                 </Sider>

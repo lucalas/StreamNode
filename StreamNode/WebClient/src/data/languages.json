@@ -1,0 +1,33 @@
+{
+    "ita":{
+        "sidebar":{
+            "obs_scenes": "Scene OBS"
+        },
+        "mixer":{
+            "filter": "Filtro",
+            "filter_label": "Tutti",
+            "edit": "Modifica",
+            "not_found": "Nessun volume trovato!"
+        },
+        "scenes":{
+            "title":"SCENE",
+            "not_found":"Nessuna scena OBS trovata!"
+        }
+    },
+    "eng":{
+        "sidebar":{
+            "obs_scenes": "OBS Scenes"
+        },
+        "mixer":{
+            "filter": "Filter",
+            "filter_label": "All",
+            "edit": "Edit Mode",
+            "not_found": "No volumes found!"
+            
+        },
+        "scenes":{
+            "title":"SCENES",
+            "not_found":"No OBS scenes found!"
+        }
+    }
+}
