@@ -6,6 +6,9 @@ import VolumeBox from '../../components/volumebox';
 import SceneBox from '../../components/scenebox';
 import WsSocket from '../../services/WSSocketConnector';
 
+//LANGUAGES
+import languages from '../../data/languages.json'
+
 //REACT DND
 import { DndProvider, useDrop } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
@@ -99,7 +102,7 @@ class Dashboard extends Component {
 
     getGUIVolumes() {
         if (this.state.volumes.length == 0) {
-            return <Row justify="center"> <Text>NO VOLUMES FOUND</Text> </Row>
+            return <Row justify="center"> <Text>{languages[this.props.language].mixer.not_found}</Text> </Row>
         }
 
         return this.state.volumes
@@ -139,7 +142,7 @@ class Dashboard extends Component {
 
     getGUIObsScenes() {
         if (this.state.obsScenes.length == 0) {
-            return <Row justify="center"> <Text>NO OBS SCENES FOUND</Text> </Row>
+            return <Row justify="center"> <Text>{languages[this.props.language].scenes.not_found}</Text> </Row>
         }
 
         return this.state.obsScenes.map(scene => {
@@ -204,7 +207,7 @@ class Dashboard extends Component {
 
                             {this.state.isEditable &&
                                 <Row justify="center">
-                                    <Title level={4} style={{ marginBottom: 0 }}>(Edit Mode)</Title>
+                                    <Title level={4} style={{ marginBottom: 0 }}>({languages[this.props.language].mixer.edit})</Title>
                                 </Row>
                             }
                         </Col>
@@ -216,13 +219,13 @@ class Dashboard extends Component {
                                 !this.state.isMobile &&
                                 <Col xs={4} sm={3} md={3} lg={2} xl={1}>
                                     <Row justify="center">
-                                        <Text strong >Filtro: </Text>
+                                        <Text strong >{languages[this.props.language].mixer.filter}: </Text>
                                     </Row>
                                 </Col>
                             }
                             <Col offset={this.state.isMobile && 1} xs={15} sm={16} md={17} lg={18} xl={18}>
                                 <Select defaultValue={deviceFilterNone} onChange={this.onChangeDevice.bind(this)} style={{ width: "100%" }}>
-                                    <Option value={deviceFilterNone}>All</Option>
+                                    <Option value={deviceFilterNone}>{languages[this.props.language].mixer.filter_label}</Option>
                                     {optionSourcesList}
                                 </Select>
                             </Col>
@@ -246,13 +249,13 @@ class Dashboard extends Component {
                                             shape="circle"
                                             onClick={this.makeEditable.bind(this)}
                                         />
-                                        <p style={{ margin: "0 0 0 5px" }}>Edit Mode</p>
+                                        <p style={{ margin: "0 0 0 5px" }}>{languages[this.props.language].mixer.edit}</p>
                                     </Row>
                                     :
                                     <Row align="middle">
                                         <Button icon={<CheckOutlined />} size={32} shape="circle" type="primary" onClick={this.saveDeckState.bind(this)}/>
                                         <Button icon={<UndoOutlined/>} size={32} shape="circle" type="primary" danger  onClick={this.undoDeckState.bind(this)}/>
-                                        <p style={{ margin: "0 0 0 5px" }}>Edit Mode</p>
+                                        <p style={{ margin: "0 0 0 5px" }}>{languages[this.props.language].mixer.edit}</p>
                                     </Row>
                                 }
                                 </Col>
@@ -285,7 +288,7 @@ class Dashboard extends Component {
                     <Divider type="vertical" />
 
                     <Row justify="center" id="obs-scenes">
-                        <Title level={2} style={{ marginBottom: 0 }}>SCENE</Title>
+                        <Title level={2} style={{ marginBottom: 0 }}>{languages[this.props.language].scenes.title}</Title>
                     </Row>
 
                     {   //OBS SCENES
