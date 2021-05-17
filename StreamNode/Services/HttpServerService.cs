@@ -40,5 +40,9 @@ namespace StreamNode.Services
                 .WithModule(new ActionModule("/", HttpVerbs.Any, ctx => ctx.SendDataAsync(new { Message = "Error" })));
             server.RunAsync();
         }
+
+        public void Stop() {
+            server.Dispose();
+        }
     }
 }
