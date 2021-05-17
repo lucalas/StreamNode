@@ -6,6 +6,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Diagnostics;
+using Serilog;
+using StreamNode.Services;
 
 namespace StreamNode
 {
@@ -14,6 +16,12 @@ namespace StreamNode
     /// </summary>
     public partial class App : Application
     {
+        public App()
+        {
+            LoggerManager.Init();
+            Log.Logger.Information("StreamNode starting...");
+        }
+
         void StopApp(object sender, ExitEventArgs e)
         {
         }
