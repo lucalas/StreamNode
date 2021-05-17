@@ -24,11 +24,10 @@
     <ProjectReference Include="..\StreamNodeEngine\StreamNodeEngine.csproj" />
   </ItemGroup>
   <PropertyGroup>
-    <Configuration>Debug</Configuration>
     <WebClient>WebClient\</WebClient>
     <ApplicationIcon>ico.ico</ApplicationIcon>
   </PropertyGroup>
-  <Target Name="PreBuild" BeforeTargets="PreBuildEvent" Condition="'$(Configuration)'=='Release'">
+  <Target Name="PreBuild" BeforeTargets="PreBuildEvent" Condition="'$(configuration)'=='Release'">
     <Exec Command="rmdir  /S /Q $(ProjectDir)wwwroot" />
     <Exec Command="mkdir $(ProjectDir)wwwroot" />
     <Exec WorkingDirectory="$(WebClient)" Command="npm install" />
