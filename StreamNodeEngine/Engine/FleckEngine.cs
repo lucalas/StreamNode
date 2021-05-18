@@ -2,18 +2,23 @@
 using System.Diagnostics;
 using StreamNodeEngine.Objects;
 using static StreamNodeEngine.Engine.IRemoteControlEngine;
+using StreamNodeEngine.Engine.Services;
 
 namespace StreamNodeEngine.Engine
 {
     class FleckEngine : IRemoteControlEngine
     {
+        private string ip = "0.0.0.0";
+        private string port = "8189";
         private WebSocketServer _server;
         private IWebSocketConnection _socket;
         public event OnMessageEventHandler OnMessage;
 
+        public string wsUrl {get {return $"ws://{ip}:{port}";}}
+
         public void Connect()
         {
-            _server = new WebSocketServer("ws://0.0.0.0:8189");
+            _server = new WebSocketServer(wsUrl);
             
             _server.Start(Configure);
         }
@@ -26,10 +31,10 @@ namespace StreamNodeEngine.Engine
         {
             _socket = socket;
             _socket.OnOpen = () => {
-                Trace.WriteLine("Connected");
+                LogRedirector.info($"WebSocket connected [{wsUrl}]");
             };
             _socket.OnClose = () => {
-                Trace.WriteLine("Disconnected");
+                LogRedirector.info($"WebSocket disconnected [{wsUrl}]");
             };
             _socket.OnMessage = HandlerMessage;
         }
