@@ -1,7 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using StreamNodeEngine.Engine;
 using StreamNodeEngine.Objects;
 using StreamNodeEngine.Engine.Services;
 
@@ -12,7 +11,8 @@ namespace StreamNodeEngine.Engine
         private IRemoteControlEngine engine;
         private Dictionary<string, Func<RemoteControlData, RemoteControlData>> routes = new Dictionary<string, Func<RemoteControlData, RemoteControlData>>();
 
-        public RemoteControlService() {
+        public RemoteControlService()
+        {
             engine = new FleckEngine();
             engine.OnMessage += MessageHandler;
         }
@@ -57,9 +57,12 @@ namespace StreamNodeEngine.Engine
 
         public void SendData(object data2Send)
         {
-            try {
+            try
+            {
                 engine.SendMessage(JsonConvert.SerializeObject(data2Send));
-            } catch (Exception ex) {
+            }
+            catch (Exception ex)
+            {
                 LogRedirector.error($"Something wrong happened during execution of send data to web socket, exception: [{ex}]");
             }
         }

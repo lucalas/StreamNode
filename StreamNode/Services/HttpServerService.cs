@@ -1,13 +1,7 @@
 ﻿using EmbedIO;
 using EmbedIO.Actions;
 using EmbedIO.Files;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Net;
-using System.Net.Sockets;
 using System.Reflection;
-using System.Text;
 
 namespace StreamNode.Services
 {
@@ -17,7 +11,8 @@ namespace StreamNode.Services
         WebServer server;
         int port;
 
-        public HttpServerService() : this(PORT) {
+        public HttpServerService() : this(PORT)
+        {
         }
 
         public HttpServerService(int port)
@@ -41,7 +36,8 @@ namespace StreamNode.Services
             server.RunAsync();
         }
 
-        public void Stop() {
+        public void Stop()
+        {
             server.Dispose();
         }
     }

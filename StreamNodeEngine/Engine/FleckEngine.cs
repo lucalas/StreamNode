@@ -1,5 +1,4 @@
 ﻿using Fleck;
-using System.Diagnostics;
 using StreamNodeEngine.Objects;
 using static StreamNodeEngine.Engine.IRemoteControlEngine;
 using StreamNodeEngine.Engine.Services;
@@ -14,32 +13,36 @@ namespace StreamNodeEngine.Engine
         private IWebSocketConnection _socket;
         public event OnMessageEventHandler OnMessage;
 
-        public string wsUrl {get {return $"ws://{ip}:{port}";}}
+        public string wsUrl { get { return $"ws://{ip}:{port}"; } }
 
         public void Connect()
         {
             _server = new WebSocketServer(wsUrl);
-            
+
             _server.Start(Configure);
         }
 
-        public void Disconnect() {
+        public void Disconnect()
+        {
             _server.Dispose();
         }
 
         public void Configure(IWebSocketConnection socket)
         {
             _socket = socket;
-            _socket.OnOpen = () => {
+            _socket.OnOpen = () =>
+            {
                 LogRedirector.info($"WebSocket connected [{wsUrl}]");
             };
-            _socket.OnClose = () => {
+            _socket.OnClose = () =>
+            {
                 LogRedirector.info($"WebSocket disconnected [{wsUrl}]");
             };
             _socket.OnMessage = HandlerMessage;
         }
 
-        public void SendMessage(string data) {
+        public void SendMessage(string data)
+        {
             if (_socket != null)
             {
                 _socket.Send(data);

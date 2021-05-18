@@ -1,14 +1,5 @@
-﻿
-using EmbedIO;
-using EmbedIO.Actions;
-using EmbedIO.Files;
-using OBSWebsocketDotNet.Types;
-using StreamNode.Controllers;
-using StreamNode.Services;
-using System;
+﻿using System;
 using System.Windows;
-using System.Diagnostics;
-using static StreamNode.Controllers.SceneController;
 using Serilog;
 using MaterialDesignThemes.Wpf;
 
@@ -53,12 +44,15 @@ namespace StreamNode
         }
         private void StartServer(object sender, RoutedEventArgs e)
         {
-            try {
+            try
+            {
                 App.engine.Connect();
                 Log.Information("StreamNode engine started");
                 App.httpServer.Start();
                 Log.Information("Http server started");
-            } catch (Exception ex) {
+            }
+            catch (Exception ex)
+            {
                 Alert(ErrorResult, String.Format("An error occured during server start [{0}]", ex.Message));
                 Log.Error("An error occured during server start [{@ex}]", ex);
             }
@@ -66,22 +60,27 @@ namespace StreamNode
 
         private void StopServer(object sender, RoutedEventArgs e)
         {
-            try {
+            try
+            {
                 App.httpServer.Stop();
                 Log.Information("Http server stopped");
                 App.engine.Disconnect();
                 Log.Information("StreamNode engine stopped");
-            } catch (Exception ex) {
+            }
+            catch (Exception ex)
+            {
                 Alert(ErrorResult, String.Format("An error occured during server shutdown [{0}]", ex.Message));
                 Log.Error("An error occured during server shutdown [{@ex}]", ex);
             }
         }
 
-        private void Alert(Snackbar alertBar, String message) {
+        private void Alert(Snackbar alertBar, String message)
+        {
             Alert(alertBar, message, null, null);
         }
 
-        private void Alert(Snackbar alertBar, String message, object? actionContent, Action<object?>? actionHandler) {
+        private void Alert(Snackbar alertBar, String message, object? actionContent, Action<object?>? actionHandler)
+        {
             alertBar.MessageQueue?.Enqueue(
                 message,
                 actionContent,

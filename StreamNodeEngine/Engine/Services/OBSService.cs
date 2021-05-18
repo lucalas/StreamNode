@@ -1,9 +1,6 @@
 ﻿using OBSWebsocketDotNet;
 using OBSWebsocketDotNet.Types;
 using System;
-using System.Collections.Generic;
-using System.Text;
-
 namespace StreamNodeEngine.Engine.Services
 {
     public class OBSService
@@ -18,9 +15,11 @@ namespace StreamNodeEngine.Engine.Services
         private EventHandler _connected;
         public bool isConnected { get { return _obs.IsConnected; } }
 
-        public EventHandler Connected {
+        public EventHandler Connected
+        {
             get { return _connected; }
-            set {
+            set
+            {
                 _connected = value;
                 _obs.Connected += _connected;
             }
@@ -33,7 +32,8 @@ namespace StreamNodeEngine.Engine.Services
             Configure(IP, PORT, PASSWORD);
         }
 
-        public void Configure(string ip, int port, string pwd) {
+        public void Configure(string ip, int port, string pwd)
+        {
             _url = "ws://" + ip + ":" + port;
             _password = pwd;
         }
@@ -44,7 +44,9 @@ namespace StreamNodeEngine.Engine.Services
             {
                 _obs.Connect(_url, _password);
                 // AuthFailureException & ErrorResponseException possible exceptions
-            } catch (Exception ex) {
+            }
+            catch (Exception ex)
+            {
 
             }
         }

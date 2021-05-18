@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using StreamNodeEngine.Utils;
 using StreamNodeEngine.Objects;
-using System.Threading;
 using System.Threading.Tasks;
 using System;
 
@@ -138,7 +137,7 @@ namespace StreamNodeEngine.Engine.Services
 
                 if (!hashCalculated.Equals(AudioServiceUpdate.hashUpdate))
                 {
-                    AudioServiceUpdate.volumes = volumes; 
+                    AudioServiceUpdate.volumes = volumes;
                     AudioServiceUpdate.tsUpdate = DateTime.Now.Millisecond;
                     AudioServiceUpdate.hashUpdate = hashCalculated;
                     OnIOUpdate(this, AudioServiceUpdate);
