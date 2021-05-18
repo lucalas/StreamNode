@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 
 namespace StreamNodeEngine.Engine.Services
@@ -10,16 +11,29 @@ namespace StreamNodeEngine.Engine.Services
         private static string tempDir = "./";
         private static string storeFile = "data.json";
 
-        public void store(object data) => System.IO.File.WriteAllText(tempDir + storeFile, JsonConvert.SerializeObject(data));
+        public void store(object data) {
+            try
+            {
+                File.WriteAllText(tempDir + storeFile, JsonConvert.SerializeObject(data));
+                LogRedirector.debug($"Stored [{tempDir + storeFile}] file");
+            } catch (Exception ex)
+            {
+                LogRedirector.error($"{ex}");
+            }
+        }
 
         public T read<T>()
         {
             try
             {
-                return JsonConvert.DeserializeObject<T>(System.IO.File.ReadAllText(tempDir + storeFile));
-            }catch (Exception ex)
+                if (File.Exists(tempDir + storeFile)) {
+                    return JsonConvert.DeserializeObject<T>(File.ReadAllText(tempDir + storeFile));
+                } else {
+                    return default;
+                }
+            } catch (Exception ex)
             {
-                // TODO report exception
+                LogRedirector.error($"{ex}");
                 return default;
             }
         }

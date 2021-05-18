@@ -1,9 +1,7 @@
 ﻿.vs
-RemoteControl/bin
-RemoteControl/obj
 RemoteControl/WebClient/.vscode
-StreamNodeEngine/bin
-StreamNodeEngine/obj
-StreamNode/bin
-StreamNode/obj
 StreamNode/wwwroot
+log/
+bin/
+node_modules/
+obj/

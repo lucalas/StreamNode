@@ -74,11 +74,11 @@
                             <Button Click="SaveSettings" Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2">Save</Button>
                         </Grid>
                     </materialDesign:Card>
-
-                    <materialDesign:Snackbar x:Name="SaveResult" MessageQueue="{materialDesign:MessageQueue}"/>
-                    <materialDesign:Snackbar x:Name="WarningResult" MessageQueue="{materialDesign:MessageQueue}"/>
                 </Grid>
             </TabItem>
         </dragablz:TabablzControl>
+        <materialDesign:Snackbar x:Name="SaveResult" MessageQueue="{materialDesign:MessageQueue}"/>
+        <materialDesign:Snackbar x:Name="WarningResult" MessageQueue="{materialDesign:MessageQueue}"/>
+        <materialDesign:Snackbar x:Name="ErrorResult" MessageQueue="{materialDesign:MessageQueue}"/>
     </Grid>
 </Window>
