@@ -2,6 +2,11 @@
 using System.Windows;
 using Serilog;
 using MaterialDesignThemes.Wpf;
+using QRCoder;
+using System.Drawing;
+using System.Windows.Media.Imaging;
+using System.Windows.Media;
+using System.Windows.Controls;
 
 namespace StreamNode
 {
@@ -16,6 +21,27 @@ namespace StreamNode
         {
             InitializeComponent();
             this.DataContext = context;
+        }
+
+        private void QRCodeShow(object sender, RoutedEventArgs e)
+        {
+
+            QRCodeGenerator qrGenerator = new QRCodeGenerator();
+            QRCodeData qrCodeData = qrGenerator.CreateQrCode(App.httpServer.publicUrl, QRCodeGenerator.ECCLevel.Q);
+            QRCode qrCode = new QRCode(qrCodeData);
+            Bitmap qrCodeAsBitmap = qrCode.GetGraphic(20);
+
+            BitmapSource bs = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
+            qrCodeAsBitmap.GetHbitmap(),
+            IntPtr.Zero,
+            System.Windows.Int32Rect.Empty,
+            BitmapSizeOptions.FromWidthAndHeight(qrCodeAsBitmap.Width, qrCodeAsBitmap.Height));
+            ImageBrush ib = new ImageBrush(bs);
+            StackPanel QRCodePanel = this.FindName("QRCodePanel") as StackPanel;
+            QRCodePanel.Background = ib;
+
+            DialogHost QRCodeDialog = this.FindName("QRCodeDialog") as DialogHost;
+            QRCodeDialog.IsOpen = true;
         }
 
         private void SaveSettings(object sender, RoutedEventArgs e)

@@ -33,6 +33,7 @@
                                 <RowDefinition Height="3*"/>
                                 <RowDefinition Height="1*"/>
                                 <RowDefinition Height="2*"/>
+                                <RowDefinition Height="1*"/>
                             </Grid.RowDefinitions>
                             <Image Grid.Column="1" Width="500">
                                 <Image.Source>
@@ -43,8 +44,19 @@
                             <Viewbox Grid.Column="1" Grid.Row="2" Margin="20">
                                 <ToggleButton Checked="StartServer" Unchecked="StopServer" Style="{StaticResource MaterialDesignSwitchDarkToggleButton}" ToolTip="MaterialDesignSwitchDarkToggleButton" IsChecked="True" HorizontalAlignment="Center" VerticalAlignment="Center" />
                             </Viewbox>
+                            <Button Click="QRCodeShow" Grid.ColumnSpan="3" Grid.Row="3" Grid.Column="0">QRCode</Button>
                         </Grid>
                     </materialDesign:Card>
+                    <materialDesign:DialogHost DialogTheme="Inherit" IsOpen="False" x:Name="QRCodeDialog" CloseOnClickAway="True">
+                        <materialDesign:DialogHost.DialogContent>
+                            <StackPanel Margin="10">
+                                <StackPanel Margin="16" x:Name="QRCodePanel" Width="150" Height="150">
+                                </StackPanel>
+                                <TextBlock Text="QRCode" HorizontalAlignment="Center"/>
+                                <TextBlock HorizontalAlignment="Center" Text="{Binding UrlQRCode, Mode = OneWay}"/>
+                            </StackPanel>
+                        </materialDesign:DialogHost.DialogContent>
+                    </materialDesign:DialogHost>
                 </Grid>
             </TabItem>
             <TabItem Header="Settings">
