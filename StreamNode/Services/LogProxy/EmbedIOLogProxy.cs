@@ -1,3 +1,4 @@
+using Serilog.Context;
 using Swan.Logging;
 
 namespace StreamNode.Services.LogProxy
@@ -7,43 +8,46 @@ namespace StreamNode.Services.LogProxy
         public LogLevel LogLevel { get; }
         public void Log(LogMessageReceivedEventArgs logEvent)
         {
-            switch (logEvent.MessageType)
+            using (LogContext.PushProperty("Proxy", "EmbedIO"))
             {
-                case LogLevel.Info:
-                    {
-                        Serilog.Log.Logger.Information($" EmbedIO | {logEvent.Message}");
-                        break;
-                    }
-                case LogLevel.Warning:
-                    {
-                        Serilog.Log.Logger.Warning($" EmbedIO | {logEvent.Message}");
-                        break;
-                    }
-                case LogLevel.Error:
-                    {
-                        Serilog.Log.Logger.Error($" EmbedIO | {logEvent.Message}");
-                        break;
-                    }
-                case LogLevel.Fatal:
-                    {
-                        Serilog.Log.Logger.Fatal($" EmbedIO | {logEvent.Message}");
-                        break;
-                    }
-                case LogLevel.Debug:
-                    {
-                        Serilog.Log.Logger.Debug($" EmbedIO | {logEvent.Message}");
-                        break;
-                    }
-                case LogLevel.Trace:
-                    {
-                        Serilog.Log.Logger.Verbose($" EmbedIO | {logEvent.Message}");
-                        break;
-                    }
-                case LogLevel.None:
-                    {
-                        Serilog.Log.Logger.Information($" EmbedIO | {logEvent.Message}");
-                        break;
-                    }
+                switch (logEvent.MessageType)
+                {
+                    case LogLevel.Info:
+                        {
+                            Serilog.Log.Logger.Information(logEvent.Message);
+                            break;
+                        }
+                    case LogLevel.Warning:
+                        {
+                            Serilog.Log.Logger.Warning(logEvent.Message);
+                            break;
+                        }
+                    case LogLevel.Error:
+                        {
+                            Serilog.Log.Logger.Error(logEvent.Message);
+                            break;
+                        }
+                    case LogLevel.Fatal:
+                        {
+                            Serilog.Log.Logger.Fatal(logEvent.Message);
+                            break;
+                        }
+                    case LogLevel.Debug:
+                        {
+                            Serilog.Log.Logger.Debug(logEvent.Message);
+                            break;
+                        }
+                    case LogLevel.Trace:
+                        {
+                            Serilog.Log.Logger.Verbose(logEvent.Message);
+                            break;
+                        }
+                    case LogLevel.None:
+                        {
+                            Serilog.Log.Logger.Information(logEvent.Message);
+                            break;
+                        }
+                }
             }
         }
 

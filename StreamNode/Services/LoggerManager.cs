@@ -1,5 +1,7 @@
 using System;
 using Serilog;
+using Serilog.Configuration;
+using Serilog.Context;
 using StreamNode.Services.LogProxy;
 using StreamNodeEngine.Engine.Services;
 
@@ -7,7 +9,7 @@ namespace StreamNode.Services
 {
     public class LoggerManager
     {
-        private static String logTemplate = "{Timestamp:dd-MM-yyyy HH:mm:ss} | {Level} | {Message}{NewLine}{Exception}";
+        private static String logTemplate = "{Timestamp:dd-MM-yyyy HH:mm:ss} | {Level,-11} | {Proxy,-16} | {Message}{NewLine}{Exception}";
 
         ///
         /// File Size Limit of 20MB
@@ -17,8 +19,10 @@ namespace StreamNode.Services
         public static void Init()
         {
             Log.Logger = new LoggerConfiguration()
+                .Enrich.FromLogContext()
                 .WriteTo.Console(outputTemplate: logTemplate)
                 .WriteTo.File("log/StreamNode.log", rollOnFileSizeLimit: true, fileSizeLimitBytes: fileSizeLimit, outputTemplate: logTemplate)
+                .MinimumLevel.Debug()
                 .CreateLogger();
 
             // Register proxy to put swan logging into serilog
@@ -27,28 +31,31 @@ namespace StreamNode.Services
             // Register proxy to put StreamNodeEngine logging into serilog
             LogRedirector.OnLog += (msg, level) =>
             {
-                switch (level)
+                using (LogContext.PushProperty("Proxy", "StreamNodeEngine"))
                 {
-                    case LogRedirector.LogRedirectorLevel.INFO:
-                        {
-                            Log.Information($" StreamNodeEngine | {msg.ToString()}");
-                            break;
-                        }
-                    case LogRedirector.LogRedirectorLevel.WARN:
-                        {
-                            Log.Warning($" StreamNodeEngine | {msg.ToString()}");
-                            break;
-                        }
-                    case LogRedirector.LogRedirectorLevel.ERROR:
-                        {
-                            Log.Error($" StreamNodeEngine | {msg.ToString()}");
-                            break;
-                        }
-                    case LogRedirector.LogRedirectorLevel.DEBUG:
-                        {
-                            Log.Debug($" StreamNodeEngine | {msg.ToString()}");
-                            break;
-                        }
+                    switch (level)
+                    {
+                        case LogRedirector.LogRedirectorLevel.INFO:
+                            {
+                                Log.Information(msg.ToString());
+                                break;
+                            }
+                        case LogRedirector.LogRedirectorLevel.WARN:
+                            {
+                                Log.Warning(msg.ToString());
+                                break;
+                            }
+                        case LogRedirector.LogRedirectorLevel.ERROR:
+                            {
+                                Log.Error(msg.ToString());
+                                break;
+                            }
+                        case LogRedirector.LogRedirectorLevel.DEBUG:
+                            {
+                                Log.Debug(msg.ToString());
+                                break;
+                            }
+                    }
                 }
             };
         }
