@@ -7,6 +7,7 @@ using System.Drawing;
 using System.Windows.Media.Imaging;
 using System.Windows.Media;
 using System.Windows.Controls;
+using System.Diagnostics;
 
 namespace StreamNode
 {
@@ -22,7 +23,15 @@ namespace StreamNode
             InitializeComponent();
             this.DataContext = context;
         }
-
+        private void OpenApp(object sender, RoutedEventArgs e)
+        {
+            var psi = new ProcessStartInfo
+            {
+                FileName = App.httpServer.publicUrl,
+                UseShellExecute = true
+            };
+            Process.Start(psi);
+        }
         private void QRCodeShow(object sender, RoutedEventArgs e)
         {
 
