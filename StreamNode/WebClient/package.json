@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "streamnode-app",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "license": "MIT",
   "scripts": {
     "np-build": "preact build --no-prerender",

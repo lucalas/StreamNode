@@ -1,11 +1,11 @@
-<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <UseWPF>true</UseWPF>
     <Authors>Luca Taddeo</Authors>
     <RepositoryUrl>https://github.com/lucalas/StreamNode</RepositoryUrl>
-    <Version>0.0.1</Version>
+    <Version>0.1.0</Version>
     <Company/>
   </PropertyGroup>
   <PropertyGroup>

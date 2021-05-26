@@ -4,6 +4,8 @@
     <TargetFramework>netstandard2.1</TargetFramework>
     <AssemblyName>StreamNodeEngine</AssemblyName>
     <RootNamespace>StreamNodeEngine</RootNamespace>
+    <Version>0.1.0</Version>
+    <Company/>
   </PropertyGroup>
 
   <ItemGroup>
