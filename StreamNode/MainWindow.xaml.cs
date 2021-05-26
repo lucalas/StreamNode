@@ -27,7 +27,7 @@ namespace StreamNode
         {
             var psi = new ProcessStartInfo
             {
-                FileName = App.httpServer.publicUrl,
+                FileName = context.UrlQRCode,
                 UseShellExecute = true
             };
             Process.Start(psi);
@@ -36,7 +36,7 @@ namespace StreamNode
         {
 
             QRCodeGenerator qrGenerator = new QRCodeGenerator();
-            QRCodeData qrCodeData = qrGenerator.CreateQrCode(App.httpServer.publicUrl, QRCodeGenerator.ECCLevel.Q);
+            QRCodeData qrCodeData = qrGenerator.CreateQrCode(context.UrlQRCode, QRCodeGenerator.ECCLevel.Q);
             QRCode qrCode = new QRCode(qrCodeData);
             Bitmap qrCodeAsBitmap = qrCode.GetGraphic(20);
 
