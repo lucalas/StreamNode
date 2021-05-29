@@ -52,11 +52,11 @@ namespace StreamNodeEngine
 
         private void IOUpdateHandler(object sender, AudioServiceUpdate message)
         {
+            LogRedirector.info("Volumes changed");
             RemoteControlData WSData = new RemoteControlData();
             WSData.data = message.volumes;
             WSData.type = RemoteControlDataType.VolumeUpdate;
 
-            // TODO Send volumes update to client
             webSocketEngine.SendData(WSData);
         }
 

@@ -8,6 +8,7 @@ import CustomSidebar from './sidebar';
 
 import italy from  "../assets/flags/italy.svg"
 import united_states from  "../assets/flags/united-states.svg"
+import { version } from '../../package.json';
 
 
 const { Footer, Sider, Content } = Layout;
@@ -40,7 +41,7 @@ const App = () => {
 					</Content>
 					<Footer style={{ backgroundColor: "#001529" }}>
 						<Row justify="end">
-							<Col><Title level={5} style={{ color: "#fff" }}>v 1.0</Title></Col>
+							<Col><Title level={5} style={{ color: "#fff" }}>v {version}</Title></Col>
 						</Row>
 					</Footer>
 				</Layout>

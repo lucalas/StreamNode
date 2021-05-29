@@ -1,13 +1,8 @@
 ﻿using EmbedIO;
 using EmbedIO.Actions;
 using EmbedIO.Files;
-using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Net;
-using System.Net.Sockets;
 using System.Reflection;
-using System.Text;
 
 namespace StreamNode.Services
 {
@@ -16,8 +11,14 @@ namespace StreamNode.Services
         private static int PORT = 8000;
         WebServer server;
         int port;
+        public string url { get { return $"http://*:{port}"; } }
 
-        public HttpServerService() : this(PORT) {
+        // Default we use hostname
+        // TODO make ip configurable
+        public string publicUrl { get { return $"http://{Dns.GetHostName()}:{port}"; } }
+
+        public HttpServerService() : this(PORT)
+        {
         }
 
         public HttpServerService(int port)
@@ -29,7 +30,7 @@ namespace StreamNode.Services
         {
             server = new WebServer(o => o
             // TODO retrieve ip from network config 
-                    .WithUrlPrefix($"http://*:{port}")
+                    .WithUrlPrefix(url)
                     .WithMode(HttpListenerMode.EmbedIO))
                 .WithLocalSessionManager()
                 .WithZipFileStream("/", Assembly.GetExecutingAssembly().GetManifestResourceStream("StreamNode.wwwroot.WebClient.zip"), m => m
@@ -39,6 +40,11 @@ namespace StreamNode.Services
                 //.WithContentCaching(true))
                 .WithModule(new ActionModule("/", HttpVerbs.Any, ctx => ctx.SendDataAsync(new { Message = "Error" })));
             server.RunAsync();
+        }
+
+        public void Stop()
+        {
+            server.Dispose();
         }
     }
 }

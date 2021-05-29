@@ -1,8 +1,8 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using StreamNodeEngine.Engine;
 using StreamNodeEngine.Objects;
+using StreamNodeEngine.Engine.Services;
 
 namespace StreamNodeEngine.Engine
 {
@@ -11,7 +11,8 @@ namespace StreamNodeEngine.Engine
         private IRemoteControlEngine engine;
         private Dictionary<string, Func<RemoteControlData, RemoteControlData>> routes = new Dictionary<string, Func<RemoteControlData, RemoteControlData>>();
 
-        public RemoteControlService() {
+        public RemoteControlService()
+        {
             engine = new FleckEngine();
             engine.OnMessage += MessageHandler;
         }
@@ -30,6 +31,7 @@ namespace StreamNodeEngine.Engine
         public void AddRoute(string key, Func<RemoteControlData, RemoteControlData> route)
         {
             routes.Add(key, route);
+            LogRedirector.info($"WebSocket Route added [{key}]");
         }
 
         private string MessageHandler(object sender, RemoteControlOnMessageArgs message)
@@ -40,10 +42,12 @@ namespace StreamNodeEngine.Engine
 
             if (routes.TryGetValue(data.type, out route))
             {
+                LogRedirector.debug($"Received command to execute [{data.type}]");
                 data = route(data);
             }
             else
             {
+                LogRedirector.error($"Unknown command received [{data.type}]");
                 data = getUnknownCommand(data);
             }
 
@@ -53,7 +57,14 @@ namespace StreamNodeEngine.Engine
 
         public void SendData(object data2Send)
         {
-            engine.SendMessage(JsonConvert.SerializeObject(data2Send));
+            try
+            {
+                engine.SendMessage(JsonConvert.SerializeObject(data2Send));
+            }
+            catch (Exception ex)
+            {
+                LogRedirector.error($"Something wrong happened during execution of send data to web socket, exception: [{ex}]");
+            }
         }
 
         private RemoteControlData getUnknownCommand(RemoteControlData wsData)

@@ -9,10 +9,7 @@
 
     <Grid>
 
-        <dragablz:TabablzControl>
-            <dragablz:TabablzControl.InterTabController>
-                <dragablz:InterTabController/>
-            </dragablz:TabablzControl.InterTabController>
+        <dragablz:TabablzControl FixedHeaderCount="3">
             <TabItem Header="Server">
                 <Grid>
                     <Grid.ColumnDefinitions>
@@ -33,6 +30,7 @@
                                 <RowDefinition Height="3*"/>
                                 <RowDefinition Height="1*"/>
                                 <RowDefinition Height="2*"/>
+                                <RowDefinition Height="1*"/>
                             </Grid.RowDefinitions>
                             <Image Grid.Column="1" Width="500">
                                 <Image.Source>
@@ -43,8 +41,22 @@
                             <Viewbox Grid.Column="1" Grid.Row="2" Margin="20">
                                 <ToggleButton Checked="StartServer" Unchecked="StopServer" Style="{StaticResource MaterialDesignSwitchDarkToggleButton}" ToolTip="MaterialDesignSwitchDarkToggleButton" IsChecked="True" HorizontalAlignment="Center" VerticalAlignment="Center" />
                             </Viewbox>
+                            <StackPanel Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3" Orientation="Horizontal" HorizontalAlignment="Center">
+                                <Button Click="QRCodeShow" Margin="0,0,4,0" Width="100">QRCode</Button>
+                                <Button Click="OpenApp" Margin="4,0,0,0" Width="100">Open</Button>
+                            </StackPanel>
                         </Grid>
                     </materialDesign:Card>
+                    <materialDesign:DialogHost DialogTheme="Inherit" IsOpen="False" x:Name="QRCodeDialog" CloseOnClickAway="True">
+                        <materialDesign:DialogHost.DialogContent>
+                            <StackPanel Margin="10">
+                                <TextBlock Text="QRCode" HorizontalAlignment="Center"/>
+                                <StackPanel Margin="16" x:Name="QRCodePanel" Width="150" Height="150">
+                                </StackPanel>
+                                <TextBox Background="Transparent" BorderThickness="0" IsReadOnly="True" TextWrapping="Wrap" HorizontalAlignment="Center" Text="{Binding UrlQRCode, Mode = OneWay}"/>
+                            </StackPanel>
+                        </materialDesign:DialogHost.DialogContent>
+                    </materialDesign:DialogHost>
                 </Grid>
             </TabItem>
             <TabItem Header="Settings">
@@ -56,12 +68,12 @@
                                 <ColumnDefinition Width="1*"/>
                             </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="30"/>
-                                <RowDefinition Height="60"/>
-                                <RowDefinition Height="50"/>
-                                <RowDefinition Height="30"/>
-                                <RowDefinition Height="30"/>
-                                <RowDefinition Height="30"/>
+                                <RowDefinition Height="3*"/>
+                                <RowDefinition Height="6*"/>
+                                <RowDefinition Height="5*"/>
+                                <RowDefinition Height="3*"/>
+                                <RowDefinition Height="3*"/>
+                                <RowDefinition Height="3*"/>
                             </Grid.RowDefinitions>
                             <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Style="{StaticResource MaterialDesignHeadline5TextBlock}" Text="OBS Configuration" />
 
@@ -71,14 +83,16 @@
 
                             <TextBox Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Margin="2" materialDesign:HintAssist.Hint="OBS Password" materialDesign:HintAssist.HelperText="Insert OBS password (empty if none)" Name="pwd" Text="{Binding PwdValue, Mode = TwoWay}"/>
 
-                            <Button Click="SaveSettings" Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2">Save</Button>
+                            <Viewbox Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2">
+                                <Button Click="SaveSettings" Width="100">Save</Button>
+                            </Viewbox>
                         </Grid>
                     </materialDesign:Card>
-
-                    <materialDesign:Snackbar x:Name="SaveResult" MessageQueue="{materialDesign:MessageQueue}"/>
-                    <materialDesign:Snackbar x:Name="WarningResult" MessageQueue="{materialDesign:MessageQueue}"/>
                 </Grid>
             </TabItem>
         </dragablz:TabablzControl>
+        <materialDesign:Snackbar x:Name="SaveResult" MessageQueue="{materialDesign:MessageQueue}"/>
+        <materialDesign:Snackbar x:Name="WarningResult" MessageQueue="{materialDesign:MessageQueue}"/>
+        <materialDesign:Snackbar x:Name="ErrorResult" MessageQueue="{materialDesign:MessageQueue}"/>
     </Grid>
 </Window>
