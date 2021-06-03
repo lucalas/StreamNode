@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Config.Net;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -9,21 +10,17 @@ namespace StreamNode.Services.Settings
         /*
             Settings Class, this is required because we need to instatiate the interface
          */
+         
+        [Option(DefaultValue = 0)]
         public int WebSocketPort { get; set; }
-
+        [Option(DefaultValue = "")]
         public string HttpServerIp { get; set; }
-
+        [Option(DefaultValue = 0)]
         public int HttpServerPort { get; set; }
 
         // TODO add the other default settings
 
 
-        public Settings() { }
-        public Settings(int wsPort, string httpIp, int httpPort)
-        {
-            this.WebSocketPort = wsPort;
-            this.HttpServerIp = httpIp;
-            this.HttpServerPort = httpPort;
-        }
+        public Settings() {}
     }
 }

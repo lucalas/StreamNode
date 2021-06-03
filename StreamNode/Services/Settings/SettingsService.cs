@@ -6,10 +6,6 @@ namespace StreamNode.Services.Settings
 {
     public class SettingsService
     {
-        private const string _HTTP_SERVER_IP = "0.0.0.0";
-        private const int _HTTP_SERVER_PORT = 0;
-        private const int _WEBSOCKET_PORT = 0;
-        // TODO add the other default settings
 
         private string PATH = "config.json";
         public ISettings settings { get; set; }
@@ -24,7 +20,7 @@ namespace StreamNode.Services.Settings
         {
             if(!File.Exists(this.PATH))
             {
-                this.settings = new Settings(_WEBSOCKET_PORT, _HTTP_SERVER_IP, _HTTP_SERVER_PORT);
+                this.settings = new Settings();
                 SaveSettings();
             }
         }

@@ -5,6 +5,7 @@
         /**
             Interface for Config Library to Read Settings
          */
+         [Option(DefaultValue=0)]
         int WebSocketPort { get; set; }
         string HttpServerIp { get; set; }
         int HttpServerPort { get; set; }
