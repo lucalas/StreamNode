@@ -5,6 +5,7 @@ using StreamNodeEngine.Engine;
 using StreamNodeEngine.Objects;
 using StreamNodeEngine.Utils;
 using StreamNodeEngine.Engine.Services;
+using StreamNodeEngine.Engine.Services.Obs;
 
 namespace StreamNodeEngine
 {
@@ -23,8 +24,8 @@ namespace StreamNodeEngine
             initRoutes();
         }
 
-        public void ConfigOBSWebSocket(string ip, int port, string pwd) {
-            obsService.Configure(ip, port, pwd);
+        public void ConfigOBSWebSocket(IObsSettings settings) {
+            obsService.settings = settings;
         }
 
         public void Connect() {

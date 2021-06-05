@@ -62,7 +62,7 @@ namespace StreamNode
 
             if (!App.engine.isConnected)
             {
-                App.engine.ConfigOBSWebSocket(settings.ObsIp, settings.ObsPort, settings.ObsPassword);
+                App.engine.ConfigOBSWebSocket(settings);
                 App.settingsService.SaveSettings();
                 Log.Information("Settings saved successfully [{@settings}]", serverContext);
                 Alert(SaveResult, "Saved successfully");
@@ -76,7 +76,7 @@ namespace StreamNode
                         Log.Information("Saving settings require server restart");
                         App.engine.Disconnect();
                         Log.Debug("StreamNode engine disconnected");
-                        App.engine.ConfigOBSWebSocket(settings.ObsIp, settings.ObsPort, settings.ObsPassword);
+                        App.engine.ConfigOBSWebSocket(settings);
                         App.engine.Connect();
                         Log.Information("Settings saved successfully [{@settings}]", settings);
                         Log.Debug("StreamNode engine connected");

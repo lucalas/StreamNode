@@ -3,16 +3,15 @@ using OBSWebsocketDotNet.Types;
 using System;
 using System.Threading.Tasks;
 
-namespace StreamNodeEngine.Engine.Services
+namespace StreamNodeEngine.Engine.Services.Obs
 {
     public class OBSService
     {
 
+        public IObsSettings settings {get; set;}
         private OBSWebsocket obs;
-        private string ip = "127.0.0.1";
         private int port = 4444;
-        public String url { get { return $"ws://{ip}:{port}"; } }
-        private String password = "";
+        public String url { get { return $"ws://{settings.ObsIp}:{settings.ObsPort}"; } }
         private EventHandler _connected;
 
         private Task ReconnectObs;
@@ -34,22 +33,13 @@ namespace StreamNodeEngine.Engine.Services
             obs = new OBSWebsocket();
             obs.Connected += onConnect;
             obs.Disconnected += onDisconnect;
-            // Default configuration
-            Configure(ip, port, password);
-        }
-
-        public void Configure(string _ip, int _port, string pwd)
-        {
-            ip = _ip;
-            port = _port;
-            password = pwd;
         }
 
         public void Connect()
         {
             try
             {
-                obs.Connect(url, password);
+                obs.Connect(url, settings.ObsPassword);
                 // AuthFailureException & ErrorResponseException possible exceptions
             }
             catch (Exception ex)
