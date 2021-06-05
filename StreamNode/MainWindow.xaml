@@ -59,7 +59,7 @@
                     </materialDesign:DialogHost>
                 </Grid>
             </TabItem>
-            <TabItem Header="Settings">
+            <TabItem Header="Settings" Name="SettingsTab">
                 <Grid>
                     <materialDesign:Card Padding="32" Margin="16">
                         <Grid>
@@ -77,11 +77,11 @@
                             </Grid.RowDefinitions>
                             <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Style="{StaticResource MaterialDesignHeadline5TextBlock}" Text="OBS Configuration" />
 
-                            <TextBox Grid.Row="1" Grid.Column="0" Margin="2,32,2,2" materialDesign:HintAssist.Hint="OBS IP" materialDesign:HintAssist.HelperText="Insert OBS ip" Name="ip" Text="{Binding IpValue, Mode = TwoWay}"/>
+                            <TextBox Grid.Row="1" Grid.Column="0" Margin="2,32,2,2" materialDesign:HintAssist.Hint="OBS IP" materialDesign:HintAssist.HelperText="Insert OBS ip" Name="ip" Text="{Binding ObsIp, Mode = TwoWay}"/>
 
-                            <TextBox Grid.Row="1" Grid.Column="1" Margin="2,32,2,2" materialDesign:HintAssist.Hint="OBS Port" materialDesign:HintAssist.HelperText="Insert OBS port" Name="port" Text="{Binding PortValue, Mode = TwoWay}"/>
+                            <TextBox Grid.Row="1" Grid.Column="1" Margin="2,32,2,2" materialDesign:HintAssist.Hint="OBS Port" materialDesign:HintAssist.HelperText="Insert OBS port" Name="port" Text="{Binding ObsPort, Mode = TwoWay}"/>
 
-                            <TextBox Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Margin="2" materialDesign:HintAssist.Hint="OBS Password" materialDesign:HintAssist.HelperText="Insert OBS password (empty if none)" Name="pwd" Text="{Binding PwdValue, Mode = TwoWay}"/>
+                            <TextBox Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Margin="2" materialDesign:HintAssist.Hint="OBS Password" materialDesign:HintAssist.HelperText="Insert OBS password (empty if none)" Name="pwd" Text="{Binding ObsPassword, Mode = TwoWay}"/>
 
                             <Viewbox Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2">
                                 <Button Click="SaveSettings" Width="100">Save</Button>

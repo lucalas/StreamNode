@@ -8,27 +8,18 @@ namespace StreamNode.Services.Settings
     {
 
         private string PATH = "config.json";
-        public ISettings settings { get; set; }
+        public ISettings settings { get {return _settings;} }
+        private ISettings _settings { get; set; }
 
         public SettingsService()
         {
-            Init();
-            GetSettings();
-        }
-
-        private void Init()
-        {
-            if(!File.Exists(this.PATH))
-            {
-                this.settings = new Settings();
-                SaveSettings();
-            }
+            InitSettings();
         }
         
 
-        private void GetSettings()
+        private void InitSettings()
         {
-            this.settings = new ConfigurationBuilder<ISettings>().UseJsonFile(this.PATH).Build();
+            this._settings = new ConfigurationBuilder<ISettings>().UseJsonFile(this.PATH).Build();
         }
 
         public void SaveSettings()
@@ -40,7 +31,7 @@ namespace StreamNode.Services.Settings
                 sw.WriteLine(json);
             }
 
-            this.GetSettings();
+            this.InitSettings();
         }
     }
 }

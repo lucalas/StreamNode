@@ -8,6 +8,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Media;
 using System.Windows.Controls;
 using System.Diagnostics;
+using StreamNode.Services.Settings;
 
 namespace StreamNode
 {
@@ -16,18 +17,20 @@ namespace StreamNode
     /// </summary>
     public partial class MainWindow : Window
     {
-        private MainWindowContext context = new MainWindowContext();
+        private ServerContext serverContext = new ServerContext();
 
         public MainWindow()
         {
             InitializeComponent();
-            this.DataContext = context;
+            this.DataContext = serverContext;
+            TabItem settingsTab = this.FindName("SettingsTab") as TabItem;
+            settingsTab.DataContext = App.settingsService.settings;
         }
         private void OpenApp(object sender, RoutedEventArgs e)
         {
             var psi = new ProcessStartInfo
             {
-                FileName = context.UrlQRCode,
+                FileName = serverContext.UrlQRCode,
                 UseShellExecute = true
             };
             Process.Start(psi);
@@ -36,7 +39,7 @@ namespace StreamNode
         {
 
             QRCodeGenerator qrGenerator = new QRCodeGenerator();
-            QRCodeData qrCodeData = qrGenerator.CreateQrCode(context.UrlQRCode, QRCodeGenerator.ECCLevel.Q);
+            QRCodeData qrCodeData = qrGenerator.CreateQrCode(serverContext.UrlQRCode, QRCodeGenerator.ECCLevel.Q);
             QRCode qrCode = new QRCode(qrCodeData);
             Bitmap qrCodeAsBitmap = qrCode.GetGraphic(20);
 
@@ -55,10 +58,13 @@ namespace StreamNode
 
         private void SaveSettings(object sender, RoutedEventArgs e)
         {
+            ISettings settings = App.settingsService.settings;
+
             if (!App.engine.isConnected)
             {
-                App.engine.ConfigOBSWebSocket(context.IpValue, context.PortValue, context.PwdValue);
-                Log.Information("Settings saved successfully [{@context}]", context);
+                App.engine.ConfigOBSWebSocket(settings.ObsIp, settings.ObsPort, settings.ObsPassword);
+                App.settingsService.SaveSettings();
+                Log.Information("Settings saved successfully [{@settings}]", serverContext);
                 Alert(SaveResult, "Saved successfully");
             }
             else
@@ -70,9 +76,9 @@ namespace StreamNode
                         Log.Information("Saving settings require server restart");
                         App.engine.Disconnect();
                         Log.Debug("StreamNode engine disconnected");
-                        App.engine.ConfigOBSWebSocket(context.IpValue, context.PortValue, context.PwdValue);
+                        App.engine.ConfigOBSWebSocket(settings.ObsIp, settings.ObsPort, settings.ObsPassword);
                         App.engine.Connect();
-                        Log.Information("Settings saved successfully [{@context}]", context);
+                        Log.Information("Settings saved successfully [{@settings}]", settings);
                         Log.Debug("StreamNode engine connected");
                     });
             }

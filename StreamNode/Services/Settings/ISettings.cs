@@ -1,5 +1,4 @@
-﻿using Config.Net;
-
+﻿using System.ComponentModel;
 namespace StreamNode.Services.Settings
 {
     public interface ISettings
@@ -7,10 +6,22 @@ namespace StreamNode.Services.Settings
         /**
          * Interface for Config Library to Read Settings
          */
-        [Option(DefaultValue=0)]
+        [DefaultValue(8189)]
         int WebSocketPort { get; set; }
+
+        [DefaultValue("*")]
         string HttpServerIp { get; set; }
+
+        [DefaultValue(8000)]
         int HttpServerPort { get; set; }
-        // TODO add the other default settings
+
+        [DefaultValue("127.0.0.1")]
+        string ObsIp {get; set;}
+
+        [DefaultValue(4444)]
+        int ObsPort {get; set;}
+
+        [DefaultValue("")]
+        string ObsPassword {get; set;}
     }
 }

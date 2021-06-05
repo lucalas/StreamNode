@@ -1,6 +1,7 @@
 ﻿using System.Windows;
 using StreamNode.Services;
 using Serilog;
+using StreamNode.Services.Settings;
 
 namespace StreamNode
 {
@@ -9,6 +10,7 @@ namespace StreamNode
     /// </summary>
     public partial class App : Application
     {
+        public static SettingsService settingsService { get; } = new SettingsService();
         public static StreamNodeEngine.StreamNodeSocketManager engine { get; } = new StreamNodeEngine.StreamNodeSocketManager();
         public static HttpServerService httpServer { get; } = new HttpServerService();
         public App()
