@@ -14,5 +14,6 @@
     <PackageReference Include="System.Management" Version="5.0.0"/>
     <PackageReference Include="WebSocketSharp-netstandard" Version="1.0.1"/>
     <PackageReference Include="obs-websocket-dotnet" Version="4.9.0"/>
+    <PackageReference Include="Config.Net" Version="4.15.0"/>
   </ItemGroup>
 </Project>

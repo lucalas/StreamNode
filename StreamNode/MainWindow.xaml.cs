@@ -23,8 +23,7 @@ namespace StreamNode
         {
             InitializeComponent();
             this.DataContext = serverContext;
-            TabItem settingsTab = this.FindName("SettingsTab") as TabItem;
-            settingsTab.DataContext = App.settingsService.settings;
+            SettingsTab.DataContext = App.settingsService.settings;
         }
         private void OpenApp(object sender, RoutedEventArgs e)
         {
@@ -49,10 +48,8 @@ namespace StreamNode
             System.Windows.Int32Rect.Empty,
             BitmapSizeOptions.FromWidthAndHeight(qrCodeAsBitmap.Width, qrCodeAsBitmap.Height));
             ImageBrush ib = new ImageBrush(bs);
-            StackPanel QRCodePanel = this.FindName("QRCodePanel") as StackPanel;
             QRCodePanel.Background = ib;
 
-            DialogHost QRCodeDialog = this.FindName("QRCodeDialog") as DialogHost;
             QRCodeDialog.IsOpen = true;
         }
 
@@ -78,8 +75,10 @@ namespace StreamNode
                         Log.Debug("StreamNode engine disconnected");
                         App.engine.ConfigOBSWebSocket(settings);
                         App.engine.Connect();
+                        App.settingsService.SaveSettings();
                         Log.Information("Settings saved successfully [{@settings}]", settings);
                         Log.Debug("StreamNode engine connected");
+                        Alert(SaveResult, "Configurations saved successfully, server restarted");
                     });
             }
         }

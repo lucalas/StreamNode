@@ -1,4 +1,5 @@
-﻿using OBSWebsocketDotNet;
+﻿using Config.Net;
+using OBSWebsocketDotNet;
 using OBSWebsocketDotNet.Types;
 using System;
 using System.Threading.Tasks;
@@ -30,6 +31,7 @@ namespace StreamNodeEngine.Engine.Services.Obs
 
         public OBSService()
         {
+            settings = new ConfigurationBuilder<IObsSettings>().Build();
             obs = new OBSWebsocket();
             obs.Connected += onConnect;
             obs.Disconnected += onDisconnect;

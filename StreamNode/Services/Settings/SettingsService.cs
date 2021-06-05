@@ -24,7 +24,7 @@ namespace StreamNode.Services.Settings
 
         public void SaveSettings()
         {
-            string json = JsonConvert.SerializeObject(this.settings);
+            string json = JsonConvert.SerializeObject(this.settings, Formatting.Indented);
 
             using (StreamWriter sw = new StreamWriter(this.PATH))
             {
