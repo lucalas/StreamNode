@@ -64,7 +64,7 @@ namespace StreamNode
             {
                 App.engine.ConfigOBSWebSocket(settings);
                 App.settingsService.SaveSettings();
-                Log.Information("Settings saved successfully [{@settings}]", serverContext);
+                Log.Information("Settings saved successfully [{@settings}]", settings);
                 Alert(SaveResult, "Saved successfully");
             }
             else
