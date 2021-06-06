@@ -6,6 +6,7 @@ using StreamNodeEngine.Objects;
 using StreamNodeEngine.Utils;
 using StreamNodeEngine.Engine.Services;
 using StreamNodeEngine.Engine.Services.Obs;
+using StreamNodeEngine.Engine.Services.WebSocket;
 
 namespace StreamNodeEngine
 {
@@ -26,6 +27,10 @@ namespace StreamNodeEngine
 
         public void ConfigOBSWebSocket(IObsSettings settings) {
             obsService.settings = settings;
+        }
+
+        public void ConfigWebSocket(IWebSocketSettings settings) {
+            webSocketEngine.settings = settings;
         }
 
         public void Connect() {

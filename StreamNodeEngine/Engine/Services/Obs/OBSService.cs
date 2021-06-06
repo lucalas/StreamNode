@@ -9,10 +9,10 @@ namespace StreamNodeEngine.Engine.Services.Obs
     public class OBSService
     {
 
-        public IObsSettings settings {get; set;}
-        private OBSWebsocket obs;
-        private int port = 4444;
-        public String url { get { return $"ws://{settings.ObsIp}:{settings.ObsPort}"; } }
+            // Use default settings
+        public IObsSettings settings {get; set;} = new ConfigurationBuilder<IObsSettings>().Build();
+        private OBSWebsocket obs = new OBSWebsocket();
+        public String url { get => $"ws://{settings.ObsIp}:{settings.ObsPort}"; }
         private EventHandler _connected;
 
         private Task ReconnectObs;
@@ -31,8 +31,6 @@ namespace StreamNodeEngine.Engine.Services.Obs
 
         public OBSService()
         {
-            settings = new ConfigurationBuilder<IObsSettings>().Build();
-            obs = new OBSWebsocket();
             obs.Connected += onConnect;
             obs.Disconnected += onDisconnect;
         }

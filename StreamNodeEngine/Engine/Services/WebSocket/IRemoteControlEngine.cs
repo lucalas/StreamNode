@@ -1,9 +1,10 @@
 ﻿using StreamNodeEngine.Objects;
 
-namespace StreamNodeEngine.Engine
+namespace StreamNodeEngine.Engine.Services.WebSocket
 {
     interface IRemoteControlEngine
     {
+        IWebSocketSettings settings {get; set;}
         delegate string OnMessageEventHandler(object sender, RemoteControlOnMessageArgs args);
         event OnMessageEventHandler OnMessage;
 
