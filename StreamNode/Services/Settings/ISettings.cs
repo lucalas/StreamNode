@@ -1,16 +1,16 @@
-﻿using Config.Net;
+﻿using System.ComponentModel;
+using StreamNodeEngine.Engine.Services.Obs;
+using StreamNodeEngine.Engine.Services.WebSocket;
 
 namespace StreamNode.Services.Settings
 {
-    public interface ISettings
+    public interface ISettings : IObsSettings, IWebSocketSettings
     {
-        /**
-         * Interface for Config Library to Read Settings
-         */
-        [Option(DefaultValue=0)]
-        int WebSocketPort { get; set; }
+
+        [DefaultValue("*")]
         string HttpServerIp { get; set; }
+
+        [DefaultValue(8000)]
         int HttpServerPort { get; set; }
-        // TODO add the other default settings
     }
 }

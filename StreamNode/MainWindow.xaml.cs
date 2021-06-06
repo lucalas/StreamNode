@@ -8,6 +8,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Media;
 using System.Windows.Controls;
 using System.Diagnostics;
+using StreamNode.Services.Settings;
 
 namespace StreamNode
 {
@@ -16,18 +17,19 @@ namespace StreamNode
     /// </summary>
     public partial class MainWindow : Window
     {
-        private MainWindowContext context = new MainWindowContext();
+        private ServerContext serverContext = new ServerContext();
 
         public MainWindow()
         {
             InitializeComponent();
-            this.DataContext = context;
+            this.DataContext = serverContext;
+            SettingsTab.DataContext = App.settingsService.settings;
         }
         private void OpenApp(object sender, RoutedEventArgs e)
         {
             var psi = new ProcessStartInfo
             {
-                FileName = context.UrlQRCode,
+                FileName = serverContext.UrlQRCode,
                 UseShellExecute = true
             };
             Process.Start(psi);
@@ -36,7 +38,7 @@ namespace StreamNode
         {
 
             QRCodeGenerator qrGenerator = new QRCodeGenerator();
-            QRCodeData qrCodeData = qrGenerator.CreateQrCode(context.UrlQRCode, QRCodeGenerator.ECCLevel.Q);
+            QRCodeData qrCodeData = qrGenerator.CreateQrCode(serverContext.UrlQRCode, QRCodeGenerator.ECCLevel.Q);
             QRCode qrCode = new QRCode(qrCodeData);
             Bitmap qrCodeAsBitmap = qrCode.GetGraphic(20);
 
@@ -46,19 +48,20 @@ namespace StreamNode
             System.Windows.Int32Rect.Empty,
             BitmapSizeOptions.FromWidthAndHeight(qrCodeAsBitmap.Width, qrCodeAsBitmap.Height));
             ImageBrush ib = new ImageBrush(bs);
-            StackPanel QRCodePanel = this.FindName("QRCodePanel") as StackPanel;
             QRCodePanel.Background = ib;
 
-            DialogHost QRCodeDialog = this.FindName("QRCodeDialog") as DialogHost;
             QRCodeDialog.IsOpen = true;
         }
 
         private void SaveSettings(object sender, RoutedEventArgs e)
         {
+            ISettings settings = App.settingsService.settings;
+
             if (!App.engine.isConnected)
             {
-                App.engine.ConfigOBSWebSocket(context.IpValue, context.PortValue, context.PwdValue);
-                Log.Information("Settings saved successfully [{@context}]", context);
+                App.engine.ConfigOBSWebSocket(settings);
+                App.settingsService.SaveSettings();
+                Log.Information("Settings saved successfully [{@settings}]", settings);
                 Alert(SaveResult, "Saved successfully");
             }
             else
@@ -70,10 +73,12 @@ namespace StreamNode
                         Log.Information("Saving settings require server restart");
                         App.engine.Disconnect();
                         Log.Debug("StreamNode engine disconnected");
-                        App.engine.ConfigOBSWebSocket(context.IpValue, context.PortValue, context.PwdValue);
+                        App.engine.ConfigOBSWebSocket(settings);
                         App.engine.Connect();
-                        Log.Information("Settings saved successfully [{@context}]", context);
+                        App.settingsService.SaveSettings();
+                        Log.Information("Settings saved successfully [{@settings}]", settings);
                         Log.Debug("StreamNode engine connected");
+                        Alert(SaveResult, "Configurations saved successfully, server restarted");
                     });
             }
         }

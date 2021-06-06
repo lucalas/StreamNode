@@ -1,18 +1,18 @@
-﻿using OBSWebsocketDotNet;
+﻿using Config.Net;
+using OBSWebsocketDotNet;
 using OBSWebsocketDotNet.Types;
 using System;
 using System.Threading.Tasks;
 
-namespace StreamNodeEngine.Engine.Services
+namespace StreamNodeEngine.Engine.Services.Obs
 {
     public class OBSService
     {
 
-        private OBSWebsocket obs;
-        private string ip = "127.0.0.1";
-        private int port = 4444;
-        public String url { get { return $"ws://{ip}:{port}"; } }
-        private String password = "";
+            // Use default settings
+        public IObsSettings settings {get; set;} = new ConfigurationBuilder<IObsSettings>().Build();
+        private OBSWebsocket obs = new OBSWebsocket();
+        public String url { get => $"ws://{settings.ObsIp}:{settings.ObsPort}"; }
         private EventHandler _connected;
 
         private Task ReconnectObs;
@@ -31,25 +31,15 @@ namespace StreamNodeEngine.Engine.Services
 
         public OBSService()
         {
-            obs = new OBSWebsocket();
             obs.Connected += onConnect;
             obs.Disconnected += onDisconnect;
-            // Default configuration
-            Configure(ip, port, password);
-        }
-
-        public void Configure(string _ip, int _port, string pwd)
-        {
-            ip = _ip;
-            port = _port;
-            password = pwd;
         }
 
         public void Connect()
         {
             try
             {
-                obs.Connect(url, password);
+                obs.Connect(url, settings.ObsPassword);
                 // AuthFailureException & ErrorResponseException possible exceptions
             }
             catch (Exception ex)

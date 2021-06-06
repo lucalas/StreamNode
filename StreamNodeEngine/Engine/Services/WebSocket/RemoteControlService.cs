@@ -2,18 +2,25 @@
 using System;
 using System.Collections.Generic;
 using StreamNodeEngine.Objects;
-using StreamNodeEngine.Engine.Services;
+using Config.Net;
 
-namespace StreamNodeEngine.Engine
+namespace StreamNodeEngine.Engine.Services.WebSocket
 {
     public class RemoteControlService
     {
-        private IRemoteControlEngine engine;
+        public IWebSocketSettings settings
+        {
+            get => _settings;
+            set { _settings = value; engine.settings = value; }
+        }
+
+        private IWebSocketSettings _settings;
+        private IRemoteControlEngine engine = new FleckEngine();
         private Dictionary<string, Func<RemoteControlData, RemoteControlData>> routes = new Dictionary<string, Func<RemoteControlData, RemoteControlData>>();
 
         public RemoteControlService()
         {
-            engine = new FleckEngine();
+            settings = new ConfigurationBuilder<IWebSocketSettings>().Build();
             engine.OnMessage += MessageHandler;
         }
 

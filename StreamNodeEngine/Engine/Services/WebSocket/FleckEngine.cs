@@ -1,19 +1,17 @@
 ﻿using Fleck;
 using StreamNodeEngine.Objects;
-using static StreamNodeEngine.Engine.IRemoteControlEngine;
-using StreamNodeEngine.Engine.Services;
+using static StreamNodeEngine.Engine.Services.WebSocket.IRemoteControlEngine;
 
-namespace StreamNodeEngine.Engine
+namespace StreamNodeEngine.Engine.Services.WebSocket
 {
     class FleckEngine : IRemoteControlEngine
     {
-        private string ip = "0.0.0.0";
-        private string port = "8189";
+        public IWebSocketSettings settings {get; set;}
         private WebSocketServer _server;
         private IWebSocketConnection _socket;
         public event OnMessageEventHandler OnMessage;
 
-        public string wsUrl { get { return $"ws://{ip}:{port}"; } }
+        public string wsUrl { get { return $"ws://{settings.WebSocketIp}:{settings.WebSocketPort}"; } }
 
         public void Connect()
         {
