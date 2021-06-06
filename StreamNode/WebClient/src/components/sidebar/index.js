@@ -1,7 +1,8 @@
 import { Component } from 'preact';
-import { Layout, Menu } from 'antd';
+import { Layout, Menu, Image, Row } from 'antd';
 import { Link } from 'preact-router/match';
 import { DesktopOutlined, BlockOutlined, CustomerServiceOutlined } from '@ant-design/icons';
+import Logo from '../../assets/icons/logo.png';
 
 //LANGUAGES
 import languages from '../../data/languages.json'
@@ -33,6 +34,9 @@ class CustomSidebar extends Component {
         if(!this.state.hideSidebar) {
             return (
                 <Sider collapsible defaultCollapsed>
+                    <Row type="flex" justify="center" align="middle">
+                        <Image src={Logo} width={70} preview={false} style={{padding:7}}/>
+                    </Row>
                     <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline">
                         <Menu.Item key="1" icon={<DesktopOutlined />}>
                             <Link href="/">Dashboard</Link>
