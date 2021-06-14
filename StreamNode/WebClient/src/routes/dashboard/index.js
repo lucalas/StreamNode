@@ -123,13 +123,13 @@ class Dashboard extends Component {
                     lg={this.state.isVertical ? 4 : 8}
                     xl={this.state.isVertical ? 2 : 6}
                     xxl={this.state.isVertical ? 2 : 4}
-                    hidden={audio.hidden}
+                    hidden={!this.state.isEditable && audio.hidden}
                     id="volumeBox"
                 >
                     <VolumeBox onVolumeChange={this.onVolumeChange.bind(this)}
                         onMutePressed={this.onMutePressed.bind(this)}
                         title={audio.name} volume={audio.volume} deviceName={audio.device} output={audio.output} defaultMute={audio.mute} icon={audio.icon}
-                        onHideEvent={hide => { audio.hidden = hide }}
+                        onHideEvent={hide => { audio.hidden = hide}}
                         isVertical={this.state.isVertical}
                         isEditable={this.state.isEditable}
                         dropEvent={this.onDroppedEvent.bind(this)}
