@@ -96,7 +96,7 @@ class VolumeBox extends Component {
 
         const extra = this.props.isEditable ? (
             <Dropdown overlay={this.getMenu()}>
-                <EllipsisOutlined style={"transform: rotate(90deg);"} />
+                <EllipsisOutlined style={{fontSize:'150%'}} />
             </Dropdown>
 
         ) : null;
