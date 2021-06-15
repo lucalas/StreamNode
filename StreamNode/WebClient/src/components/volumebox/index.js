@@ -104,7 +104,7 @@ class VolumeBox extends Component {
         const title = (
             <div>
                 <Row>
-                    <Col span={22}><Paragraph ellipsis>{this.props.title}</Paragraph></Col>
+                    <Col span={22}><Paragraph ellipsis style={{marginBottom:0, color: "white"}}>{this.props.title}</Paragraph></Col>
                     <Col span={2} hidden={!this.props.isEditable || !this.props.isHide}><div width="100%"><Image src={HideIcon} width={20} preview={false} /></div></Col>
                 </Row>
                 <Row><Text style={{ fontSize: 10 }}>{this.props.deviceName}</Text></Row>
