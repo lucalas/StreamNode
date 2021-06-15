@@ -18,8 +18,7 @@ class VolumeBox extends Component {
         this.state = {
             mute: this.props.defaultMute,
             audioLocked: false,
-            micLocked: false,
-            hide: false
+            micLocked: false
         }
     }
 
@@ -63,14 +62,13 @@ class VolumeBox extends Component {
     }
 
     setHideValue(value) {
-        this.setState({ hide: value });
         this.props.onHideEvent(value);
     }
 
     getMenu() {
         return (<Menu>
             <Menu.Item>
-                <Text onClick={event => this.setHideValue(!this.state.hide)}>Hide me</Text>
+                <Text onClick={event => this.setHideValue(!this.props.isHide)}>{this.props.isHide ? "Show me" : "Hide me"}</Text>
             </Menu.Item>
         </Menu>)
     }
@@ -107,7 +105,7 @@ class VolumeBox extends Component {
             <div>
                 <Row>
                     <Col span={22}><Paragraph ellipsis>{this.props.title}</Paragraph></Col>
-                    <Col span={2} hidden={!this.props.isEditable || !this.state.hide}><div width="100%"><Image src={HideIcon} width={20} preview={false} /></div></Col>
+                    <Col span={2} hidden={!this.props.isEditable || !this.props.isHide}><div width="100%"><Image src={HideIcon} width={20} preview={false} /></div></Col>
                 </Row>
                 <Row><Text style={{ fontSize: 10 }}>{this.props.deviceName}</Text></Row>
             </div>);

@@ -38,6 +38,16 @@ class Dashboard extends Component {
         };
     }
 
+    setVolumes(volume, newValues, id) {
+        let newVolumes = [...this.state.volumes];
+        let newVolume = {...volume, ...newValues};
+
+        newVolumes[id] = newVolume;
+
+        this.setState({volumes: newVolumes});
+
+    }
+
     componentDidMount() {
         WsSocket.addVolumeUpdateHandler(this.getVolumeUpdate.bind(this));
 
@@ -129,7 +139,8 @@ class Dashboard extends Component {
                     <VolumeBox onVolumeChange={this.onVolumeChange.bind(this)}
                         onMutePressed={this.onMutePressed.bind(this)}
                         title={audio.name} volume={audio.volume} deviceName={audio.device} output={audio.output} defaultMute={audio.mute} icon={audio.icon}
-                        onHideEvent={hide => { audio.hidden = hide}}
+                        onHideEvent={hide => {this.setVolumes(audio, {hidden: hide}, idx)}}
+                        isHide={audio.hidden}
                         isVertical={this.state.isVertical}
                         isEditable={this.state.isEditable}
                         dropEvent={this.onDroppedEvent.bind(this)}
