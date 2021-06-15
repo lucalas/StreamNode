@@ -38,6 +38,16 @@ class Dashboard extends Component {
         };
     }
 
+    setVolumes(volume, newValues, id) {
+        let newVolumes = [...this.state.volumes];
+        let newVolume = {...volume, ...newValues};
+
+        newVolumes[id] = newVolume;
+
+        this.setState({volumes: newVolumes});
+
+    }
+
     componentDidMount() {
         WsSocket.addVolumeUpdateHandler(this.getVolumeUpdate.bind(this));
 
@@ -123,13 +133,14 @@ class Dashboard extends Component {
                     lg={this.state.isVertical ? 4 : 8}
                     xl={this.state.isVertical ? 2 : 6}
                     xxl={this.state.isVertical ? 2 : 4}
-                    hidden={audio.hidden}
+                    hidden={!this.state.isEditable && audio.hidden}
                     id="volumeBox"
                 >
                     <VolumeBox onVolumeChange={this.onVolumeChange.bind(this)}
                         onMutePressed={this.onMutePressed.bind(this)}
                         title={audio.name} volume={audio.volume} deviceName={audio.device} output={audio.output} defaultMute={audio.mute} icon={audio.icon}
-                        onHideEvent={hide => { audio.hidden = hide }}
+                        onHideEvent={hide => {this.setVolumes(audio, {hidden: hide}, idx)}}
+                        isHide={audio.hidden}
                         isVertical={this.state.isVertical}
                         isEditable={this.state.isEditable}
                         dropEvent={this.onDroppedEvent.bind(this)}
@@ -178,7 +189,7 @@ class Dashboard extends Component {
 
     saveDeckState() {
         WsSocket.storeDeck(this.state.volumes
-            .map((vol, index) => {return{id: vol.device + vol.name, order: vol.order != -1 ? vol.order : index}}));
+            .map((vol, index) => {return{id: vol.device + vol.name, order: vol.order != -1 ? vol.order : index, hidden: vol.hidden}}));
         this.setState({ isEditable: false });
     }
 

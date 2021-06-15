@@ -79,7 +79,7 @@ namespace StreamNodeEngine
         private RemoteControlData GetVolumes(RemoteControlData wsData)
         {
             RemoteControlVolumes volumes = new RemoteControlVolumes();
-            VolumeOrderData[] orderVolumes = storeService.read<VolumeOrderData[]>();
+            VolumeStoreData[] orderVolumes = storeService.read<VolumeStoreData[]>();
             foreach (MMDevice dev in audioService.GetListOfOutputDevices())
             {
                 foreach (ApplicationController appOut in audioService.GetApplicationsMixer(dev))
@@ -94,6 +94,7 @@ namespace StreamNodeEngine
                     audio.icon = ProcessUtils.ProcessIcon(appOut.session.GetProcessID);
                     audio.id = audio.name + "|" + audio.device;
                     audio.order = GetVolumeOrder(orderVolumes, audio.device + audio.name);
+                    audio.hidden = GetVolumeHidden(orderVolumes, audio.device + audio.name);
                     volumes.Add(audio);
                 }
             }
@@ -116,18 +117,32 @@ namespace StreamNodeEngine
             return wsData;
         }
 
-        private int GetVolumeOrder(VolumeOrderData[] data, string id) {
+        private int GetVolumeOrder(VolumeStoreData[] data, string id) {
             int order = -1;
 
             if (data != null)
             {
-                foreach (VolumeOrderData volume in data)
+                foreach (VolumeStoreData volume in data)
                 {
                     if (volume.id.Equals(id)) order = volume.order;
                 }
             }
 
             return order;
+        }
+
+        private bool GetVolumeHidden(VolumeStoreData[] data, string id) {
+            bool hidden = false;
+
+            if (data != null)
+            {
+                foreach (VolumeStoreData volume in data)
+                {
+                    if (volume.id.Equals(id)) hidden = volume.hidden;
+                }
+            }
+
+            return hidden;
         }
 
         private RemoteControlData ChangeVolume(RemoteControlData wsData)
