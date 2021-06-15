@@ -189,7 +189,7 @@ class Dashboard extends Component {
 
     saveDeckState() {
         WsSocket.storeDeck(this.state.volumes
-            .map((vol, index) => {return{id: vol.device + vol.name, order: vol.order != -1 ? vol.order : index}}));
+            .map((vol, index) => {return{id: vol.device + vol.name, order: vol.order != -1 ? vol.order : index, hidden: vol.hidden}}));
         this.setState({ isEditable: false });
     }
 
