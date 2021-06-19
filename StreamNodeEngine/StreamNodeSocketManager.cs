@@ -1,7 +1,6 @@
 ﻿using NAudio.CoreAudioApi;
 using Newtonsoft.Json;
 using OBSWebsocketDotNet.Types;
-using StreamNodeEngine.Engine;
 using StreamNodeEngine.Objects;
 using StreamNodeEngine.Utils;
 using StreamNodeEngine.Engine.Services;
