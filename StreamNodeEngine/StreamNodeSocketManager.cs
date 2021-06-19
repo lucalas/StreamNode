@@ -12,7 +12,7 @@ namespace StreamNodeEngine
     public class StreamNodeSocketManager
     {
 
-        public bool isConnected {get {return _isConnected;}}
+        public bool isConnected { get { return _isConnected; } }
         private bool _isConnected = false;
         public OBSService obsService { get; } = new OBSService();
         public AudioService audioService { get; } = new AudioService();
@@ -24,21 +24,25 @@ namespace StreamNodeEngine
             initRoutes();
         }
 
-        public void ConfigOBSWebSocket(IObsSettings settings) {
+        public void ConfigOBSWebSocket(IObsSettings settings)
+        {
             obsService.settings = settings;
         }
 
-        public void ConfigWebSocket(IWebSocketSettings settings) {
+        public void ConfigWebSocket(IWebSocketSettings settings)
+        {
             webSocketEngine.settings = settings;
         }
 
-        public void Connect() {
+        public void Connect()
+        {
             webSocketEngine.Connect();
             obsService.Connect();
             _isConnected = true;
         }
 
-        public void Disconnect() {
+        public void Disconnect()
+        {
             webSocketEngine.Disconnect();
             _isConnected = false;
         }
@@ -116,7 +120,8 @@ namespace StreamNodeEngine
             return wsData;
         }
 
-        private int GetVolumeOrder(VolumeStoreData[] data, string id) {
+        private int GetVolumeOrder(VolumeStoreData[] data, string id)
+        {
             int order = -1;
 
             if (data != null)
@@ -130,7 +135,8 @@ namespace StreamNodeEngine
             return order;
         }
 
-        private bool GetVolumeHidden(VolumeStoreData[] data, string id) {
+        private bool GetVolumeHidden(VolumeStoreData[] data, string id)
+        {
             bool hidden = false;
 
             if (data != null)

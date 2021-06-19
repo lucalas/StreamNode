@@ -10,7 +10,7 @@
         public string icon { get; set; }
         public string device { get; set; }
         public int order { get; set; } = -1;
-        public bool hidden {get; set;} = false;
+        public bool hidden { get; set; } = false;
 
     }
 }

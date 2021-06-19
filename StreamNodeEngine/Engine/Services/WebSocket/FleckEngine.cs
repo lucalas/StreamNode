@@ -6,7 +6,7 @@ namespace StreamNodeEngine.Engine.Services.WebSocket
 {
     class FleckEngine : IRemoteControlEngine
     {
-        public IWebSocketSettings settings {get; set;}
+        public IWebSocketSettings settings { get; set; }
         private WebSocketServer _server;
         private IWebSocketConnection _socket;
         public event OnMessageEventHandler OnMessage;

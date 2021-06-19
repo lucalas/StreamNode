@@ -5,7 +5,7 @@ namespace StreamNodeEngine.Engine.Services.WebSocket
     {
         [DefaultValue("0.0.0.0")]
         int WebSocketIp { get; set; }
-        
+
         [DefaultValue(8189)]
         int WebSocketPort { get; set; }
     }

@@ -9,8 +9,8 @@ namespace StreamNodeEngine.Engine.Services.Obs
     public class OBSService
     {
 
-            // Use default settings
-        public IObsSettings settings {get; set;} = new ConfigurationBuilder<IObsSettings>().Build();
+        // Use default settings
+        public IObsSettings settings { get; set; } = new ConfigurationBuilder<IObsSettings>().Build();
         private OBSWebsocket obs = new OBSWebsocket();
         public String url { get => $"ws://{settings.ObsIp}:{settings.ObsPort}"; }
         private EventHandler _connected;

@@ -5,12 +5,12 @@ namespace StreamNodeEngine.Engine.Services.Obs
     {
 
         [DefaultValue("127.0.0.1")]
-        string ObsIp {get; set;}
+        string ObsIp { get; set; }
 
         [DefaultValue(4444)]
-        int ObsPort {get; set;}
+        int ObsPort { get; set; }
 
         [DefaultValue("")]
-        string ObsPassword {get; set;}
+        string ObsPassword { get; set; }
     }
 }

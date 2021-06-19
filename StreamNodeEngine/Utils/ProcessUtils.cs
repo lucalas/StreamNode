@@ -70,7 +70,8 @@ namespace StreamNodeEngine.Utils
             return blob;
         }
 
-        public static string getIcon(uint procid) {
+        public static string getIcon(uint procid)
+        {
             // TODO test old method just for fun
             string blob = "";
             Icon ico = Icon.ExtractAssociatedIcon(Process.GetProcessById((int)procid).MainModule.FileName);
