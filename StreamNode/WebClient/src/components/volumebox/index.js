@@ -9,6 +9,8 @@ import HideIcon from '../../assets/images/hide-icon.svg';
 
 const { Text, Paragraph } = Typography;
 
+const VOLUME_CHANGE_DELAY = 150;
+
 class VolumeBox extends Component {
     _slider = createRef();
 
@@ -233,7 +235,7 @@ class VolumeBox extends Component {
                 this.props.onVolumeChange(this.props.title, this.props.deviceName, value, this.props.output, this.state.mute);
             }
             // We found that a good value of delay to have a gradual change of the volume is 150
-        }, 150);
+        }, VOLUME_CHANGE_DELAY);
     }
 }
 

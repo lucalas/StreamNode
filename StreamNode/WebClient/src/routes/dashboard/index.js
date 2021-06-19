@@ -10,7 +10,7 @@ import WsSocket from '../../services/WSSocketConnector';
 import languages from '../../data/languages.json'
 
 //REACT DND
-import { DndProvider, useDrop } from 'react-dnd'
+import { DndProvider } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
 
 
@@ -40,11 +40,11 @@ class Dashboard extends Component {
 
     setVolumes(volume, newValues, id) {
         let newVolumes = [...this.state.volumes];
-        let newVolume = {...volume, ...newValues};
+        let newVolume = { ...volume, ...newValues };
 
         newVolumes[id] = newVolume;
 
-        this.setState({volumes: newVolumes});
+        this.setState({ volumes: newVolumes });
 
     }
 
@@ -111,44 +111,48 @@ class Dashboard extends Component {
     }
 
     getGUIVolumes() {
+        let component = (<div />);
+
         if (this.state.volumes.length == 0) {
-            return <Row justify="center"> <Text>{languages[this.props.language].mixer.not_found}</Text> </Row>
+            component = (<Row justify="center"> <Text>{languages[this.props.language].mixer.not_found}</Text> </Row>);
         }
 
-        return this.state.volumes
-        .sort((a, b) => a.order - b.order)
-        .filter(volume => {
-            let valid = true;
-            if (this.state.deviceFilter !== deviceFilterNone && volume.output) {
-                valid = volume.device === this.state.deviceFilter;
-            }
-            return valid;
-        }).map((audio, idx) => {
-            //console.log(JSON.stringify(audio));
-            return (
-                <Col
-                    xs={this.state.isVertical ? 8 : 24}
-                    sm={this.state.isVertical ? 8 : 12}
-                    md={this.state.isVertical ? 4 : 12}
-                    lg={this.state.isVertical ? 4 : 8}
-                    xl={this.state.isVertical ? 2 : 6}
-                    xxl={this.state.isVertical ? 2 : 4}
-                    hidden={!this.state.isEditable && audio.hidden}
-                    id="volumeBox"
-                >
-                    <VolumeBox onVolumeChange={this.onVolumeChange.bind(this)}
-                        onMutePressed={this.onMutePressed.bind(this)}
-                        title={audio.name} volume={audio.volume} deviceName={audio.device} output={audio.output} defaultMute={audio.mute} icon={audio.icon}
-                        onHideEvent={hide => {this.setVolumes(audio, {hidden: hide}, idx)}}
-                        isHide={audio.hidden}
-                        isVertical={this.state.isVertical}
-                        isEditable={this.state.isEditable}
-                        dropEvent={this.onDroppedEvent.bind(this)}
-                        index={idx}
-                    />
-                </Col>
-            )
-        });
+        component = this.state.volumes
+            .sort((a, b) => a.order - b.order)
+            .filter(volume => {
+                let valid = true;
+                if (this.state.deviceFilter !== deviceFilterNone && volume.output) {
+                    valid = volume.device === this.state.deviceFilter;
+                }
+                return valid;
+            }).map((audio, idx) => {
+                //console.log(JSON.stringify(audio));
+                return (
+                    <Col
+                        xs={this.state.isVertical ? 8 : 24}
+                        sm={this.state.isVertical ? 8 : 12}
+                        md={this.state.isVertical ? 4 : 12}
+                        lg={this.state.isVertical ? 4 : 8}
+                        xl={this.state.isVertical ? 2 : 6}
+                        xxl={this.state.isVertical ? 2 : 4}
+                        hidden={!this.state.isEditable && audio.hidden}
+                        id="volumeBox"
+                    >
+                        <VolumeBox onVolumeChange={this.onVolumeChange.bind(this)}
+                            onMutePressed={this.onMutePressed.bind(this)}
+                            title={audio.name} volume={audio.volume} deviceName={audio.device} output={audio.output} defaultMute={audio.mute} icon={audio.icon}
+                            onHideEvent={hide => { this.setVolumes(audio, { hidden: hide }, idx) }}
+                            isHide={audio.hidden}
+                            isVertical={this.state.isVertical}
+                            isEditable={this.state.isEditable}
+                            dropEvent={this.onDroppedEvent.bind(this)}
+                            index={idx}
+                        />
+                    </Col>
+                )
+            });
+
+        return component;
     }
 
     getGUIObsScenes() {
@@ -189,7 +193,7 @@ class Dashboard extends Component {
 
     saveDeckState() {
         WsSocket.storeDeck(this.state.volumes
-            .map((vol, index) => {return{id: vol.device + vol.name, order: vol.order != -1 ? vol.order : index, hidden: vol.hidden}}));
+            .map((vol, index) => { return { id: vol.device + vol.name, order: vol.order != -1 ? vol.order : index, hidden: vol.hidden } }));
         this.setState({ isEditable: false });
     }
 
@@ -249,26 +253,26 @@ class Dashboard extends Component {
                             </Col>
                             {!this.state.isMobile &&
                                 <Col >
-                                {
-                                    !this.state.isEditable 
-                                    ?
-                                    <Row align="middle">
-                                        <Button
-                                            icon={<EditOutlined />}
-                                            type={this.state.isEditable ? "primary" : "default"}
-                                            size={32}
-                                            shape="circle"
-                                            onClick={this.makeEditable.bind(this)}
-                                        />
-                                        <p style={{ margin: "0 0 0 5px" }}>{languages[this.props.language].mixer.edit}</p>
-                                    </Row>
-                                    :
-                                    <Row align="middle">
-                                        <Button icon={<CheckOutlined />} size={32} shape="circle" type="primary" onClick={this.saveDeckState.bind(this)}/>
-                                        <Button icon={<UndoOutlined/>} size={32} shape="circle" type="primary" danger  onClick={this.undoDeckState.bind(this)}/>
-                                        <p style={{ margin: "0 0 0 5px" }}>{languages[this.props.language].mixer.edit}</p>
-                                    </Row>
-                                }
+                                    {
+                                        !this.state.isEditable
+                                            ?
+                                            <Row align="middle">
+                                                <Button
+                                                    icon={<EditOutlined />}
+                                                    type={this.state.isEditable ? "primary" : "default"}
+                                                    size={32}
+                                                    shape="circle"
+                                                    onClick={this.makeEditable.bind(this)}
+                                                />
+                                                <p style={{ margin: "0 0 0 5px" }}>{languages[this.props.language].mixer.edit}</p>
+                                            </Row>
+                                            :
+                                            <Row align="middle">
+                                                <Button icon={<CheckOutlined />} size={32} shape="circle" type="primary" onClick={this.saveDeckState.bind(this)} />
+                                                <Button icon={<UndoOutlined />} size={32} shape="circle" type="primary" danger onClick={this.undoDeckState.bind(this)} />
+                                                <p style={{ margin: "0 0 0 5px" }}>{languages[this.props.language].mixer.edit}</p>
+                                            </Row>
+                                    }
                                 </Col>
                             }
                         </Row>
