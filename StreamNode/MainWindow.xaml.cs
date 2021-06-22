@@ -9,6 +9,7 @@ using System.Windows.Media;
 using System.Windows.Controls;
 using System.Diagnostics;
 using StreamNode.Services.Settings;
+using StreamNode.Services.OBSPlugin;
 
 namespace StreamNode
 {
@@ -24,6 +25,9 @@ namespace StreamNode
             InitializeComponent();
             this.DataContext = serverContext;
             SettingsTab.DataContext = App.settingsService.settings;
+            
+
+            new OBSPluginManager().InstallAsync();
         }
         private void OpenApp(object sender, RoutedEventArgs e)
         {
