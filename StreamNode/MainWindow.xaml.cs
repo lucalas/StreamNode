@@ -10,6 +10,7 @@ using System.Windows.Controls;
 using System.Diagnostics;
 using StreamNode.Services.Settings;
 using StreamNode.Services.OBSPlugin;
+using System.Net;
 
 namespace StreamNode
 {
@@ -116,6 +117,20 @@ namespace StreamNode
                 Alert(ErrorResult, String.Format("An error occured during server shutdown [{0}]", ex.Message));
                 Log.Error("An error occured during server shutdown [{@ex}]", ex);
             }
+        }
+        private void DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
+        {
+            TextBlockOBSPluginLoading.Text = e.ProgressPercentage + " Downloading ";
+        }
+        private void InstallOBSPluginClick(object sender, RoutedEventArgs e)
+        {
+            OBSPluginManager manager = new OBSPluginManager();
+
+            manager.InstallAsync();
+        }
+        private void CancelOBSPluginClick(object sender, RoutedEventArgs e)
+        {
+            InstallOBSPluginPopup.IsOpen = false;
         }
 
         private void Alert(Snackbar alertBar, String message)

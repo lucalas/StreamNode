@@ -94,5 +94,27 @@
         <materialDesign:Snackbar x:Name="SaveResult" MessageQueue="{materialDesign:MessageQueue}"/>
         <materialDesign:Snackbar x:Name="WarningResult" MessageQueue="{materialDesign:MessageQueue}"/>
         <materialDesign:Snackbar x:Name="ErrorResult" MessageQueue="{materialDesign:MessageQueue}"/>
+        <materialDesign:DialogHost DialogTheme="Inherit" IsOpen="True" x:Name="InstallOBSPluginPopup" CloseOnClickAway="True">
+            <materialDesign:DialogHost.DialogContent>
+                <StackPanel Margin="10">
+                    <TextBlock Text="OBS-Websocket Plugin is not installed, do you want to install?" HorizontalAlignment="Center" Margin="5"/>
+                    <TextBlock Text="Plugin is required to control OBS Scenes" HorizontalAlignment="Center" Margin="5,5,5,20"/>
+                    <CheckBox x:Name="SkipOBSPopupAlways" Margin="5">Don't ask me again</CheckBox>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="5">
+                        <Button Click="InstallOBSPluginClick">Install</Button>
+                        <Button Click="CancelOBSPluginClick">Cancel</Button>
+                    </StackPanel>
+                    <ProgressBar x:Name="DeterminateCircularProgress" IsIndeterminate="True"/>
+                </StackPanel>
+            </materialDesign:DialogHost.DialogContent>
+        </materialDesign:DialogHost>
+        <materialDesign:DialogHost DialogTheme="Inherit" IsOpen="True" x:Name="InstallOBSPluginLoading" CloseOnClickAway="True">
+            <materialDesign:DialogHost.DialogContent>
+                <StackPanel Margin="10">
+                    <ProgressBar x:Name="ProgressOBSPlugin" IsIndeterminate="True"/>
+                    <TextBlock x:Name="TextBlockOBSPluginLoading" Text="Loading..." HorizontalAlignment="Center" Margin="5"/>
+                </StackPanel>
+            </materialDesign:DialogHost.DialogContent>
+        </materialDesign:DialogHost>
     </Grid>
 </Window>

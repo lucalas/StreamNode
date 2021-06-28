@@ -1,13 +1,6 @@
 using System;
-using System.ComponentModel;
 using System.IO;
 using System.IO.Compression;
-using System.Net;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Reflection;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
 
 namespace StreamNode.Services.OBSPlugin
 {
@@ -16,9 +9,9 @@ namespace StreamNode.Services.OBSPlugin
         // public static string obsInstallPath = "C:\\Program Files\\OBS-Studio\\";
         public static string obsInstallPath = "D:\\GDrive\\Dati\\Programmi\\OBS-Studio-Test";
         public static string obsPluginPath = "obs-plugins\\64bit\\";
+        public static string tmpFolder = "tmp\\";
         public static string obsWebsocketPlugin = "obs-websocket.dll";
 
-        public static string obsWebsocketUrl = "https://github.com/Palakis/obs-websocket/releases/download/4.9.1/obs-websocket-4.9.1-Windows.zip";
 
         public bool CheckObsExistence()
         {
@@ -33,33 +26,36 @@ namespace StreamNode.Services.OBSPlugin
         {
             if (true || CheckObsExistence() && !CheckPluginExistence())
             {
-                using (var client = new WebClient())
-                {
-                    Directory.CreateDirectory("tmp");
-
-                    client.DownloadProgressChanged += DownloadProgressChanged;
-                    client.DownloadFileAsync(new System.Uri(obsWebsocketUrl), "tmp\\obs-websocket-4.9.1-Windows.zip");
-                    client.DownloadFileCompleted += DownloadFileCompleted;
-                }
+                // Create tmp dir
+                Directory.CreateDirectory(tmpFolder);
+                // Extract obs plugin
+                ExtractZip();
+                // Copy file into obs folder
+                DirectoryCopy($"{tmpFolder}obs-websocket-4.9.1-Windows\\", obsInstallPath, true, true);
             }
         }
 
-        void DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
+        private void ExtractZip()
         {
-        }
+            try
+            {
+                //write the resource zip file to the temp directory
+                using (Stream stream = System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceStream("StreamNode.Resources.obs-websocket-4.9.1-Windows.zip"))
+                {
+                    using (FileStream bw = new FileStream($"{tmpFolder}obs-websocket-4.9.1-Windows.zip", FileMode.Create))
+                    {
+                        stream.CopyTo(bw);
+                    }
+                }
 
-        void DownloadFileCompleted(object sender, AsyncCompletedEventArgs e)
-        {
-            Install();
-        }
+                // Unzip
+                ZipFile.ExtractToDirectory($"{tmpFolder}obs-websocket-4.9.1-Windows.zip", $"{tmpFolder}obs-websocket-4.9.1-Windows", true);
 
-        private void Install()
-        {
-            // Unzip
-            ZipFile.ExtractToDirectory("tmp\\obs-websocket-4.9.1-Windows.zip", "tmp\\obs-websocket-4.9.1-Windows", true);
-            // Copy file into obs folder
-            DirectoryCopy("tmp\\obs-websocket-4.9.1-Windows\\", "D:\\GDrive\\Dati\\Programmi\\OBS-Studio-Test", true, true);
-            int a = 0;
+            }
+            catch (Exception e)
+            {
+                //handle the error
+            }
         }
 
         private static void DirectoryCopy(string sourceDirName, string destDirName, bool copySubDirs, bool overwrite)

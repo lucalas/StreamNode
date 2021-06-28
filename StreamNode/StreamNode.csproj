@@ -14,6 +14,7 @@
   </PropertyGroup>
   <ItemGroup>
     <EmbeddedResource Include="wwwroot\WebClient.zip" />
+    <EmbeddedResource Include="Resources\obs-websocket-4.9.1-Windows.zip" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\logo.png" />
