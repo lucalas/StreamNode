@@ -11,6 +11,8 @@ using System.Diagnostics;
 using StreamNode.Services.Settings;
 using StreamNode.Services.OBSPlugin;
 using System.Net;
+using System.Threading.Tasks;
+using System.Threading;
 
 namespace StreamNode
 {
@@ -20,15 +22,16 @@ namespace StreamNode
     public partial class MainWindow : Window
     {
         private ServerContext serverContext = new ServerContext();
+        private OBSPluginManager manager = new OBSPluginManager();
 
         public MainWindow()
         {
             InitializeComponent();
             this.DataContext = serverContext;
             SettingsTab.DataContext = App.settingsService.settings;
-            
-
-            new OBSPluginManager().InstallAsync();
+            if (!manager.CheckPluginExistence()) {
+                InstallOBSPluginPopup.IsOpen = true;
+            }
         }
         private void OpenApp(object sender, RoutedEventArgs e)
         {
@@ -124,10 +127,41 @@ namespace StreamNode
         }
         private void InstallOBSPluginClick(object sender, RoutedEventArgs e)
         {
-            OBSPluginManager manager = new OBSPluginManager();
-
+            manager.onOBSInstallEvent += InstallingUpdate;
+            InstallOBSPluginPopup.IsOpen = false;
+            InstallOBSPluginLoading.IsOpen = true;
             manager.InstallAsync();
         }
+
+        private delegate void SafeCallDelegate(string text);
+        private void InstallingUpdate(object sender, OBSPluginEvent e)
+        {
+            Task.Run(() =>
+            {
+                //TextBlockOBSPluginLoading.Text = e.obsEvent;
+                TextBlockOBSPluginLoading.Dispatcher.Invoke(() =>
+                {
+                    TextBlockOBSPluginLoading.Text = e.obsEvent;
+                });
+
+                if (e.finished)
+                {
+                    Thread.Sleep(2000);
+                    TextBlockOBSPluginLoading.Dispatcher.Invoke(() =>
+                    {
+                        TextBlockOBSPluginLoading.Text = "Installation finished";
+                    });
+                    //TextBlockOBSPluginLoading.Text = "Installation finished";
+                    Thread.Sleep(2000);
+                    //InstallOBSPluginLoading.IsOpen = true;
+                    InstallOBSPluginLoading.Dispatcher.Invoke(() =>
+                    {
+                        InstallOBSPluginLoading.IsOpen = false;
+                    });
+                }
+            });
+        }
+
         private void CancelOBSPluginClick(object sender, RoutedEventArgs e)
         {
             InstallOBSPluginPopup.IsOpen = false;

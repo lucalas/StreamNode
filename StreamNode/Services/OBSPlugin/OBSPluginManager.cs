@@ -1,16 +1,18 @@
 using System;
 using System.IO;
 using System.IO.Compression;
+using System.Threading.Tasks;
 
 namespace StreamNode.Services.OBSPlugin
 {
     public class OBSPluginManager
     {
-        // public static string obsInstallPath = "C:\\Program Files\\OBS-Studio\\";
-        public static string obsInstallPath = "D:\\GDrive\\Dati\\Programmi\\OBS-Studio-Test";
+        public static string obsInstallPath { get; set; } = "C:\\Program Files\\OBS-Studio\\";
         public static string obsPluginPath = "obs-plugins\\64bit\\";
         public static string tmpFolder = "tmp\\";
         public static string obsWebsocketPlugin = "obs-websocket.dll";
+
+        public event EventHandler<OBSPluginEvent> onOBSInstallEvent;
 
 
         public bool CheckObsExistence()
@@ -24,15 +26,26 @@ namespace StreamNode.Services.OBSPlugin
 
         public async void InstallAsync()
         {
-            if (true || CheckObsExistence() && !CheckPluginExistence())
+            await Task.Run(() =>
             {
-                // Create tmp dir
-                Directory.CreateDirectory(tmpFolder);
-                // Extract obs plugin
-                ExtractZip();
-                // Copy file into obs folder
-                DirectoryCopy($"{tmpFolder}obs-websocket-4.9.1-Windows\\", obsInstallPath, true, true);
-            }
+                if (CheckObsExistence() && !CheckPluginExistence())
+                {
+                    // Create tmp dir
+                    onOBSInstallEvent?.Invoke(this, OBSPluginEvent.GenerateEvent("Creating temporary directory"));
+                    Directory.CreateDirectory(tmpFolder);
+                    onOBSInstallEvent?.Invoke(this, OBSPluginEvent.GenerateEvent("Temporary directory created"));
+
+                    // Extract obs plugin
+                    onOBSInstallEvent?.Invoke(this, OBSPluginEvent.GenerateEvent("Extracting obs websocket plugin zip"));
+                    ExtractZip();
+                    onOBSInstallEvent?.Invoke(this, OBSPluginEvent.GenerateEvent("Obs websocket plugin extracted"));
+
+                    // Copy file into obs folder
+                    onOBSInstallEvent?.Invoke(this, OBSPluginEvent.GenerateEvent("Installing obs websocket plugin"));
+                    DirectoryCopy($"{tmpFolder}obs-websocket-4.9.1-Windows\\", obsInstallPath, true, true);
+                    onOBSInstallEvent?.Invoke(this, OBSPluginEvent.GenerateEvent("Obs websocket plugin installed", true));
+                }
+            });
         }
 
         private void ExtractZip()
@@ -93,5 +106,7 @@ namespace StreamNode.Services.OBSPlugin
                 }
             }
         }
+
+
     }
 }
