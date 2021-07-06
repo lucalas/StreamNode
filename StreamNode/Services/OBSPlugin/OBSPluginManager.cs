@@ -7,7 +7,7 @@ namespace StreamNode.Services.OBSPlugin
 {
     public class OBSPluginManager
     {
-        public static string obsInstallPath { get; set; } = "C:\\Program Files\\OBS-Studio\\";
+        public string obsInstallPath { get; set; } = "C:\\Program Files\\OBS-Studio\\";
         public static string obsPluginPath = "obs-plugins\\64bit\\";
         public static string tmpFolder = "tmp\\";
         public static string obsWebsocketPlugin = "obs-websocket.dll";

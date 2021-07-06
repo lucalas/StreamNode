@@ -12,5 +12,8 @@ namespace StreamNodeEngine.Engine.Services.Obs
 
         [DefaultValue("")]
         string ObsPassword { get; set; }
+
+        [DefaultValue("C:\\Program Files\\OBS-Studio\\")]
+        string ObsPath { get; set; }
     }
 }

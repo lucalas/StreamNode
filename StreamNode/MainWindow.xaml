@@ -5,7 +5,9 @@
     xmlns:dragablz="clr-namespace:Dragablz;assembly=Dragablz"
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" TextElement.Foreground="{DynamicResource MaterialDesignBody}" TextElement.FontWeight="Regular" TextElement.FontSize="13" TextOptions.TextFormattingMode="Ideal" TextOptions.TextRenderingMode="Auto" Background="{DynamicResource MaterialDesignPaper}" FontFamily="{DynamicResource MaterialDesignFont}"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:local="clr-namespace:StreamNode" mc:Ignorable="d" Title="MainWindow" ResizeMode="CanMinimize" Width="700" Height="400">
+    xmlns:local="clr-namespace:StreamNode" mc:Ignorable="d" Title="MainWindow" ResizeMode="CanMinimize" Width="700" Height="400"
+    xmlns:rules="clr-namespace:StreamNode.Validation">
+    
 
     <Grid>
 
@@ -61,33 +63,51 @@
             </TabItem>
             <TabItem Header="Settings" Name="SettingsTab">
                 <Grid>
-                    <materialDesign:Card Padding="32" Margin="16">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="1*"/>
-                                <ColumnDefinition Width="1*"/>
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="3*"/>
-                                <RowDefinition Height="6*"/>
-                                <RowDefinition Height="5*"/>
-                                <RowDefinition Height="3*"/>
-                                <RowDefinition Height="3*"/>
-                                <RowDefinition Height="3*"/>
-                            </Grid.RowDefinitions>
-                            <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Style="{StaticResource MaterialDesignHeadline5TextBlock}" Text="OBS Configuration" />
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="5*"/>
+                        <RowDefinition Height="1*"/>
+                    </Grid.RowDefinitions>
+                    <Grid>
+                        <materialDesign:Card Padding="32" Margin="16">
+                            <ScrollViewer Grid.Row="0">
+                                <Grid ScrollViewer.CanContentScroll="True" Height="250">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="1*"/>
+                                        <ColumnDefinition Width="1*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="60"/>
+                                        <RowDefinition Height="30"/>
+                                        <RowDefinition Height="40"/>
+                                        <RowDefinition Height="30"/>
+                                        <RowDefinition Height="40"/>
+                                        <RowDefinition Height="30"/>
+                                    </Grid.RowDefinitions>
+                                    <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Style="{StaticResource MaterialDesignHeadline5TextBlock}" Text="OBS Configuration" />
 
-                            <TextBox Grid.Row="1" Grid.Column="0" Margin="2,32,2,2" materialDesign:HintAssist.Hint="OBS IP" materialDesign:HintAssist.HelperText="Insert OBS ip" Name="ip" Text="{Binding ObsIp, Mode = TwoWay}"/>
+                                    <TextBox Grid.Row="1" Grid.Column="0" Margin="2" materialDesign:HintAssist.Hint="OBS IP" materialDesign:HintAssist.HelperText="Insert OBS ip" Name="ip" Text="{Binding ObsIp, Mode = TwoWay}"/>
 
-                            <TextBox Grid.Row="1" Grid.Column="1" Margin="2,32,2,2" materialDesign:HintAssist.Hint="OBS Port" materialDesign:HintAssist.HelperText="Insert OBS port" Name="port" Text="{Binding ObsPort, Mode = TwoWay}"/>
+                                    <TextBox Grid.Row="1" Grid.Column="1" Margin="2" materialDesign:HintAssist.Hint="OBS Port" materialDesign:HintAssist.HelperText="Insert OBS port" Name="port" Text="{Binding ObsPort, Mode = TwoWay}" Cursor="IBeam"/>
 
-                            <TextBox Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Margin="2" materialDesign:HintAssist.Hint="OBS Password" materialDesign:HintAssist.HelperText="Insert OBS password (empty if none)" Name="pwd" Text="{Binding ObsPassword, Mode = TwoWay}"/>
+                                    <TextBox Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Margin="2" materialDesign:HintAssist.Hint="OBS Password" materialDesign:HintAssist.HelperText="Insert OBS password (empty if none)" Name="pwd" Text="{Binding ObsPassword, Mode = TwoWay}"/>
+                                    <TextBox Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" Margin="2" materialDesign:HintAssist.Hint="OBS Directory" materialDesign:HintAssist.HelperText="Insert OBS Directory" Name="OBSDirectory" Cursor="IBeam">
+                                        <TextBox.Text>
+                                            <Binding Path="ObsPath" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
+                                                <Binding.ValidationRules>
+                                                    <rules:PathExistsValidationRule/>
+                                                </Binding.ValidationRules>
+                                            </Binding>
+                                        </TextBox.Text>
+                                    </TextBox>
 
-                            <Viewbox Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2">
-                                <Button Click="SaveSettings" Width="100">Save</Button>
-                            </Viewbox>
-                        </Grid>
-                    </materialDesign:Card>
+                                </Grid>
+                            </ScrollViewer>
+                        </materialDesign:Card>
+                    </Grid>
+
+                    <Viewbox Grid.Row="1" Margin="10">
+                        <Button Click="SaveSettings" Width="100">Save</Button>
+                    </Viewbox>
                 </Grid>
             </TabItem>
         </dragablz:TabablzControl>

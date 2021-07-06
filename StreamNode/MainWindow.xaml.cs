@@ -29,10 +29,19 @@ namespace StreamNode
             InitializeComponent();
             this.DataContext = serverContext;
             SettingsTab.DataContext = App.settingsService.settings;
+            CheckOBSPlugin();
+        }
+
+        private void CheckOBSPlugin() {
+            if (!manager.CheckObsExistence()) {
+                Alert(ErrorResult, String.Format("OBS Folder not found [{0}] go in settings tab and change it", manager.obsInstallPath));
+                return;
+            }
             if (!manager.CheckPluginExistence()) {
                 InstallOBSPluginPopup.IsOpen = true;
             }
         }
+
         private void OpenApp(object sender, RoutedEventArgs e)
         {
             var psi = new ProcessStartInfo
